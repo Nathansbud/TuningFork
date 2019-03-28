@@ -1,3 +1,5 @@
+#!/usr/local/opt/python/bin/python3.7
+
 from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
@@ -7,6 +9,9 @@ from mutagen.id3 import ID3, USLT, ID3NoHeaderError
 from mutagen import MutagenError
 
 from parser import parse_itunes_xml
+import unidecode
+
+import os
 
 arr = parse_itunes_xml()
 
@@ -31,14 +36,20 @@ def is_good_response(resp):
 ##To-do: Try-catch block in case genius page doesn't exist (so it doesn't crash the ones that do) with a log file, output lyrics to text files using itunes filepath
 ##also how to deal with features? Genius scraping won't work with them...
 
+def has_lyrics(file):
+    return "USLT::eng" in ID3(file).keys()
+
 def get_lyrics(artist, name, file, rewrite=False):
-    artist = artist.split(" ft. ")[0].lower().replace(" ", "-").capitalize().replace("•", "").replace("!", "-").replace("(", "").replace(")", "").replace("é", "e").replace(".", "").replace("í", "i").replace(",", "").replace("&", "and")
-    name = name.lower().replace(" – ", "-").replace(" ", "-").replace(".", "").replace("!", "").replace("'", "").replace("/", "-").replace(",", "").replace("?", "").replace("(", "").replace(")", "").replace("’", "").replace(":", "").replace("&", "and")
+    song = name
+    by = artist
+
+    artist = unidecode.unidecode(artist.split(" ft. ")[0].split(" feat. ")[0].lower().replace(" ", "-").capitalize().replace("•", "").replace("!", "-").replace("(", "").replace(")", "").replace("é", "e").replace(".", "").replace("í", "i").replace(",", "").replace("&", "and"))
+    name = unidecode.unidecode(name.lower().replace(" – ", "-").replace(" / ", "/").replace(" ~ ", "-").replace(" ", "-").replace(".", "").replace("!", "").replace("'", "").replace("/", "-").replace(",", "").replace("?", "").replace("(", "").replace(")", "").replace("’", "").replace(":", "").replace("&", "and").replace("[", "").replace("]", ""))
 
     song_tags = ID3(file) #call mutagen file
 
     if not rewrite:
-        if "USLT::eng" in song_tags.keys():
+        if has_lyrics(file):
             return
 
     lyrics_url = "https://genius.com/" + artist + "-" +  name + "-lyrics"
@@ -54,6 +65,7 @@ def get_lyrics(artist, name, file, rewrite=False):
         song_tags.delall("USLT")
         song_tags[u"USLT::eng"] = USLT(encoding=3, lang=u'eng', text=lyrics) #Write USLT tag
         song_tags.save() #
+        print("Lyrics added to " + song + " by " + by)
     except TypeError:
         print("Song add failed! Genius link was " + lyrics_url)
     except MutagenError:
@@ -61,16 +73,22 @@ def get_lyrics(artist, name, file, rewrite=False):
     except ID3NoHeaderError:
         print("Cannot add lyrics to an m4a! Genius link was " + lyrics_url)
 
+def add_lyrics(track, rewrite=False):
+    try:
+        get_lyrics(track["Artist"], track["Name"], file_path_prettify(track["Location"]), rewrite)  # [7:] to counter file:// at start, %20 replace with spaces
+    except MutagenError:
+        print("Lyric add failed, likely due to error in system file path! File path is " + track["Location"])
+
+def file_path_prettify(path):
+    return path[7:].replace("%20", " ").replace("%E2%80%A2", "•").replace("%E2%80%93", "–").replace("e%CC%81","é").replace("i%CC%81", "í").replace("%23", "#").replace("%C3%A9", "é").replace("%5B", "[").replace("%5D", "]").replace("%E2%98%86", "☆")
+
 def add_all_lyrics(rewrite=False):
     for s in arr:
         if "Comments" in s:
             if "Vocal" in s["Comments"] and s["Location"].endswith(".mp3") and "Imbecile" not in s["Comments"]:
-                try:
-                    get_lyrics(s["Artist"], s["Name"], s["Location"][7:].replace("%20", " ").replace("%E2%80%A2", "•").replace("%E2%80%93", "–").replace("e%CC%81", "é").replace("i%CC%81", "í").replace("%23", "#"), rewrite)#[7:] to counter file:// at start, %20 replace with spaces
-                except: #Bad exception handling technique but it be like that sometimes!!!!
-                    print("Song add failed (in add all)! Song was " + s["Name"] + " by " + s["Artist"])
+                add_lyrics(s, rewrite)
     print("Done!")
 
 if __name__ == "__main__":
-    add_all_lyrics()
+    add_all_lyrics(False)
     pass
