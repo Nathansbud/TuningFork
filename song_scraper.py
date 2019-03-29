@@ -1,7 +1,7 @@
 #!/usr/local/opt/python/bin/python3.7
 
-from tune_scraper import add_lyrics
-from tune_scraper import arr
+from scraper import add_lyrics
+from scraper import arr
 import sys
 
 if __name__ == "__main__":

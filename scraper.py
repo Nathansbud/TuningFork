@@ -90,5 +90,5 @@ def add_all_lyrics(rewrite=False):
     print("Done!")
 
 if __name__ == "__main__":
-    add_all_lyrics(False)
+    add_all_lyrics()
     pass
