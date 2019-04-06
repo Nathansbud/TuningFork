@@ -11,8 +11,6 @@ from mutagen import MutagenError
 from parser import parse_itunes_xml
 import unidecode
 
-import os
-
 arr = parse_itunes_xml()
 
 ###CODE THAT IS NOT MINE STARTS HERE:
@@ -38,6 +36,29 @@ def is_good_response(resp):
 
 def has_lyrics(file):
     return "USLT::eng" in ID3(file).keys()
+
+def get_lyrics_without_write(artist, name): #too tired to do without breaking things, but restructure get_lyrics to use this and rename to write_lyrics
+    artist = unidecode.unidecode(artist.split(" ft. ")[0].split(" feat. ")[0].lower().replace(" ", "-").capitalize().replace("•", "").replace("!", "-").replace("(", "").replace(")", "").replace("é", "e").replace(".", "").replace("í", "i").replace(",", "").replace("&", "and"))
+    name = unidecode.unidecode(name.lower().replace(" – ", "-").replace(" / ", "/").replace(" ~ ", "-").replace(" ", "-").replace(".", "").replace("!", "").replace("'", "").replace("/", "-").replace(",", "").replace("?", "").replace("(", "").replace(")", "").replace("’", "").replace(":", "").replace("&", "and").replace("[", "").replace("]", ""))
+
+    lyrics_url = "https://genius.com/" + artist + "-" +  name + "-lyrics"
+
+    lyrics = ""
+
+    try:
+        raw_html = simple_get(lyrics_url)
+
+        soup = BeautifulSoup(raw_html, 'html.parser')
+        soup.prettify()
+
+        lyrics = (soup.find(class_="lyrics")).text #Genius has all lyric data in a div with class lyrics, text gets plaintext
+        lyrics = lyrics[2:len(lyrics)-2] #Delete trailing and leading newlines
+        return lyrics.split("\n")
+    except TypeError:
+        print("Song add failed! Genius link was " + lyrics_url)
+    except MutagenError:
+        print("Song add failed! Genius link was " + lyrics_url)
+
 
 def get_lyrics(artist, name, file, rewrite=False):
     song = name

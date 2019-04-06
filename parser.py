@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ET
-import os
 
 itunes_dir = "/Users/zackamiton/Music/iTunes/iTunes Library.xml"
 
