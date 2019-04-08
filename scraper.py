@@ -6,6 +6,7 @@ from contextlib import closing
 from bs4 import BeautifulSoup
 
 from mutagen.id3 import ID3, USLT, ID3NoHeaderError
+from mutagen.mp4 import MP4
 from mutagen import MutagenError
 
 from parser import parse_itunes_xml
@@ -31,19 +32,17 @@ def is_good_response(resp):
     return resp.status_code == 200 and content_type is not None and content_type.find('html') > -1
 ###ENDS HERE—THANK YOU TO https://realpython.com/python-web-scraping-practical-introduction/
 
-##To-do: Try-catch block in case genius page doesn't exist (so it doesn't crash the ones that do) with a log file, output lyrics to text files using itunes filepath
-##also how to deal with features? Genius scraping won't work with them...
-
 def has_lyrics(file):
-    return "USLT::eng" in ID3(file).keys()
+    if file.endswith(".mp3"):
+        return "USLT::eng" in ID3(file).keys()
+    else:
+        return "\xa9lyr" in MP4(file).keys()
 
 def get_lyrics_without_write(artist, name): #too tired to do without breaking things, but restructure get_lyrics to use this and rename to write_lyrics
     artist = unidecode.unidecode(artist.split(" ft. ")[0].split(" feat. ")[0].lower().replace(" ", "-").capitalize().replace("•", "").replace("!", "-").replace("(", "").replace(")", "").replace("é", "e").replace(".", "").replace("í", "i").replace(",", "").replace("&", "and"))
     name = unidecode.unidecode(name.lower().replace(" – ", "-").replace(" / ", "/").replace(" ~ ", "-").replace(" ", "-").replace(".", "").replace("!", "").replace("'", "").replace("/", "-").replace(",", "").replace("?", "").replace("(", "").replace(")", "").replace("’", "").replace(":", "").replace("&", "and").replace("[", "").replace("]", ""))
 
     lyrics_url = "https://genius.com/" + artist + "-" +  name + "-lyrics"
-
-    lyrics = ""
 
     try:
         raw_html = simple_get(lyrics_url)
@@ -65,17 +64,23 @@ def get_lyrics(artist, name, file, rewrite=False):
     by = artist
 
     artist = unidecode.unidecode(artist.split(" ft. ")[0].split(" feat. ")[0].lower().replace(" ", "-").capitalize().replace("•", "").replace("!", "-").replace("(", "").replace(")", "").replace("é", "e").replace(".", "").replace("í", "i").replace(",", "").replace("&", "and"))
-    name = unidecode.unidecode(name.lower().replace(" – ", "-").replace(" / ", "/").replace(" ~ ", "-").replace(" ", "-").replace(".", "").replace("!", "").replace("'", "").replace("/", "-").replace(",", "").replace("?", "").replace("(", "").replace(")", "").replace("’", "").replace(":", "").replace("&", "and").replace("[", "").replace("]", ""))
+    name = unidecode.unidecode(name.lower().replace(" – ", "-").replace(" - ", "-").replace(" = ", "-").replace(" / ", "/").replace(" ~ ", "-").replace(" ", "-").replace(".", "").replace("!", "").replace("'", "").replace("/", "-").replace(",", "").replace("?", "").replace("(", "").replace(")", "").replace("’", "").replace(":", "").replace("&", "and").replace("[", "").replace("]", "").replace("$", "").replace("=", ""))
 
-    song_tags = ID3(file) #call mutagen file
-
-    if not rewrite:
-        if has_lyrics(file):
-            return
+    if name[-1] == "-":
+        name = name[:-1] #not sure if necessary, to make sure it doesn't end in hyphens...should be done a tad bit more elegantly
 
     lyrics_url = "https://genius.com/" + artist + "-" +  name + "-lyrics"
 
     try:
+        if file.endswith(".mp3"): #should reduce these checks
+            song_tags = ID3(file) #ID3 unique to MP3s, other a/v types use MP4 specifications on tagging
+        else:
+            song_tags = MP4(file)
+
+        if not rewrite:
+            if has_lyrics(file):
+                return
+
         raw_html = simple_get(lyrics_url)
 
         soup = BeautifulSoup(raw_html, 'html.parser')
@@ -83,16 +88,21 @@ def get_lyrics(artist, name, file, rewrite=False):
 
         lyrics = (soup.find(class_="lyrics")).text #Genius has all lyric data in a div with class lyrics, text gets plaintext
         lyrics = lyrics[2:len(lyrics)-2] #Delete trailing and leading newlines
-        song_tags.delall("USLT")
-        song_tags[u"USLT::eng"] = USLT(encoding=3, lang=u'eng', text=lyrics) #Write USLT tag
-        song_tags.save() #
+
+        if file.endswith(".mp3"):
+            song_tags.delall("USLT")
+            song_tags[u"USLT::eng"] = USLT(encoding=3, lang=u'eng', text=lyrics) #Lyric tag
+            song_tags.save()
+        else:
+            song_tags["\xa9lyr"] = lyrics
+            song_tags.save()
         print("Lyrics added to " + song + " by " + by)
     except TypeError:
-        print("Song add failed! Genius link was " + lyrics_url)
+        print("Lyric add failed (TypeError)! Genius link was " + lyrics_url)
     except MutagenError:
-        print("Song add failed! Genius link was " + lyrics_url)
+        print("Lyric add failed (MutagenError)! Genius link was " + lyrics_url + ", and file extension was " + file[file.rfind("."):])
     except ID3NoHeaderError:
-        print("Cannot add lyrics to an m4a! Genius link was " + lyrics_url)
+        print("Lyric add failed (ID3NoHeader)! Genius link was " + lyrics_url + ", and file extension was " + file[file.rfind("."):])
 
 def add_lyrics(track, rewrite=False):
     try:
@@ -101,7 +111,7 @@ def add_lyrics(track, rewrite=False):
         print("Lyric add failed, likely due to error in system file path! File path is " + track["Location"])
 
 def file_path_prettify(path):
-    return path[7:].replace("%20", " ").replace("%E2%80%A2", "•").replace("%E2%80%93", "–").replace("e%CC%81","é").replace("i%CC%81", "í").replace("%23", "#").replace("%C3%A9", "é").replace("%5B", "[").replace("%5D", "]").replace("%E2%98%86", "☆")
+    return path[7:].replace("%20", " ").replace("%E2%80%A2", "•").replace("%E2%80%93", "–").replace("e%CC%81","é").replace("i%CC%81", "í").replace("%23", "#").replace("%C3%A9", "é").replace("%5B", "[").replace("%5D", "]").replace("%E2%98%86", "☆").replace("%C3%A2", "â")
 
 def add_all_lyrics(rewrite=False):
     for s in arr:

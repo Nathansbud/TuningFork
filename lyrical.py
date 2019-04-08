@@ -1,6 +1,5 @@
 from parser import parse_itunes_xml
 
-from scraper import has_lyrics
 from scraper import file_path_prettify
 from scraper import get_lyrics_without_write
 
