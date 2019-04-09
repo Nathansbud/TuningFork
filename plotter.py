@@ -5,10 +5,8 @@ import math
 
 plt.style.use("seaborn")
 
-arr = parse_itunes_xml("Play Count")
-art = parse_itunes_xml("Artist")
-
 def artist_plot():
+    art = parse_itunes_xml("Artist")
     artists = {}
     for val in art:
         if val["Artist"] in artists:
@@ -21,6 +19,8 @@ def artist_plot():
 
 
 def play_plot():
+    arr = parse_itunes_xml("Play Count")
+
     l = [int(x["Play Count"]) for x in arr]
 
     print(l)
@@ -50,5 +50,5 @@ def play_plot():
     plt.show()
 
 if __name__ == "__main__":
-    artist_plot()
+    play_plot()
     pass

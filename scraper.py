@@ -9,6 +9,8 @@ from mutagen.id3 import ID3, USLT, ID3NoHeaderError
 from mutagen.mp4 import MP4
 from mutagen import MutagenError
 
+from urllib import parse
+
 from parser import parse_itunes_xml
 import unidecode
 
@@ -24,6 +26,7 @@ def simple_get(url):
                 return None
     except RequestException as e:
         return None
+
 def is_good_response(resp):
     """
     Returns True if the response seems to be HTML, False otherwise.
@@ -38,9 +41,12 @@ def has_lyrics(file):
     else:
         return "\xa9lyr" in MP4(file).keys()
 
-def get_lyrics_without_write(artist, name): #too tired to do without breaking things, but restructure get_lyrics to use this and rename to write_lyrics
+def get_lyrics(artist, name): #too tired to do without breaking things, but restructure get_lyrics to use this and rename to write_lyrics
     artist = unidecode.unidecode(artist.split(" ft. ")[0].split(" feat. ")[0].lower().replace(" ", "-").capitalize().replace("•", "").replace("!", "-").replace("(", "").replace(")", "").replace("é", "e").replace(".", "").replace("í", "i").replace(",", "").replace("&", "and"))
-    name = unidecode.unidecode(name.lower().replace(" – ", "-").replace(" / ", "/").replace(" ~ ", "-").replace(" ", "-").replace(".", "").replace("!", "").replace("'", "").replace("/", "-").replace(",", "").replace("?", "").replace("(", "").replace(")", "").replace("’", "").replace(":", "").replace("&", "and").replace("[", "").replace("]", ""))
+    name = unidecode.unidecode(name.lower().replace(" – ", "-").replace(" - ", "-").replace(" = ", "-").replace(" / ", "/").replace(" ~ ", "-").replace(" ", "-").replace(".", "").replace("!", "").replace("'", "").replace("/", "-").replace(",", "").replace("?","").replace("(", "").replace(")", "").replace("’", "").replace(":", "").replace("&", "and").replace("[", "").replace("]", "").replace("$", "").replace("=", ""))
+
+    if name[-1] == "-":
+        name = name[:-1] #not sure if necessary, to make sure it doesn't end in hyphens...should be done a tad bit more elegantly
 
     lyrics_url = "https://genius.com/" + artist + "-" +  name + "-lyrics"
 
@@ -52,24 +58,16 @@ def get_lyrics_without_write(artist, name): #too tired to do without breaking th
 
         lyrics = (soup.find(class_="lyrics")).text #Genius has all lyric data in a div with class lyrics, text gets plaintext
         lyrics = lyrics[2:len(lyrics)-2] #Delete trailing and leading newlines
-        return lyrics.split("\n")
+        return lyrics
     except TypeError:
         print("Song add failed! Genius link was " + lyrics_url)
     except MutagenError:
         print("Song add failed! Genius link was " + lyrics_url)
 
 
-def get_lyrics(artist, name, file, rewrite=False):
+def write_lyrics(artist, name, file, rewrite=False):
     song = name
     by = artist
-
-    artist = unidecode.unidecode(artist.split(" ft. ")[0].split(" feat. ")[0].lower().replace(" ", "-").capitalize().replace("•", "").replace("!", "-").replace("(", "").replace(")", "").replace("é", "e").replace(".", "").replace("í", "i").replace(",", "").replace("&", "and"))
-    name = unidecode.unidecode(name.lower().replace(" – ", "-").replace(" - ", "-").replace(" = ", "-").replace(" / ", "/").replace(" ~ ", "-").replace(" ", "-").replace(".", "").replace("!", "").replace("'", "").replace("/", "-").replace(",", "").replace("?", "").replace("(", "").replace(")", "").replace("’", "").replace(":", "").replace("&", "and").replace("[", "").replace("]", "").replace("$", "").replace("=", ""))
-
-    if name[-1] == "-":
-        name = name[:-1] #not sure if necessary, to make sure it doesn't end in hyphens...should be done a tad bit more elegantly
-
-    lyrics_url = "https://genius.com/" + artist + "-" +  name + "-lyrics"
 
     try:
         if file.endswith(".mp3"): #should reduce these checks
@@ -81,37 +79,32 @@ def get_lyrics(artist, name, file, rewrite=False):
             if has_lyrics(file):
                 return
 
-        raw_html = simple_get(lyrics_url)
+        lyrics = get_lyrics(artist, name)
 
-        soup = BeautifulSoup(raw_html, 'html.parser')
-        soup.prettify()
-
-        lyrics = (soup.find(class_="lyrics")).text #Genius has all lyric data in a div with class lyrics, text gets plaintext
-        lyrics = lyrics[2:len(lyrics)-2] #Delete trailing and leading newlines
-
-        if file.endswith(".mp3"):
-            song_tags.delall("USLT")
-            song_tags[u"USLT::eng"] = USLT(encoding=3, lang=u'eng', text=lyrics) #Lyric tag
-            song_tags.save()
-        else:
-            song_tags["\xa9lyr"] = lyrics
-            song_tags.save()
-        print("Lyrics added to " + song + " by " + by)
+        if lyrics is not None:
+            if file.endswith(".mp3"):
+                song_tags.delall("USLT")
+                song_tags[u"USLT::eng"] = USLT(encoding=3, lang=u'eng', text=lyrics) #Lyric tag
+                song_tags.save()
+            else:
+                song_tags["\xa9lyr"] = lyrics
+                song_tags.save()
+            print("Lyrics added to " + song + " by " + by)
     except TypeError:
-        print("Lyric add failed (TypeError)! Genius link was " + lyrics_url)
+        print("Lyric add failed (TypeError)!")
     except MutagenError:
-        print("Lyric add failed (MutagenError)! Genius link was " + lyrics_url + ", and file extension was " + file[file.rfind("."):])
+        print("Lyric add failed (MutagenError)!  File extension was " + file[file.rfind("."):])
     except ID3NoHeaderError:
-        print("Lyric add failed (ID3NoHeader)! Genius link was " + lyrics_url + ", and file extension was " + file[file.rfind("."):])
+        print("Lyric add failed (ID3NoHeader)! File extension was " + file[file.rfind("."):])
 
 def add_lyrics(track, rewrite=False):
     try:
-        get_lyrics(track["Artist"], track["Name"], file_path_prettify(track["Location"]), rewrite)  # [7:] to counter file:// at start, %20 replace with spaces
+        write_lyrics(track["Artist"], track["Name"], path_prettify(track["Location"]), rewrite)  # [7:] to counter file:// at start, %20 replace with spaces
     except MutagenError:
         print("Lyric add failed, likely due to error in system file path! File path is " + track["Location"])
 
-def file_path_prettify(path):
-    return path[7:].replace("%20", " ").replace("%E2%80%A2", "•").replace("%E2%80%93", "–").replace("e%CC%81","é").replace("i%CC%81", "í").replace("%23", "#").replace("%C3%A9", "é").replace("%5B", "[").replace("%5D", "]").replace("%E2%98%86", "☆").replace("%C3%A2", "â")
+def path_prettify(path):
+    return parse.unquote(path[7:])
 
 def add_all_lyrics(rewrite=False):
     for s in arr:
