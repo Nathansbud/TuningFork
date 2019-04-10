@@ -13,6 +13,7 @@ from urllib import parse
 
 from parser import parse_itunes_xml
 import unidecode
+import re
 
 arr = parse_itunes_xml()
 
@@ -41,9 +42,36 @@ def has_lyrics(file):
     else:
         return "\xa9lyr" in MP4(file).keys()
 
+def genius_clean(field):
+    #unidecode turns • into *...annoying.
+    field = unidecode.unidecode(field.split( " ft. ")[0].split( " feat. ")[0].split(" featuring. ")[0].replace("&", "and").replace("•", "")) #split off featuring, replace & with and
+    field = re.sub("(?<=\s)[^a-zA-Z0-9](?=\s)", "-", field) #replace space-surrounded punctuation with hyphen
+    field = re.sub("(?<=[a-zA-Z0-9])[^a-zA-Z0-9'.](?=[a-zA-Z0-9])", "-", field).replace(" - ", "-").replace(" ", "-") #replace mid-string punctuation; i.e. "P!nk"
+    ##BEGIN UGLIEST CODE EVER WRITTEN (obsolete for overkill, replaced with ^, but want logged in case)
+    # parts = [r.start() for r in re.finditer("(?<=\s)[^a-zA-Z0-9](?=\s)", field)]
+
+    # if len(parts) > 0:
+    #     frank = ""
+    #
+    #     for n in range(len(parts)):
+    #         if n == 0:
+    #             frank += field[:parts[n] - 1]
+    #         else:
+    #             frank += field[parts[n-1]+2:parts[n]-1]
+    #
+    #         frank += "-" #punctuation point (fields[parts[n]] should be replaced with - for genius
+    #
+    #         if n == len(parts)-1:
+    #             frank += field[parts[n]+2:]
+    #
+    #     field = frank
+    ##END UGLIEST CODE EVER WRITTEN
+
+    return unidecode.unidecode(re.sub("[^a-zA-Z0-9\-]", "", field)).lower()
+
 def get_lyrics(artist, name): #too tired to do without breaking things, but restructure get_lyrics to use this and rename to write_lyrics
-    artist = unidecode.unidecode(artist.split(" ft. ")[0].split(" feat. ")[0].lower().replace(" ", "-").capitalize().replace("•", "").replace("!", "-").replace("(", "").replace(")", "").replace("é", "e").replace(".", "").replace("í", "i").replace(",", "").replace("&", "and"))
-    name = unidecode.unidecode(name.lower().replace(" – ", "-").replace(" - ", "-").replace(" = ", "-").replace(" / ", "/").replace(" ~ ", "-").replace(" ", "-").replace(".", "").replace("!", "").replace("'", "").replace("/", "-").replace(",", "").replace("?","").replace("(", "").replace(")", "").replace("’", "").replace(":", "").replace("&", "and").replace("[", "").replace("]", "").replace("$", "").replace("=", ""))
+    artist = genius_clean(artist).capitalize()
+    name = genius_clean(name)
 
     if name[-1] == "-":
         name = name[:-1] #not sure if necessary, to make sure it doesn't end in hyphens...should be done a tad bit more elegantly
