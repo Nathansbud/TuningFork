@@ -47,27 +47,7 @@ def genius_clean(field):
     field = unidecode.unidecode(field.split( " ft. ")[0].split( " feat. ")[0].split(" featuring. ")[0].replace("&", "and").replace("•", "")) #split off featuring, replace & with and
     field = re.sub("(?<=\s)[^a-zA-Z0-9](?=\s)", "-", field) #replace space-surrounded punctuation with hyphen
     field = re.sub("(?<=[a-zA-Z0-9])[^a-zA-Z0-9'.](?=[a-zA-Z0-9])", "-", field).replace(" - ", "-").replace(" ", "-") #replace mid-string punctuation; i.e. "P!nk"
-    ##BEGIN UGLIEST CODE EVER WRITTEN (obsolete for overkill, replaced with ^, but want logged in case)
-    # parts = [r.start() for r in re.finditer("(?<=\s)[^a-zA-Z0-9](?=\s)", field)]
-
-    # if len(parts) > 0:
-    #     frank = ""
-    #
-    #     for n in range(len(parts)):
-    #         if n == 0:
-    #             frank += field[:parts[n] - 1]
-    #         else:
-    #             frank += field[parts[n-1]+2:parts[n]-1]
-    #
-    #         frank += "-" #punctuation point (fields[parts[n]] should be replaced with - for genius
-    #
-    #         if n == len(parts)-1:
-    #             frank += field[parts[n]+2:]
-    #
-    #     field = frank
-    ##END UGLIEST CODE EVER WRITTEN
-
-    return unidecode.unidecode(re.sub("[^a-zA-Z0-9\-]", "", field)).lower()
+    return re.sub("[^a-zA-Z0-9\-]", "", field).lower()
 
 def get_lyrics(artist, name): #too tired to do without breaking things, but restructure get_lyrics to use this and rename to write_lyrics
     artist = genius_clean(artist).capitalize()
@@ -127,12 +107,14 @@ def write_lyrics(artist, name, file, rewrite=False):
 
 def add_lyrics(track, rewrite=False):
     try:
-        write_lyrics(track["Artist"], track["Name"], path_prettify(track["Location"]), rewrite)  # [7:] to counter file:// at start, %20 replace with spaces
+        write_lyrics(track["Artist"], track["Name"], path_prettify(track["Location"]), rewrite) #[7:] slice to counter file:// at start
     except MutagenError:
         print("Lyric add failed, likely due to error in system file path! File path is " + track["Location"])
 
 def path_prettify(path):
-    return parse.unquote(path[7:])
+    if path.startswith("file:///"):
+        return parse.unquote(path[7:])
+    return parse.unquote(path)
 
 def add_all_lyrics(rewrite=False):
     for s in arr:
@@ -142,5 +124,5 @@ def add_all_lyrics(rewrite=False):
     print("Done!")
 
 if __name__ == "__main__":
-    add_all_lyrics()
+    # add_all_lyrics()
     pass
