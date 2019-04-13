@@ -15,6 +15,9 @@ from parser import parse_itunes_xml
 import unidecode
 import re
 
+from tkinter.filedialog import askopenfilename, Tk
+
+
 arr = parse_itunes_xml()
 
 ###CODE THAT IS NOT MINE STARTS HERE:
@@ -123,6 +126,11 @@ def add_all_lyrics(rewrite=False):
                 add_lyrics(s, rewrite)
     print("Done!")
 
+def select_track(): #Not used rn, but called file explorer window, can be used to get filepath for track, i.e. write_lyrics("Pink Floyd", "Money", select_track(), True) and then song is selected
+    Tk().withdraw()
+    return askopenfilename()
+
 if __name__ == "__main__":
-    # add_all_lyrics()
+    # write_lyrics("King Gizzard & The Lizard Wizard", "Wah Wah", select_track(), True)
+    add_all_lyrics()
     pass
