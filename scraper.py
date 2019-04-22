@@ -56,8 +56,9 @@ def get_lyrics(artist, name): #too tired to do without breaking things, but rest
     artist = genius_clean(artist).capitalize()
     name = genius_clean(name)
 
-    if name[-1] == "-":
-        name = name[:-1] #not sure if necessary, to make sure it doesn't end in hyphens...should be done a tad bit more elegantly
+    if len(name) > 0:
+        if name[-1] == "-":
+            name = name[:-1] #not sure if necessary, to make sure it doesn't end in hyphens...should be done a tad bit more elegantly
 
     lyrics_url = "https://genius.com/" + artist + "-" +  name + "-lyrics"
 
