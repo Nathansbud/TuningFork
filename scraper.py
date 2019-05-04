@@ -15,7 +15,7 @@ from parser import parse_itunes_xml
 import unidecode
 import re
 
-from tkinter.filedialog import askopenfilename, Tk
+from tkinter.filedialog import askopenfilename, Tk, askopenfilenames
 
 
 arr = parse_itunes_xml()
@@ -103,15 +103,37 @@ def write_lyrics(artist, name, file, rewrite=False):
                 song_tags.save()
             print("Lyrics added to " + song + " by " + by)
     except TypeError:
-        print("Lyric add failed (TypeError)!")
+        print("Lyric add failed in WL (TypeError)!")
     except MutagenError:
-        print("Lyric add failed (MutagenError)!  File extension was " + file[file.rfind("."):])
+        print("Lyric add failed in WL (MutagenError)!  File extension was " + file[file.rfind("."):])
     except ID3NoHeaderError:
-        print("Lyric add failed (ID3NoHeader)! File extension was " + file[file.rfind("."):])
+        print("Lyric add failed in WL (ID3NoHeader)! File extension was " + file[file.rfind("."):])
+
+def write_lyrics_with_path(path, rewrite): #Attempted re-write of write_lyrics() using just path argument;
+    try:
+        if path.endswith(".mp3"):  # should reduce these checks
+            song_tags = ID3(path)  # ID3 unique to MP3s, other a/v types use MP4 specifications on tagging
+            if "TPE2" in song_tags:
+                artist = str(song_tags["TPE2"])
+            else:
+                artist = str(song_tags["TPE1"])
+            name = str(song_tags["TIT2"])
+        else:
+            song_tags = MP4(path)
+            artist = str(song_tags["\xa9ART"])
+            name = str(song_tags["\xa9nam"])
+
+        write_lyrics(artist, name, path, rewrite)
+    except TypeError:
+        print("Lyric add failed in WLWP (TypeError)!")
+    except MutagenError:
+        print("Lyric add failed in WLWP (MutagenError)!  File extension was " + path[path.rfind("."):])
+    except ID3NoHeaderError:
+        print("Lyric add failed in WLWP (ID3NoHeader)! File extension was " + path[path.rfind("."):])
 
 def add_lyrics(track, rewrite=False):
     try:
-        write_lyrics(track["Artist"], track["Name"], path_prettify(track["Location"]), rewrite) #[7:] slice to counter file:// at start
+        write_lyrics(track["Artist"], track["Name"], path_prettify(track["Location"]), rewrite) #[7:] slice to counter file:// at start, should this use new write_lyrics(path)?
     except MutagenError:
         print("Lyric add failed, likely due to error in system file path! File path is " + track["Location"])
 
@@ -127,11 +149,14 @@ def add_all_lyrics(rewrite=False):
                 add_lyrics(s, rewrite)
     print("Done!")
 
-def select_track(): #Not used rn, but called file explorer window, can be used to get filepath for track, i.e. write_lyrics("Pink Floyd", "Money", select_track(), True) and then song is selected
-    Tk().withdraw()
-    return askopenfilename()
+def write_tracklist():
+    root = Tk()
+    root.withdraw()
+    files = askopenfilenames(parent=root, title="Choose Tracks")
+    tracklist = root.tk.splitlist(files)
+    for to_write in tracklist:
+        write_lyrics_with_path(to_write, True)
 
 if __name__ == "__main__":
-    # write_lyrics("King Gizzard & The Lizard Wizard", "Wah Wah", select_track(), True)
     add_all_lyrics()
     pass
