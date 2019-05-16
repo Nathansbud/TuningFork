@@ -156,6 +156,7 @@ def write_tracklist():
     tracklist = root.tk.splitlist(files)
     for to_write in tracklist:
         write_lyrics_with_path(to_write, True)
+    print("Done!")
 
 if __name__ == "__main__":
     add_all_lyrics()

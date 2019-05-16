@@ -5,10 +5,10 @@ numerical = [
     "Play Count"
 ]
 
-def parse_itunes_xml(path="/Users/zackamiton/Music/iTunes/iTunes Library.xml", method="Play Count"):
+def parse_itunes_xml(path="/Users/zackamiton/Music/iTunes/iTunes Library.xml"):
     tree = ET.parse(path)
     root = tree.getroot()
-    track_list = root[0][15]  # p sure this doesn't always work oops
+    track_list = root[0][13] #if shit goes south it's probably the fault of this line
 
     arr = []
     for elem in track_list:
@@ -22,8 +22,6 @@ def parse_itunes_xml(path="/Users/zackamiton/Music/iTunes/iTunes Library.xml", m
                 c["Play Count"] = "0"
             if "Podcast" not in c:
                 arr.append(c)
-
-    sort_arr(arr, method)
     return arr
 
 ##KEEPING THIS AS A TALE FOR FUTURE ME
