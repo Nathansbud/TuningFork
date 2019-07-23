@@ -5,7 +5,7 @@ numerical = [
     "Play Count"
 ]
 
-def parse_itunes_xml(path="/Users/zackamiton/Music/iTunes/iTunes Library.xml"):
+def parse_itunes_xml(path="/Users/zackamiton/Music/iTunes/iTunes Music Library.xml"):
     tree = ET.parse(path)
     root = tree.getroot()
     track_list = root[0][13] #if shit goes south it's probably the fault of this line
