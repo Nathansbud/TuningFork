@@ -1,11 +1,10 @@
 from parser import parse_itunes_xml
 
 from scraper import path_prettify
+from scraper import get_lyrics_from_url
 from scraper import get_lyrics
 
-from mutagen.id3 import ID3, USLT, ID3NoHeaderError
-from mutagen import MutagenError
-
+from mutagen.id3 import ID3
 from random import randint
 
 def lyrics_from_itunes():
@@ -53,23 +52,15 @@ def lyrics_from_itunes_with_fields(artist, name):
     if not found:
         print(name + " by " + artist + " does not exist in library!")
 
+def lyrics_from_genius_by_artist(artist, name):
+    return [line for line in get_lyrics(artist, name).split("\n") if not line.startswith("[")]
 
+def lyrics_from_genius_by_url(url):
+    return [line for line in get_lyrics_from_url(url).split("\n") if not line.startswith("[")]
 
-def lyrics_from_genius(artist, name):
-    print(name + " by " + artist)
-    lyrics_raw = get_lyrics(artist, name)
-    lyrics = []
-    for l in lyrics_raw:
-        if l.__len__() > 0 and l[0] == "[":
-            pass
-        else:
-            lyrics.append(l)
-    return lyrics
-
-def show_lyrics(lyrics, line_num=10):
+def show_lyrics(lyrics, line_num=5):
     if line_num >= lyrics.__len__():
-        for line in lyrics:
-            print(line)
+        return lyrics
     else:
         if line_num > -1:
             lb = randint(0, lyrics.__len__() - 1 - line_num) #lower bound
@@ -77,9 +68,16 @@ def show_lyrics(lyrics, line_num=10):
         else:
             lb = randint(0, lyrics.__len__() - 2)  # lower bound
             ub = randint(lb + 1, lyrics.__len__() - 1)
-        for line in lyrics[lb: ub]:
-            print(line)
+        lyrics_snippet = lyrics[lb : ub]
+
+        while lyrics_snippet.__len__() - lyrics_snippet.count("") != line_num:
+            if ub < (lyrics.__len__() - 1): ub+=1
+            elif lb > 0: lb -=1
+            else: break
+
+            lyrics_snippet = lyrics[lb : ub]
+
+        return lyrics_snippet
 
 if __name__ == "__main__":
-    show_lyrics(lyrics_from_itunes())
     pass

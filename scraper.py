@@ -52,7 +52,7 @@ def genius_clean(field):
     field = re.sub("(?<=[a-zA-Z0-9])[^a-zA-Z0-9'.](?=[a-zA-Z0-9])", "-", field).replace(" - ", "-").replace(" ", "-") #replace mid-string punctuation; i.e. "P!nk"
     return re.sub("[^a-zA-Z0-9\-]", "", field).lower()
 
-def get_lyrics(artist, name): #too tired to do without breaking things, but restructure get_lyrics to use this and rename to write_lyrics
+def get_lyrics(artist, name):
     artist = genius_clean(artist).capitalize()
     name = genius_clean(name)
 
@@ -61,9 +61,11 @@ def get_lyrics(artist, name): #too tired to do without breaking things, but rest
             name = name[:-1] #not sure if necessary, to make sure it doesn't end in hyphens...should be done a tad bit more elegantly
 
     lyrics_url = "https://genius.com/" + artist + "-" +  name + "-lyrics"
+    return get_lyrics_from_url(lyrics_url)
 
+def get_lyrics_from_url(url):
     try:
-        raw_html = simple_get(lyrics_url)
+        raw_html = simple_get(url)
 
         soup = BeautifulSoup(raw_html, 'html.parser')
         soup.prettify()
@@ -72,9 +74,9 @@ def get_lyrics(artist, name): #too tired to do without breaking things, but rest
         lyrics = lyrics[2:len(lyrics)-2] #Delete trailing and leading newlines
         return lyrics
     except TypeError:
-        print("Song add failed! Genius link was " + lyrics_url)
+        print("Song add failed! Genius link was " + url)
     except MutagenError:
-        print("Song add failed! Genius link was " + lyrics_url)
+        print("Song add failed! Genius link was " + url)
 
 
 def write_lyrics(artist, name, file, rewrite=False):
@@ -105,9 +107,9 @@ def write_lyrics(artist, name, file, rewrite=False):
     except TypeError:
         print("Lyric add failed in WL (TypeError)!")
     except MutagenError:
-        print("Lyric add failed in WL (MutagenError)!  File extension was " + file[file.rfind("."):])
+        print("Lyric add failed in WL (MutagenError)!  File extension was " + file)
     except ID3NoHeaderError:
-        print("Lyric add failed in WL (ID3NoHeader)! File extension was " + file[file.rfind("."):])
+        print("Lyric add failed in WL (ID3NoHeader)! File extension was " + file)
 
 def write_lyrics_with_path(path, rewrite): #Attempted re-write of write_lyrics() using just path argument;
     try:
@@ -125,11 +127,12 @@ def write_lyrics_with_path(path, rewrite): #Attempted re-write of write_lyrics()
 
         write_lyrics(artist, name, path, rewrite)
     except TypeError:
-        print("Lyric add failed in WLWP (TypeError)!")
+        print("Lyric add failed in WLWP (TypeError)! " + path)
     except MutagenError:
-        print("Lyric add failed in WLWP (MutagenError)!  File extension was " + path[path.rfind("."):])
+        print("Lyric add failed in WLWP (MutagenError)!  File extension was " + path)
     except ID3NoHeaderError:
-        print("Lyric add failed in WLWP (ID3NoHeader)! File extension was " + path[path.rfind("."):])
+        print("Lyric add failed in WLWP (ID3NoHeader)! File extension was " + path)
+
 
 def add_lyrics(track, rewrite=False):
     try:
