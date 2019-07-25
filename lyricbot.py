@@ -92,6 +92,9 @@ def make_botgenius_tweet():
     with open('logs' + sep + 'botgenius.txt', 'a+') as lf:
         lf.seek(0)
         lines = (lf.read()).split("\n")
+        if len(lines) >= 15:
+            lines = lines[-15:]
+
         index = random.randint(0, len(botgenius_list) - 1)
         while lines.__contains__(index):
             index = random.randint(0, len(botgenius_list) - 1)
