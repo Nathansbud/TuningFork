@@ -3,16 +3,19 @@
 import tweepy
 import json
 import requests
+from os import sep
 
-from random import choice
+import random
 
 from lyrical import lyrics_from_genius_by_url
 from lyrical import show_lyrics
 
+from googleapi import make_snippet_list_from_doc
+
 char_limit = 280
 
 #Load creds for Twitter & Genius APIs
-with open("secret.json") as jf:
+with open("credentials" + sep + "secret.json") as jf:
     creds = json.load(jf)
 
 
@@ -65,7 +68,7 @@ def get_lyric_snippet(aid):
     lyrics = ""
 
     while not passed:
-        song_choice = choice(songs)
+        song_choice = random.choice(songs)
 
         if song_choice['url'].endswith("lyrics"):
             lyrics = show_lyrics(lyrics_from_genius_by_url(song_choice['url']))
@@ -75,16 +78,36 @@ def get_lyric_snippet(aid):
             if lyric_string.__len__() <= char_limit:
                 return lyric_string.strip()
 
-def make_lyric_tweet(user, content):
+def make_tweet(user, content):
     api = setup_user(user)
     api.update_status(status=content)
 
-def delete_tweet(user, id):
+def delete_tweet(user, tid):
     api = setup_user(user)
-    api.destroy_status(id)
+    api.destroy_status(tid)
+
+def make_botgenius_tweet():
+    botgenius_list = make_snippet_list_from_doc("16WNStYc5qNLGFOujF8EBywvFtIQWq56hhYwrh9PLp8c")
+
+    with open('logs' + sep + 'botgenius.txt', 'a+') as lf:
+        lf.seek(0)
+        lines = (lf.read()).split("\n")
+        index = random.randint(0, len(botgenius_list) - 1)
+        while lines.__contains__(index):
+            index = random.randint(0, len(botgenius_list) - 1)
+        lf.write(str(index)+"\n")
+
+    make_tweet('bg_twitter', botgenius_list[index])
+
+
 
 
 if __name__ == "__main__":
-    # delete_tweet("kkb_twitter", "1153620549681049600")
-    make_lyric_tweet("kkb_twitter", get_lyric_snippet("Kero Kero Bonito"))
+    # delete_tweet("kkb_twitter", "1154140506898612224")
+    # make_tweet("kkb_twitter", get_lyric_snippet("Kero Kero Bonito"))
+    # make_tweet("dg_twitter", get_lyric_snippet("Death Grips"))
+    #make_botgenius_tweet()
 
+
+
+    pass

@@ -4,8 +4,11 @@ A collection of mini projects related to my iTunes library! Just messing around,
 
 Currently:
 
-- PlayPlotter: Scatter plot of song plays against frequency
 - TuneScraper: Lyric scraper from Genius to update USLT tag of songs
-- SingleScraper: Command line script to grab lyric data for single song given name/artist variable
 - Lyrical: Lyric grabber from random or specified song
+    - LyricBot: Twitter bot that posts random lyrics for various artists using Genius lyrics or curated Google Doc
+- PlayPlotter: Scatter plot of song plays against frequency
+
+    
+    
 
