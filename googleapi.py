@@ -56,13 +56,13 @@ def make_snippet_list_from_doc(doc):
                 ele = par.get('elements')
                 line = ele[0]['textRun']['content']
                 if line != '\n':
-                    currentSnippet += line
+                    currentSnippet += (line if line.strip() != "|" else "\n")
                 elif len(currentSnippet) > 0:
                     snippets.append(currentSnippet)
                     currentSnippet = ""
     return snippets
 
 if __name__ == '__main__':
-    # print(make_snippet_list_from_doc("16WNStYc5qNLGFOujF8EBywvFtIQWq56hhYwrh9PLp8c"))
-    print(get_sheet("1rmQ0ps140rlztd2CtDCaTaWdel8RO6YxHWB03DmIoU0", "Levels!A1:L16").get('values'))
+    print(make_snippet_list_from_doc("16WNStYc5qNLGFOujF8EBywvFtIQWq56hhYwrh9PLp8c"))
+    # print(get_sheet("1rmQ0ps140rlztd2CtDCaTaWdel8RO6YxHWB03DmIoU0", "Levels!A1:L16").get('values'))
     pass

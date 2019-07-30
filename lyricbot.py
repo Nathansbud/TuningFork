@@ -30,6 +30,11 @@ artist_ids = {
     "Death Grips":"11778"
 }
 
+bot_uids = {
+    "Kero Kero Botnito":"1153421304315310080",
+    "Daily Grips":"1153750067133575168"
+}
+
 
 base_url = 'https://api.genius.com'
 
@@ -75,16 +80,23 @@ def get_lyric_snippet(aid):
             lyric_string = ""
             for l in lyrics:
                 lyric_string += l + "\n"
-            if lyric_string.__len__() <= char_limit:
+            if 0 < lyric_string.__len__() <= char_limit:
                 return lyric_string.strip()
 
 def make_tweet(user, content):
-    api = setup_user(user)
-    api.update_status(status=content)
+    setup_user(user).update_status(status=content)
 
 def delete_tweet(user, tid):
-    api = setup_user(user)
-    api.destroy_status(tid)
+    setup_user(user).destroy_status(tid)
+
+def follow_user(user, fid):
+    if fid.isdigit():
+        setup_user(user).create_friendship(fid)
+    elif bot_uids.__contains__(fid):
+        setup_user(user).create_friendship(bot_uids[fid])
+    else:
+        print("No user exists with uid " + fid)
+
 
 def make_botgenius_tweet():
     botgenius_list = make_snippet_list_from_doc("16WNStYc5qNLGFOujF8EBywvFtIQWq56hhYwrh9PLp8c")
@@ -107,10 +119,10 @@ def make_botgenius_tweet():
 
 if __name__ == "__main__":
     # delete_tweet("kkb_twitter", "1154140506898612224")
+
     # make_tweet("kkb_twitter", get_lyric_snippet("Kero Kero Bonito"))
     # make_tweet("dg_twitter", get_lyric_snippet("Death Grips"))
+
     #make_botgenius_tweet()
-
-
 
     pass
