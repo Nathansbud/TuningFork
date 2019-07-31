@@ -9,8 +9,8 @@ from google.auth.transport.requests import Request
 def make_token(scope, cred_name):
     creds = None
 
-    token_path = "credentials" + os.sep + cred_name + "_token.pickle"
-    cred_path = "credentials" + os.sep + cred_name + ".json"
+    token_path = os.path.join(os.path.dirname(__file__), "credentials" + os.sep + cred_name + "_token.pickle")
+    cred_path = os.path.join(os.path.dirname(__file__), "credentials" + os.sep + cred_name + ".json")
 
     if os.path.exists(token_path):
         with open(token_path, 'rb') as token:

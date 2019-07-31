@@ -3,7 +3,7 @@
 import tweepy
 import json
 import requests
-from os import sep
+import os
 
 import random
 
@@ -15,7 +15,7 @@ from googleapi import make_snippet_list_from_doc
 char_limit = 280
 
 #Load creds for Twitter & Genius APIs
-with open("credentials" + sep + "secret.json") as jf:
+with open(os.path.join(os.path.dirname(__file__), "credentials" + os.sep + "secret.json")) as jf:
     creds = json.load(jf)
 
 
@@ -101,7 +101,7 @@ def follow_user(user, fid):
 def make_botgenius_tweet():
     botgenius_list = make_snippet_list_from_doc("16WNStYc5qNLGFOujF8EBywvFtIQWq56hhYwrh9PLp8c")
 
-    with open('logs' + sep + 'botgenius.txt', 'a+') as lf:
+    with open(os.path.join(os.path.dirname(__file__), 'logs' + os.sep + 'botgenius.txt', 'a+')) as lf:
         lf.seek(0)
         lines = (lf.read()).split("\n")
         if len(lines) >= 15:
@@ -120,9 +120,8 @@ def make_botgenius_tweet():
 if __name__ == "__main__":
     # delete_tweet("kkb_twitter", "1154140506898612224")
 
-    # make_tweet("kkb_twitter", get_lyric_snippet("Kero Kero Bonito"))
-    # make_tweet("dg_twitter", get_lyric_snippet("Death Grips"))
-
-    #make_botgenius_tweet()
+    make_tweet("kkb_twitter", get_lyric_snippet("Kero Kero Bonito"))
+    make_tweet("dg_twitter", get_lyric_snippet("Death Grips"))
+    make_botgenius_tweet()
 
     pass
