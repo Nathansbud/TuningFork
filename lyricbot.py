@@ -101,7 +101,7 @@ def follow_user(user, fid):
 def make_botgenius_tweet():
     botgenius_list = make_snippet_list_from_doc("16WNStYc5qNLGFOujF8EBywvFtIQWq56hhYwrh9PLp8c")
 
-    with open(os.path.join(os.path.dirname(__file__), 'logs' + os.sep + 'botgenius.txt', 'a+')) as lf:
+    with open(os.path.join(os.path.dirname(__file__), 'logs' + os.sep + 'botgenius.txt'), 'a+') as lf:
         lf.seek(0)
         lines = (lf.read()).split("\n")
         if len(lines) >= 15:
