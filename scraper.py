@@ -17,9 +17,6 @@ import re
 
 from tkinter.filedialog import askopenfilename, Tk, askopenfilenames
 
-
-arr = parse_itunes_xml()
-
 ###CODE THAT IS NOT MINE STARTS HERE:
 def simple_get(url):
     try:
@@ -146,7 +143,7 @@ def path_prettify(path):
     return parse.unquote(path)
 
 def add_all_lyrics(rewrite=False):
-    for s in arr:
+    for s in parse_itunes_xml():
         if "Comments" in s:
             if "Vocal" in s["Comments"] and s["Location"].endswith(".mp3") and "Imbecile" not in s["Comments"]:
                 add_lyrics(s, rewrite)
