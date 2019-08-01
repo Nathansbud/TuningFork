@@ -37,11 +37,11 @@ def get_document(doc): #Wholesale stolen from Google examples :)
     return service.documents().get(documentId=doc).execute()
 
 
-def get_sheet(sheet, range):
+def get_sheet(sheet, r):
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
     sheets_token = make_token(scope=SCOPES, cred_name="sheets")
     service = build('sheets', 'v4', credentials=sheets_token)
-    return service.spreadsheets().values().get(spreadsheetId=sheet, range=range).execute()
+    return service.spreadsheets().values().get(spreadsheetId=sheet, range=r, majorDimension="COLUMNS").execute()
 
 
 def make_snippet_list_from_doc(doc):
@@ -62,7 +62,9 @@ def make_snippet_list_from_doc(doc):
                     currentSnippet = ""
     return snippets
 
+def make_snippet_list_from_sheet(sheet, r):
+    lyric_sheet = get_sheet(sheet, r).get('values')
+    return lyric_sheet[0]
+
 if __name__ == '__main__':
-    print(make_snippet_list_from_doc("16WNStYc5qNLGFOujF8EBywvFtIQWq56hhYwrh9PLp8c"))
-    # print(get_sheet("1rmQ0ps140rlztd2CtDCaTaWdel8RO6YxHWB03DmIoU0", "Levels!A1:L16").get('values'))
     pass

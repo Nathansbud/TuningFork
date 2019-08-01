@@ -10,21 +10,7 @@ import random
 from lyrical import lyrics_from_genius_by_url
 from lyrical import show_lyrics
 
-from googleapi import make_snippet_list_from_doc
-
 char_limit = 280
-
-#Load creds for Twitter & Genius APIs
-with open(os.path.join(os.path.dirname(__file__), "credentials" + os.sep + "secret.json")) as jf:
-    creds = json.load(jf)
-
-
-def setup_user(api_user):
-    auth = tweepy.OAuthHandler(creds[api_user]['api_key'], creds[api_user]['api_secret'])
-    auth.set_access_token(creds[api_user]['access_token'], creds[api_user]['access_secret'])
-    return tweepy.API(auth)
-
-
 artist_ids = {
     "Kero Kero Bonito":"231956",
     "Death Grips":"11778"
@@ -32,11 +18,20 @@ artist_ids = {
 
 bot_uids = {
     "Kero Kero Botnito":"1153421304315310080",
-    "Daily Grips":"1153750067133575168"
+    "Daily Grips":"1153750067133575168",
+    "Botgenius":"1113132654596063238"
 }
 
-
 base_url = 'https://api.genius.com'
+
+#Load creds for Twitter & Genius APIs
+with open(os.path.join(os.path.dirname(__file__), "credentials" + os.sep + "secret.json")) as jf:
+    creds = json.load(jf)
+
+def setup_user(api_user):
+    auth = tweepy.OAuthHandler(creds[api_user]['api_key'], creds[api_user]['api_secret'])
+    auth.set_access_token(creds[api_user]['access_token'], creds[api_user]['access_secret'])
+    return tweepy.API(auth)
 
 
 def get_artist_songs(aid): #Wholesale stolen from https://www.jw.pe/blog/post/quantifying-sufjan-stevens-with-the-genius-api-and-nltk/
@@ -97,31 +92,8 @@ def follow_user(user, fid):
     else:
         print("No user exists with uid " + fid)
 
-
-def make_botgenius_tweet():
-    botgenius_list = make_snippet_list_from_doc("16WNStYc5qNLGFOujF8EBywvFtIQWq56hhYwrh9PLp8c")
-
-    with open(os.path.join(os.path.dirname(__file__), 'logs' + os.sep + 'botgenius.txt'), 'a+') as lf:
-        lf.seek(0)
-        lines = (lf.read()).split("\n")
-        if len(lines) >= 15:
-            lines = lines[-15:]
-
-        index = random.randint(0, len(botgenius_list) - 1)
-        while lines.__contains__(index):
-            index = random.randint(0, len(botgenius_list) - 1)
-        lf.write(str(index)+"\n")
-
-    make_tweet('bg_twitter', botgenius_list[index])
-
-
-
-
 if __name__ == "__main__":
-    # delete_tweet("kkb_twitter", "1154140506898612224")
-
+    # delete_tweet("kkb_twitter", "1156884516293623810")
     make_tweet("kkb_twitter", get_lyric_snippet("Kero Kero Bonito"))
     make_tweet("dg_twitter", get_lyric_snippet("Death Grips"))
-    make_botgenius_tweet()
-
     pass
