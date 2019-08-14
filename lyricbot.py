@@ -93,7 +93,6 @@ def follow_user(user, fid):
         print("No user exists with uid " + fid)
 
 if __name__ == "__main__":
-    # delete_tweet("kkb_twitter", "1156884516293623810")
     make_tweet("kkb_twitter", get_lyric_snippet("Kero Kero Bonito"))
     make_tweet("dg_twitter", get_lyric_snippet("Death Grips"))
     pass
