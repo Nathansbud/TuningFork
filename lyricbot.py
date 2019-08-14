@@ -10,6 +10,9 @@ import random
 from lyrical import lyrics_from_genius_by_url
 from lyrical import show_lyrics
 
+from googleapi import make_snippet_list_from_sheet
+from googleapi import make_snippet_list_from_doc
+
 char_limit = 280
 artist_ids = {
     "Kero Kero Bonito":"231956",
@@ -78,8 +81,35 @@ def get_lyric_snippet(aid):
             if 0 < lyric_string.__len__() <= char_limit:
                 return lyric_string.strip()
 
+
+
 def make_tweet(user, content):
     setup_user(user).update_status(status=content)
+
+def make_tweet_from_drive(name, src, kind="sheet", buffer=50):
+    if kind.lower() == "sheet":
+        snippet_list = make_snippet_list_from_sheet(src, "A1:2000")
+    elif kind.lower() == "doc":
+        snippet_list = make_snippet_list_from_doc(src)
+    else:
+        print("Source does not exist!")
+        return
+
+    with open(os.path.join(os.path.dirname(__file__), 'logs' + os.sep + name+'.txt'), 'a+') as lf:
+        lf.seek(0)
+        lines = (lf.read()).split("\n")
+        if len(lines) >= buffer:
+            lines = lines[-buffer:]
+
+        index = random.randint(0, len(snippet_list) - 1)
+        while lines.__contains__(index):
+            index = random.randint(0, len(snippet_list) - 1)
+
+        lf.write(str(index)+"\n")
+
+
+    make_tweet(name, snippet_list[index])
+
 
 def delete_tweet(user, tid):
     setup_user(user).destroy_status(tid)
