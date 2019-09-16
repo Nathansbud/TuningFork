@@ -1,14 +1,9 @@
 # Tune Parser
 
-A collection of mini projects related to my iTunes library! Just messing around, so everything a little rough around the edges and everywhere else.
+A collection of projects of varying size, all related to music files: lyric scraping, iTunes parsing/logging, Twitter lyric bots, and more! Everything is for personal use so a tad rough around the edges (and everywhere else):
 
-Currently:
-
-- TuneScraper: Lyric scraper from Genius to update USLT tag of songs
-- Lyrical: Lyric grabber from random or specified song
-    - LyricBot: Twitter bot that posts random lyrics for various artists using Genius lyrics or curated Google Doc
-- PlayPlotter: Scatter plot of song plays against frequency
-
-    
-    
-
+- Parser: Script to run through iTunes Library.xml file to load in song data
+- Scraper: Lyric scraper from Genius to update lyric tag of all songs specified as having scrapable vocals (Vocal in comments)
+- Lyrical: Lyric grabber from random/specified songs
+	- LyricBot: Script used to post random lyrics to Twitter for various artist bots, using Genius/Google Doc/Sheets as source
+- Logger: Script to read differences in iTunes Library.xml, and log change
