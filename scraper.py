@@ -11,7 +11,7 @@ from mutagen import MutagenError
 
 from urllib import parse
 
-from parser import parse_itunes_xml
+from parser import parse_itunes_xml, get_vocal_tracks
 import unidecode
 import re
 
@@ -133,7 +133,7 @@ def write_lyrics_with_path(path, rewrite): #Attempted re-write of write_lyrics()
 
 def add_lyrics(track, rewrite=False):
     try:
-        write_lyrics(track["Artist"], track["Name"], path_prettify(track["Location"]), rewrite) #[7:] slice to counter file:// at start, should this use new write_lyrics(path)?
+        write_lyrics(track["Artist"], track["Name"], path_prettify(track["Location"]), rewrite)
     except MutagenError:
         print("Lyric add failed, likely due to error in system file path! File path is " + track["Location"])
 
@@ -142,11 +142,15 @@ def path_prettify(path):
         return parse.unquote(path[7:])
     return parse.unquote(path)
 
-def add_all_lyrics(rewrite=False):
-    for s in parse_itunes_xml():
-        if "Comments" in s:
-            if "Vocal" in s["Comments"] and s["Location"].endswith(".mp3") and "Imbecile" not in s["Comments"]:
-                add_lyrics(s, rewrite)
+def add_all_lyrics(rewrite=False, use_xml=False):
+    if use_xml:
+        for s in parse_itunes_xml():
+            if "Comments" in s:
+                if "Vocal" in s["Comments"] and s["Location"].endswith(".mp3") and "Imbecile" not in s["Comments"]:
+                    add_lyrics(s, rewrite)
+    else:
+        for s in get_vocal_tracks():
+            add_lyrics(s, rewrite)
     print("Done!")
 
 def write_tracklist():
