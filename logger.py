@@ -3,6 +3,7 @@
 import difflib
 import shutil
 import os
+import json
 
 music_dir = "/Users/zackamiton/Music/iTunes/"
 
@@ -93,13 +94,13 @@ for line in difflib.context_diff(new, comp, fromfile=music_dir + 'iTunes Library
         if line.startswith("!"):
             changed_index += 1
             line = line[1:]
-            if ssw(line, 'date'):
-                print(strip_fields(line, 'date'))
-            elif ssw(line, 'play_count'):
-                get_keys = match_for(new, ['track_id', 'name', 'artist', 'play_date_utc', 'play_count'], changed_index)
+            if ssw(line, "date"):
+                print(strip_fields(line, "date"))
+            elif ssw(line, "play_count"):
+                get_keys = match_for(new, ["track_id", "name", "artist", "play_date_utc", "play_count"], changed_index)
                 change_set.append(get_keys)
-            elif ssw(line, 'skip_count'):
-                get_keys = match_for(new, ['track_id', 'name', 'artist', 'skip_count', 'skip_date'], changed_index)
+            elif ssw(line, "skip_count"):
+                get_keys = match_for(new, ["track_id", "name", "artist", "skip_count", "skip_date"], changed_index)
                 change_set.append(get_keys)
             else:
                 pass
@@ -107,7 +108,7 @@ for line in difflib.context_diff(new, comp, fromfile=music_dir + 'iTunes Library
 
 with open(os.path.dirname(__file__) + os.sep + "data" + os.sep + "log.txt", 'a+') as lf:
     for line in change_set:
-        lf.write(str(line) + "\n")
+        lf.write(json.dumps(line) + "\n")
 
 shutil.copyfile(music_dir + main_name, music_dir + temp_name)
 shutil.copyfile(music_dir + temp_name, music_dir + old_name)

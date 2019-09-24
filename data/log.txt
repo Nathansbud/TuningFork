@@ -1,150 +1,346 @@
-{'track_id': '858', 'skip_count': '48', 'skip_date': '2019-09-16T19:40:52Z', 'name': 'Boulevard of Broken Dreams', 'artist': 'Green Day'}
-{'track_id': '1646', 'skip_count': '9', 'skip_date': '2019-09-16T19:40:58Z', 'name': 'Colonial (Explore)', 'artist': 'Ben Prunty'}
-{'track_id': '2028', 'play_count': '21', 'play_date_utc': '2019-09-16T19:53:43Z', 'name': 'The Wight to Remain', 'artist': 'Flexstyle ft. DjjD'}
-{'track_id': '2028', 'skip_count': '11', 'skip_date': '2019-09-16T19:53:13Z', 'name': 'The Wight to Remain', 'artist': 'Flexstyle ft. DjjD'}
-{'track_id': '4590', 'play_count': '92', 'play_date_utc': '2019-09-16T19:56:24Z', 'name': 'Goodie Bag', 'artist': 'Still Woozy'}
-{'track_id': '4602', 'play_count': '18', 'play_date_utc': '2019-09-16T19:56:16Z', 'name': 'Wolfcat', 'artist': 'Still Woozy'}
-{'track_id': '5146', 'skip_count': '3', 'skip_date': '2019-09-16T19:52:56Z', 'name': 'Pop', 'artist': 'Death Grips'}
-{'track_id': '5336', 'play_count': '8', 'play_date_utc': '2019-09-16T18:51:42Z', 'name': 'We The People....', 'artist': 'A Tribe Called Quest'}
-{'track_id': '4606', 'skip_count': '7', 'skip_date': '2019-09-16T20:17:46Z', 'name': 'Habit', 'artist': 'Still Woozy'}
-{'track_id': '4604', 'skip_count': '5', 'skip_date': '2019-09-16T20:17:52Z', 'name': 'Lucy', 'artist': 'Still Woozy ft. ODIE'}
-{'track_id': '5526', 'play_count': '19', 'play_date_utc': '2019-09-16T20:19:51Z', 'name': 'Maybe She', 'artist': 'Still Woozy'}
-{'track_id': '4588', 'skip_count': '15', 'skip_date': '2019-09-16T20:24:03Z', 'name': 'Vacation', 'artist': 'Still Woozy'}
-{'track_id': '4592', 'play_count': '50', 'play_date_utc': '2019-09-16T20:23:30Z', 'name': 'Cooks', 'artist': 'Still Woozy'}
-{'track_id': '5522', 'play_count': '27', 'play_date_utc': '2019-09-16T20:21:58Z', 'name': 'Ipanema', 'artist': 'Still Woozy ft. Omar Apollo &#38; Elujay'}
-{'track_id': '1094', 'play_count': '77', 'play_date_utc': '2019-09-16T20:25:06Z', 'name': 'Metal Crusher', 'artist': 'Toby Fox'}
-{'track_id': '4304', 'play_count': '9', 'play_date_utc': '2019-09-16T20:33:28Z', 'name': 'Why Not?', 'artist': 'Gentle Giant'}
-{'track_id': '2368', 'play_count': '9', 'play_date_utc': '2019-09-16T20:35:07Z', 'name': 'Underwater', 'artist': 'Koji Kondo'}
-{'track_id': '3282', 'play_count': '11', 'play_date_utc': '2019-09-16T20:36:14Z', 'name': 'Shoshone Overlook', 'artist': 'Chris Remo'}
-{'track_id': '5426', 'play_count': '2', 'play_date_utc': '2019-09-16T20:39:34Z', 'name': "IGOR'S THEME", 'artist': 'Tyler, The Creator'}
-{'track_id': '4196', 'play_count': '8', 'play_date_utc': '2019-09-16T20:44:27Z', 'name': 'Cat Food', 'artist': 'King Crimson'}
-{'track_id': '3154', 'skip_count': '10', 'skip_date': '2019-09-17T07:10:16Z', 'name': 'End of the World', 'artist': 'TOMMY, Coda, JIN'}
-{'track_id': '4598', 'skip_count': '7', 'skip_date': '2019-09-17T07:10:10Z', 'name': 'Living in the Plastic Age', 'artist': 'Buggles'}
-{'track_id': '868', 'skip_count': '42', 'skip_date': '2019-09-17T07:11:03Z', 'name': 'Animal', 'artist': 'Miike Snow'}
-{'track_id': '4884', 'skip_count': '2', 'skip_date': '2019-09-17T07:11:06Z', 'name': 'Lord of the Game', 'artist': 'Death Grips'}
-{'track_id': '4902', 'play_count': '30', 'play_date_utc': '2019-09-17T07:13:45Z', 'name': 'Lava', 'artist': 'Still Woozy'}
-{'track_id': '5524', 'play_count': '11', 'play_date_utc': '2019-09-17T07:16:38Z', 'name': 'Foolsong', 'artist': 'Still Woozy'}
-{'track_id': '4604', 'play_count': '28', 'play_date_utc': '2019-09-17T07:19:00Z', 'name': 'Lucy', 'artist': 'Still Woozy ft. ODIE'}
-{'track_id': '5522', 'play_count': '28', 'play_date_utc': '2019-09-17T07:21:07Z', 'name': 'Ipanema', 'artist': 'Still Woozy ft. Omar Apollo &#38; Elujay'}
-{'track_id': '5526', 'play_count': '20', 'play_date_utc': '2019-09-17T07:23:56Z', 'name': 'Maybe She', 'artist': 'Still Woozy'}
-{'track_id': '4588', 'play_count': '29', 'play_date_utc': '2019-09-17T07:27:50Z', 'name': 'Vacation', 'artist': 'Still Woozy'}
-{'track_id': '4602', 'play_count': '19', 'play_date_utc': '2019-09-17T07:30:42Z', 'name': 'Wolfcat', 'artist': 'Still Woozy'}
-{'track_id': '4590', 'play_count': '93', 'play_date_utc': '2019-09-17T07:33:10Z', 'name': 'Goodie Bag', 'artist': 'Still Woozy'}
-{'track_id': '5084', 'play_count': '80', 'play_date_utc': '2019-09-17T07:35:38Z', 'name': 'What?', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5066', 'skip_count': '3', 'skip_date': '2019-09-17T07:37:36Z', 'name': 'Butter', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5076', 'play_count': '30', 'play_date_utc': '2019-09-17T07:37:24Z', 'name': 'Check The Rhime', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5084', 'skip_count': '6', 'skip_date': '2019-09-17T07:37:33Z', 'name': 'What?', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5358', 'skip_count': '5', 'skip_date': '2019-09-17T07:37:27Z', 'name': 'Movin Backwards', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5062', 'skip_count': '3', 'skip_date': '2019-09-17T07:42:42Z', 'name': "Buggin' Out", 'artist': 'A Tribe Called Quest'}
-{'track_id': '5344', 'skip_count': '5', 'skip_date': '2019-09-17T07:42:37Z', 'name': 'Kids...', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5358', 'play_count': '30', 'play_date_utc': '2019-09-17T07:42:21Z', 'name': 'Movin Backwards', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5746', 'skip_count': '5', 'skip_date': '2019-09-17T07:42:26Z', 'name': 'Description of a Fool', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5336', 'play_count': '9', 'play_date_utc': '2019-09-17T07:45:34Z', 'name': 'We The People....', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5064', 'play_count': '13', 'play_date_utc': '2019-09-17T07:47:48Z', 'name': 'Rap Promoter', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5080', 'skip_count': '5', 'skip_date': '2019-09-17T07:47:56Z', 'name': "Jazz (We've Got)", 'artist': 'A Tribe Called Quest'}
-{'track_id': '5072', 'play_count': '14', 'play_date_utc': '2019-09-17T07:52:14Z', 'name': 'Vibes and Stuff', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5338', 'play_count': '7', 'play_date_utc': '2019-09-17T07:55:07Z', 'name': 'Whateva Will Be', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5722', 'play_count': '4', 'play_date_utc': '2019-09-17T08:47:53Z', 'name': 'Luck of Lucien', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5062', 'play_count': '10', 'play_date_utc': '2019-09-17T08:51:30Z', 'name': "Buggin' Out", 'artist': 'A Tribe Called Quest'}
-{'track_id': '5354', 'play_count': '7', 'play_date_utc': '2019-09-17T08:54:14Z', 'name': 'The Killing Season', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5720', 'skip_count': '3', 'skip_date': '2019-09-17T08:54:27Z', 'name': 'Push It Along', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5316', 'play_count': '4', 'play_date_utc': '2019-09-17T09:00:15Z', 'name': 'God Lives Through', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5336', 'play_count': '10', 'play_date_utc': '2019-09-17T09:03:07Z', 'name': 'We The People....', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5326', 'play_count': '7', 'play_date_utc': '2019-09-17T09:07:23Z', 'name': 'Oh My God', 'artist': 'A Tribe Called Quest ft. Busta Rhymes'}
-{'track_id': '5074', 'skip_count': '6', 'skip_date': '2019-09-17T09:12:20Z', 'name': 'The Infamous Date Rape', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5226', 'skip_count': '2', 'skip_date': '2019-09-17T09:12:42Z', 'name': 'Venus', 'artist': 'Television'}
-{'track_id': '5334', 'skip_count': '2', 'skip_date': '2019-09-17T09:12:33Z', 'name': 'The Space Program', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5736', 'play_count': '8', 'play_date_utc': '2019-09-17T09:12:18Z', 'name': 'Youthful Expression', 'artist': 'A Tribe Called Quest'}
-{'track_id': '77998', 'play_count': '14', 'play_date_utc': '2019-09-17T09:15:47Z', 'name': 'Rapapapa', 'artist': 'Rich Brian'}
-{'track_id': '998', 'play_count': '95', 'play_date_utc': '2019-09-17T09:19:41Z', 'name': "Pumpkin Party in Sea Hitler's Water Apocalypse", 'artist': 'Malcolm Brown'}
-{'track_id': '1672', 'play_count': '26', 'play_date_utc': '2019-09-17T09:21:08Z', 'name': 'Crazy Dave', 'artist': 'Laura Shigihara'}
-{'track_id': '5718', 'play_count': '4', 'play_date_utc': '2019-09-17T09:25:12Z', 'name': 'Puff Daddy', 'artist': 'JPEGMAFIA &#38; Kenny Beats'}
-{'track_id': '3126', 'play_count': '163', 'play_date_utc': '2019-09-17T09:34:22Z', 'name': 'Roundabout', 'artist': 'Yes'}
-{'track_id': '4848', 'play_count': '5', 'play_date_utc': '2019-09-17T09:43:03Z', 'name': 'Dance Yrself Clean', 'artist': 'LCD Soundsystem'}
-{'track_id': '5674', 'skip_count': '2', 'skip_date': '2019-09-17T09:43:21Z', 'name': 'The World Is Yours', 'artist': 'Nas'}
-{'track_id': '4642', 'play_count': '4', 'play_date_utc': '2019-09-17T09:46:27Z', 'name': 'Anoxia', 'artist': 'King Gizzard &#38; The Lizard Wizard'}
-{'track_id': '5332', 'skip_count': '6', 'skip_date': '2019-09-17T09:49:44Z', 'name': 'Jesus Walks', 'artist': 'Kanye West'}
-{'track_id': '5526', 'play_count': '21', 'play_date_utc': '2019-09-17T09:52:35Z', 'name': 'Maybe She', 'artist': 'Still Woozy'}
-{'track_id': '5560', 'skip_count': '3', 'skip_date': '2019-09-17T10:00:24Z', 'name': 'Institutionalized', 'artist': 'Kendrick Lamar ft. Bilal, Anna Wise &#38; Snoop Dogg'}
-{'track_id': '5820', 'play_count': '2', 'play_date_utc': '2019-09-17T10:00:21Z', 'name': 'Norman fucking Rockwell', 'artist': 'Lana Del Rey'}
-{'track_id': '4884', 'skip_count': '3', 'skip_date': '2019-09-17T10:01:24Z', 'name': 'Lord of the Game', 'artist': 'Death Grips'}
-{'track_id': '5544', 'play_count': '8', 'play_date_utc': '2019-09-17T10:04:00Z', 'name': 'Good Ass Intro', 'artist': 'Chance the Rapper'}
-{'track_id': '4606', 'skip_count': '8', 'skip_date': '2019-09-17T10:04:19Z', 'name': 'Habit', 'artist': 'Still Woozy'}
-{'track_id': '4918', 'skip_count': '4', 'skip_date': '2019-09-17T10:05:05Z', 'name': 'Fergalicious', 'artist': 'Fergie ft. will.i.am'}
-{'track_id': '5402', 'skip_count': '3', 'skip_date': '2019-09-17T10:40:52Z', 'name': "I'm Waiting for the Day", 'artist': 'The Beach Boys'}
-{'track_id': '75346', 'play_count': '2', 'play_date_utc': '2019-09-17T10:40:43Z', 'name': 'When the Fires Come', 'artist': 'Kero Kero Bonito'}
-{'track_id': '5308', 'skip_count': '4', 'skip_date': '2019-09-17T10:41:20Z', 'name': '8 Million Stories', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5524', 'play_count': '12', 'play_date_utc': '2019-09-17T10:44:21Z', 'name': 'Foolsong', 'artist': 'Still Woozy'}
-{'track_id': '4604', 'play_count': '29', 'play_date_utc': '2019-09-17T10:46:44Z', 'name': 'Lucy', 'artist': 'Still Woozy ft. ODIE'}
-{'track_id': '4602', 'play_count': '20', 'play_date_utc': '2019-09-17T10:49:35Z', 'name': 'Wolfcat', 'artist': 'Still Woozy'}
-{'track_id': '4588', 'play_count': '30', 'play_date_utc': '2019-09-17T10:53:29Z', 'name': 'Vacation', 'artist': 'Still Woozy'}
-{'track_id': '5526', 'play_count': '22', 'play_date_utc': '2019-09-17T10:56:18Z', 'name': 'Maybe She', 'artist': 'Still Woozy'}
-{'track_id': '4592', 'play_count': '51', 'play_date_utc': '2019-09-17T10:59:12Z', 'name': 'Cooks', 'artist': 'Still Woozy'}
-{'track_id': '5522', 'play_count': '29', 'play_date_utc': '2019-09-17T11:01:19Z', 'name': 'Ipanema', 'artist': 'Still Woozy ft. Omar Apollo &#38; Elujay'}
-{'track_id': '4606', 'play_count': '34', 'play_date_utc': '2019-09-17T11:03:53Z', 'name': 'Habit', 'artist': 'Still Woozy'}
-{'track_id': '4902', 'play_count': '31', 'play_date_utc': '2019-09-17T11:06:31Z', 'name': 'Lava', 'artist': 'Still Woozy'}
-{'track_id': '4590', 'play_count': '94', 'play_date_utc': '2019-09-17T11:08:58Z', 'name': 'Goodie Bag', 'artist': 'Still Woozy'}
-{'track_id': '5887', 'play_count': '9', 'play_date_utc': '2019-09-17T17:04:55Z', 'name': 'Jesus Forgive Me, I Am A Thot', 'artist': 'JPEGMAFIA'}
-{'track_id': '4691', 'play_count': '6', 'play_date_utc': '2019-09-17T17:08:28Z', 'name': 'Deserted Dunes Welcome Weary Feet', 'artist': 'King Gizzard &#38; The Lizard Wizard'}
-{'track_id': '5277', 'play_count': '2', 'play_date_utc': '2019-09-17T17:11:44Z', 'name': 'All Around The World or The Myth Of Fingerprints', 'artist': 'Paul Simon'}
-{'track_id': '4319', 'play_count': '27', 'play_date_utc': '2019-09-17T17:16:13Z', 'name': 'Raconteur, Troubadour', 'artist': 'Gentle Giant'}
-{'track_id': '5065', 'skip_count': '4', 'skip_date': '2019-09-17T18:53:52Z', 'name': 'Butter', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5337', 'play_count': '8', 'play_date_utc': '2019-09-17T18:53:37Z', 'name': 'Whateva Will Be', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5083', 'play_count': '81', 'play_date_utc': '2019-09-17T18:56:21Z', 'name': 'What?', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5703', 'play_count': '4', 'play_date_utc': '2019-09-17T19:00:34Z', 'name': 'Can I Kick It?', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5351', 'play_count': '7', 'play_date_utc': '2019-09-17T19:03:38Z', 'name': 'Black Spasmodic', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5701', 'play_count': '9', 'play_date_utc': '2019-09-18T06:39:47Z', 'name': 'Youthful Expression', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5333', 'play_count': '11', 'play_date_utc': '2019-09-18T06:42:39Z', 'name': 'We The People....', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5073', 'play_count': '31', 'play_date_utc': '2019-09-18T06:46:16Z', 'name': 'Check The Rhime', 'artist': 'A Tribe Called Quest'}
-{'track_id': '2737', 'play_count': '84', 'play_date_utc': '2019-09-18T09:44:56Z', 'name': 'Mii Channel', 'artist': 'Kazumi Totaka'}
-{'track_id': '4891', 'skip_count': '3', 'skip_date': '2019-09-18T09:45:01Z', 'name': 'Blood Creepin', 'artist': 'Death Grips'}
-{'track_id': '5057', 'play_count': '19', 'play_date_utc': '2019-09-18T10:34:01Z', 'name': 'Excursions', 'artist': 'A Tribe Called Quest'}
-{'track_id': '3327', 'skip_count': '6', 'skip_date': '2019-09-18T15:18:37Z', 'name': 'Cheerful Journey', 'artist': 'Yugo Kanno'}
-{'track_id': '5683', 'play_count': '5', 'play_date_utc': '2019-09-18T15:18:21Z', 'name': 'Puff Daddy', 'artist': 'JPEGMAFIA &#38; Kenny Beats'}
-{'track_id': '5333', 'play_count': '12', 'play_date_utc': '2019-09-18T16:48:40Z', 'name': 'We The People....', 'artist': 'A Tribe Called Quest'}
-{'track_id': '3883', 'play_count': '6', 'play_date_utc': '2019-09-18T16:54:33Z', 'name': 'Scattered and Lost', 'artist': 'Lena Raine'}
-{'track_id': '4605', 'skip_count': '11', 'skip_date': '2019-09-18T17:48:38Z', 'name': 'Robot Stop', 'artist': 'King Gizzard &#38; The Lizard Wizard'}
-{'track_id': '5083', 'skip_count': '9', 'skip_date': '2019-09-18T17:48:43Z', 'name': 'Scenario', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5765', 'skip_count': '2', 'skip_date': '2019-09-18T17:48:30Z', 'name': 'Floor 5-3: Tell It To My Cardiologist, Why Dontcha', 'artist': 'Craig Barnes'}
-{'track_id': '5885', 'play_count': '3', 'play_date_utc': '2019-09-18T17:52:07Z', 'name': 'All My Heroes Are Cornballs', 'artist': 'JPEGMAFIA'}
-{'track_id': '5907', 'play_count': '2', 'play_date_utc': '2019-09-19T06:31:59Z', 'name': 'Thot Tactics', 'artist': 'JPEGMAFIA'}
-{'track_id': '3351', 'skip_count': '10', 'skip_date': '2019-09-19T06:35:45Z', 'name': 'Great Days', 'artist': 'JO☆UNITED'}
-{'track_id': '5919', 'play_count': '3', 'play_date_utc': '2019-09-19T06:35:39Z', 'name': 'When the Fires Come', 'artist': 'Kero Kero Bonito'}
-{'track_id': '5919', 'play_count': '4', 'play_date_utc': '2019-09-19T06:57:20Z', 'name': 'When the Fires Come', 'artist': 'Kero Kero Bonito'}
-{'track_id': '5693', 'play_count': '5', 'play_date_utc': '2019-09-19T07:36:42Z', 'name': 'I Left My Wallet In El Segundo', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5489', 'play_count': '30', 'play_date_utc': '2019-09-19T07:38:49Z', 'name': 'Ipanema', 'artist': 'Still Woozy ft. Omar Apollo &#38; Elujay'}
-{'track_id': '5261', 'play_count': '4', 'play_date_utc': '2019-09-19T07:41:13Z', 'name': "Wouldn't It Be Nice", 'artist': 'The Beach Boys'}
-{'track_id': '3737', 'skip_count': '3', 'skip_date': '2019-09-19T10:30:28Z', 'name': 'New Donk City: Daytime', 'artist': 'Naoto Kubo, Shiho Fuiji, Koji Kondo'}
-{'track_id': '5919', 'play_count': '5', 'play_date_utc': '2019-09-19T10:30:14Z', 'name': 'When the Fires Come', 'artist': 'Kero Kero Bonito'}
-{'track_id': '5393', 'play_count': '2', 'play_date_utc': '2019-09-19T10:33:00Z', 'name': 'Youth Decay', 'artist': 'Sleater-Kinney'}
-{'track_id': '5447', 'skip_count': '5', 'skip_date': '2019-09-19T11:00:21Z', 'name': 'Dilemma', 'artist': 'Death Grips'}
-{'track_id': '4189', 'skip_count': '11', 'skip_date': '2019-09-19T11:00:26Z', 'name': 'One More Red Nightmare', 'artist': 'King Crimson'}
-{'track_id': '5197', 'play_count': '5', 'play_date_utc': '2019-09-19T11:05:53Z', 'name': 'Dream', 'artist': 'clipping.'}
-{'track_id': '4635', 'skip_count': '5', 'skip_date': '2019-09-19T11:25:05Z', 'name': 'Sleep Drifter', 'artist': 'King Gizzard &#38; The Lizard Wizard'}
-{'track_id': '5785', 'play_count': '3', 'play_date_utc': '2019-09-19T11:29:14Z', 'name': 'Norman fucking Rockwell', 'artist': 'Lana Del Rey'}
-{'track_id': '4367', 'play_count': '78', 'play_date_utc': '2019-09-19T11:31:11Z', 'name': 'BLACKJACK', 'artist': 'Aminé'}
-{'track_id': '1103', 'skip_count': '24', 'skip_date': '2019-09-19T12:13:15Z', 'name': 'Wrong Enemy', 'artist': 'Toby Fox'}
-{'track_id': '5683', 'play_count': '6', 'play_date_utc': '2019-09-19T13:39:03Z', 'name': 'Puff Daddy', 'artist': 'JPEGMAFIA &#38; Kenny Beats'}
-{'track_id': '3005', 'skip_count': '18', 'skip_date': '2019-09-19T13:41:28Z', 'name': 'Gear Getaway', 'artist': 'Noriyuki Iwadare'}
-{'track_id': '5675', 'skip_count': '2', 'skip_date': '2019-09-19T16:32:01Z', 'name': 'On GP', 'artist': 'Death Grips'}
-{'track_id': '3945', 'play_count': '42', 'play_date_utc': '2019-09-19T16:41:12Z', 'name': 'Then', 'artist': 'Yes'}
-{'track_id': '5069', 'play_count': '15', 'play_date_utc': '2019-09-19T16:45:47Z', 'name': 'Vibes and Stuff', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5327', 'skip_count': '4', 'skip_date': '2019-09-19T16:49:15Z', 'name': 'The Chase, Part II', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5359', 'play_count': '9', 'play_date_utc': '2019-09-19T16:49:08Z', 'name': 'Ego', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5355', 'play_count': '31', 'play_date_utc': '2019-09-19T16:54:14Z', 'name': 'Movin Backwards', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5067', 'play_count': '14', 'play_date_utc': '2019-09-19T16:58:07Z', 'name': 'Show Business', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5345', 'play_count': '12', 'play_date_utc': '2019-09-19T17:01:28Z', 'name': 'Enough!!', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5693', 'play_count': '6', 'play_date_utc': '2019-09-19T17:05:35Z', 'name': 'I Left My Wallet In El Segundo', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5337', 'play_count': '8', 'play_date_utc': '2019-09-19T17:09:18Z', 'name': 'Solid Wall of Sound', 'artist': 'A Tribe Called Quest'}
-{'track_id': '5897', 'play_count': '2', 'play_date_utc': '2019-09-19T17:32:14Z', 'name': 'Juicy', 'artist': 'Doja Cat'}
-{'track_id': '983', 'play_count': '35', 'play_date_utc': '2019-09-19T17:34:54Z', 'name': "Bowser's Lava Lake Keep", 'artist': 'Mahito Yokota, Toru Minegishi, Yasuaki Iwata, and Koji Kondo'}
-{'track_id': '4907', 'play_count': '4', 'play_date_utc': '2019-09-19T17:36:02Z', 'name': '(Da Da Da Da)', 'artist': 'Feed Me Jack'}
-{'track_id': '3591', 'play_count': '7', 'play_date_utc': '2019-09-19T17:38:16Z', 'name': 'Bracketeering: Lobby', 'artist': 'Jackbox Games'}
-{'track_id': '2721', 'play_count': '15', 'play_date_utc': '2019-09-19T17:40:31Z', 'name': 'Gourmet Race [Cover]', 'artist': 'RichaadEB'}
-{'track_id': '5689', 'play_count': '2', 'play_date_utc': '2019-09-19T17:45:13Z', 'name': 'After Hours', 'artist': 'A Tribe Called Quest'}
-{'track_id': '2627', 'play_count': '13', 'play_date_utc': '2019-09-19T17:48:11Z', 'name': 'The Town', 'artist': 'Stuart Chatwood'}
-{'track_id': '1141', 'play_count': '66', 'play_date_utc': '2019-09-19T17:56:00Z', 'name': 'Pathetic House', 'artist': 'Toby Fox'}
-{'track_id': '3111', 'play_count': '31', 'play_date_utc': '2019-09-19T18:38:32Z', 'name': 'Sono Chi no Sadame', 'artist': 'Hiroaki Tominaga'}
-{'track_id': '3621', 'skip_count': '4', 'skip_date': '2019-09-19T18:38:36Z', 'name': 'A Walk to Remember', 'artist': 'Vulfpeck'}
-{'track_id': '3201', 'play_count': '11', 'play_date_utc': '2019-09-19T18:40:15Z', 'name': 'The Temple of Istus', 'artist': 'Griffin McElroy'}
-{'track_id': '971', 'play_count': '74', 'play_date_utc': '2019-09-19T18:41:18Z', 'name': 'Muda Kingdom', 'artist': 'Hirokazu Tanaka'}
+{"track_id": "858", "skip_count": "48", "skip_date": "2019-09-16T19:40:52Z", "name": "Boulevard of Broken Dreams", "artist": "Green Day"}
+{"track_id": "1646", "skip_count": "9", "skip_date": "2019-09-16T19:40:58Z", "name": "Colonial (Explore)", "artist": "Ben Prunty"}
+{"track_id": "2028", "play_count": "21", "play_date_utc": "2019-09-16T19:53:43Z", "name": "The Wight to Remain", "artist": "Flexstyle ft. DjjD"}
+{"track_id": "2028", "skip_count": "11", "skip_date": "2019-09-16T19:53:13Z", "name": "The Wight to Remain", "artist": "Flexstyle ft. DjjD"}
+{"track_id": "4590", "play_count": "92", "play_date_utc": "2019-09-16T19:56:24Z", "name": "Goodie Bag", "artist": "Still Woozy"}
+{"track_id": "4602", "play_count": "18", "play_date_utc": "2019-09-16T19:56:16Z", "name": "Wolfcat", "artist": "Still Woozy"}
+{"track_id": "5146", "skip_count": "3", "skip_date": "2019-09-16T19:52:56Z", "name": "Pop", "artist": "Death Grips"}
+{"track_id": "5336", "play_count": "8", "play_date_utc": "2019-09-16T18:51:42Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "4606", "skip_count": "7", "skip_date": "2019-09-16T20:17:46Z", "name": "Habit", "artist": "Still Woozy"}
+{"track_id": "4604", "skip_count": "5", "skip_date": "2019-09-16T20:17:52Z", "name": "Lucy", "artist": "Still Woozy ft. ODIE"}
+{"track_id": "5526", "play_count": "19", "play_date_utc": "2019-09-16T20:19:51Z", "name": "Maybe She", "artist": "Still Woozy"}
+{"track_id": "4588", "skip_count": "15", "skip_date": "2019-09-16T20:24:03Z", "name": "Vacation", "artist": "Still Woozy"}
+{"track_id": "4592", "play_count": "50", "play_date_utc": "2019-09-16T20:23:30Z", "name": "Cooks", "artist": "Still Woozy"}
+{"track_id": "5522", "play_count": "27", "play_date_utc": "2019-09-16T20:21:58Z", "name": "Ipanema", "artist": "Still Woozy ft. Omar Apollo &#38; Elujay"}
+{"track_id": "1094", "play_count": "77", "play_date_utc": "2019-09-16T20:25:06Z", "name": "Metal Crusher", "artist": "Toby Fox"}
+{"track_id": "4304", "play_count": "9", "play_date_utc": "2019-09-16T20:33:28Z", "name": "Why Not?", "artist": "Gentle Giant"}
+{"track_id": "2368", "play_count": "9", "play_date_utc": "2019-09-16T20:35:07Z", "name": "Underwater", "artist": "Koji Kondo"}
+{"track_id": "3282", "play_count": "11", "play_date_utc": "2019-09-16T20:36:14Z", "name": "Shoshone Overlook", "artist": "Chris Remo"}
+{"track_id": "5426", "play_count": "2", "play_date_utc": "2019-09-16T20:39:34Z", "name": "IGOR'S THEME", "artist": "Tyler, The Creator"}
+{"track_id": "4196", "play_count": "8", "play_date_utc": "2019-09-16T20:44:27Z", "name": "Cat Food", "artist": "King Crimson"}
+{"track_id": "3154", "skip_count": "10", "skip_date": "2019-09-17T07:10:16Z", "name": "End of the World", "artist": "TOMMY, Coda, JIN"}
+{"track_id": "4598", "skip_count": "7", "skip_date": "2019-09-17T07:10:10Z", "name": "Living in the Plastic Age", "artist": "Buggles"}
+{"track_id": "868", "skip_count": "42", "skip_date": "2019-09-17T07:11:03Z", "name": "Animal", "artist": "Miike Snow"}
+{"track_id": "4884", "skip_count": "2", "skip_date": "2019-09-17T07:11:06Z", "name": "Lord of the Game", "artist": "Death Grips"}
+{"track_id": "4902", "play_count": "30", "play_date_utc": "2019-09-17T07:13:45Z", "name": "Lava", "artist": "Still Woozy"}
+{"track_id": "5524", "play_count": "11", "play_date_utc": "2019-09-17T07:16:38Z", "name": "Foolsong", "artist": "Still Woozy"}
+{"track_id": "4604", "play_count": "28", "play_date_utc": "2019-09-17T07:19:00Z", "name": "Lucy", "artist": "Still Woozy ft. ODIE"}
+{"track_id": "5522", "play_count": "28", "play_date_utc": "2019-09-17T07:21:07Z", "name": "Ipanema", "artist": "Still Woozy ft. Omar Apollo &#38; Elujay"}
+{"track_id": "5526", "play_count": "20", "play_date_utc": "2019-09-17T07:23:56Z", "name": "Maybe She", "artist": "Still Woozy"}
+{"track_id": "4588", "play_count": "29", "play_date_utc": "2019-09-17T07:27:50Z", "name": "Vacation", "artist": "Still Woozy"}
+{"track_id": "4602", "play_count": "19", "play_date_utc": "2019-09-17T07:30:42Z", "name": "Wolfcat", "artist": "Still Woozy"}
+{"track_id": "4590", "play_count": "93", "play_date_utc": "2019-09-17T07:33:10Z", "name": "Goodie Bag", "artist": "Still Woozy"}
+{"track_id": "5084", "play_count": "80", "play_date_utc": "2019-09-17T07:35:38Z", "name": "What?", "artist": "A Tribe Called Quest"}
+{"track_id": "5066", "skip_count": "3", "skip_date": "2019-09-17T07:37:36Z", "name": "Butter", "artist": "A Tribe Called Quest"}
+{"track_id": "5076", "play_count": "30", "play_date_utc": "2019-09-17T07:37:24Z", "name": "Check The Rhime", "artist": "A Tribe Called Quest"}
+{"track_id": "5084", "skip_count": "6", "skip_date": "2019-09-17T07:37:33Z", "name": "What?", "artist": "A Tribe Called Quest"}
+{"track_id": "5358", "skip_count": "5", "skip_date": "2019-09-17T07:37:27Z", "name": "Movin Backwards", "artist": "A Tribe Called Quest"}
+{"track_id": "5062", "skip_count": "3", "skip_date": "2019-09-17T07:42:42Z", "name": "Buggin' Out", "artist": "A Tribe Called Quest"}
+{"track_id": "5344", "skip_count": "5", "skip_date": "2019-09-17T07:42:37Z", "name": "Kids...", "artist": "A Tribe Called Quest"}
+{"track_id": "5358", "play_count": "30", "play_date_utc": "2019-09-17T07:42:21Z", "name": "Movin Backwards", "artist": "A Tribe Called Quest"}
+{"track_id": "5746", "skip_count": "5", "skip_date": "2019-09-17T07:42:26Z", "name": "Description of a Fool", "artist": "A Tribe Called Quest"}
+{"track_id": "5336", "play_count": "9", "play_date_utc": "2019-09-17T07:45:34Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "5064", "play_count": "13", "play_date_utc": "2019-09-17T07:47:48Z", "name": "Rap Promoter", "artist": "A Tribe Called Quest"}
+{"track_id": "5080", "skip_count": "5", "skip_date": "2019-09-17T07:47:56Z", "name": "Jazz (We've Got)", "artist": "A Tribe Called Quest"}
+{"track_id": "5072", "play_count": "14", "play_date_utc": "2019-09-17T07:52:14Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "5338", "play_count": "7", "play_date_utc": "2019-09-17T07:55:07Z", "name": "Whateva Will Be", "artist": "A Tribe Called Quest"}
+{"track_id": "5722", "play_count": "4", "play_date_utc": "2019-09-17T08:47:53Z", "name": "Luck of Lucien", "artist": "A Tribe Called Quest"}
+{"track_id": "5062", "play_count": "10", "play_date_utc": "2019-09-17T08:51:30Z", "name": "Buggin' Out", "artist": "A Tribe Called Quest"}
+{"track_id": "5354", "play_count": "7", "play_date_utc": "2019-09-17T08:54:14Z", "name": "The Killing Season", "artist": "A Tribe Called Quest"}
+{"track_id": "5720", "skip_count": "3", "skip_date": "2019-09-17T08:54:27Z", "name": "Push It Along", "artist": "A Tribe Called Quest"}
+{"track_id": "5316", "play_count": "4", "play_date_utc": "2019-09-17T09:00:15Z", "name": "God Lives Through", "artist": "A Tribe Called Quest"}
+{"track_id": "5336", "play_count": "10", "play_date_utc": "2019-09-17T09:03:07Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "5326", "play_count": "7", "play_date_utc": "2019-09-17T09:07:23Z", "name": "Oh My God", "artist": "A Tribe Called Quest ft. Busta Rhymes"}
+{"track_id": "5074", "skip_count": "6", "skip_date": "2019-09-17T09:12:20Z", "name": "The Infamous Date Rape", "artist": "A Tribe Called Quest"}
+{"track_id": "5226", "skip_count": "2", "skip_date": "2019-09-17T09:12:42Z", "name": "Venus", "artist": "Television"}
+{"track_id": "5334", "skip_count": "2", "skip_date": "2019-09-17T09:12:33Z", "name": "The Space Program", "artist": "A Tribe Called Quest"}
+{"track_id": "5736", "play_count": "8", "play_date_utc": "2019-09-17T09:12:18Z", "name": "Youthful Expression", "artist": "A Tribe Called Quest"}
+{"track_id": "77998", "play_count": "14", "play_date_utc": "2019-09-17T09:15:47Z", "name": "Rapapapa", "artist": "Rich Brian"}
+{"track_id": "998", "play_count": "95", "play_date_utc": "2019-09-17T09:19:41Z", "name": "Pumpkin Party in Sea Hitler's Water Apocalypse", "artist": "Malcolm Brown"}
+{"track_id": "1672", "play_count": "26", "play_date_utc": "2019-09-17T09:21:08Z", "name": "Crazy Dave", "artist": "Laura Shigihara"}
+{"track_id": "5718", "play_count": "4", "play_date_utc": "2019-09-17T09:25:12Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "3126", "play_count": "163", "play_date_utc": "2019-09-17T09:34:22Z", "name": "Roundabout", "artist": "Yes"}
+{"track_id": "4848", "play_count": "5", "play_date_utc": "2019-09-17T09:43:03Z", "name": "Dance Yrself Clean", "artist": "LCD Soundsystem"}
+{"track_id": "5674", "skip_count": "2", "skip_date": "2019-09-17T09:43:21Z", "name": "The World Is Yours", "artist": "Nas"}
+{"track_id": "4642", "play_count": "4", "play_date_utc": "2019-09-17T09:46:27Z", "name": "Anoxia", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5332", "skip_count": "6", "skip_date": "2019-09-17T09:49:44Z", "name": "Jesus Walks", "artist": "Kanye West"}
+{"track_id": "5526", "play_count": "21", "play_date_utc": "2019-09-17T09:52:35Z", "name": "Maybe She", "artist": "Still Woozy"}
+{"track_id": "5560", "skip_count": "3", "skip_date": "2019-09-17T10:00:24Z", "name": "Institutionalized", "artist": "Kendrick Lamar ft. Bilal, Anna Wise &#38; Snoop Dogg"}
+{"track_id": "5820", "play_count": "2", "play_date_utc": "2019-09-17T10:00:21Z", "name": "Norman fucking Rockwell", "artist": "Lana Del Rey"}
+{"track_id": "4884", "skip_count": "3", "skip_date": "2019-09-17T10:01:24Z", "name": "Lord of the Game", "artist": "Death Grips"}
+{"track_id": "5544", "play_count": "8", "play_date_utc": "2019-09-17T10:04:00Z", "name": "Good Ass Intro", "artist": "Chance the Rapper"}
+{"track_id": "4606", "skip_count": "8", "skip_date": "2019-09-17T10:04:19Z", "name": "Habit", "artist": "Still Woozy"}
+{"track_id": "4918", "skip_count": "4", "skip_date": "2019-09-17T10:05:05Z", "name": "Fergalicious", "artist": "Fergie ft. will.i.am"}
+{"track_id": "5402", "skip_count": "3", "skip_date": "2019-09-17T10:40:52Z", "name": "I'm Waiting for the Day", "artist": "The Beach Boys"}
+{"track_id": "75346", "play_count": "2", "play_date_utc": "2019-09-17T10:40:43Z", "name": "When the Fires Come", "artist": "Kero Kero Bonito"}
+{"track_id": "5308", "skip_count": "4", "skip_date": "2019-09-17T10:41:20Z", "name": "8 Million Stories", "artist": "A Tribe Called Quest"}
+{"track_id": "5524", "play_count": "12", "play_date_utc": "2019-09-17T10:44:21Z", "name": "Foolsong", "artist": "Still Woozy"}
+{"track_id": "4604", "play_count": "29", "play_date_utc": "2019-09-17T10:46:44Z", "name": "Lucy", "artist": "Still Woozy ft. ODIE"}
+{"track_id": "4602", "play_count": "20", "play_date_utc": "2019-09-17T10:49:35Z", "name": "Wolfcat", "artist": "Still Woozy"}
+{"track_id": "4588", "play_count": "30", "play_date_utc": "2019-09-17T10:53:29Z", "name": "Vacation", "artist": "Still Woozy"}
+{"track_id": "5526", "play_count": "22", "play_date_utc": "2019-09-17T10:56:18Z", "name": "Maybe She", "artist": "Still Woozy"}
+{"track_id": "4592", "play_count": "51", "play_date_utc": "2019-09-17T10:59:12Z", "name": "Cooks", "artist": "Still Woozy"}
+{"track_id": "5522", "play_count": "29", "play_date_utc": "2019-09-17T11:01:19Z", "name": "Ipanema", "artist": "Still Woozy ft. Omar Apollo &#38; Elujay"}
+{"track_id": "4606", "play_count": "34", "play_date_utc": "2019-09-17T11:03:53Z", "name": "Habit", "artist": "Still Woozy"}
+{"track_id": "4902", "play_count": "31", "play_date_utc": "2019-09-17T11:06:31Z", "name": "Lava", "artist": "Still Woozy"}
+{"track_id": "4590", "play_count": "94", "play_date_utc": "2019-09-17T11:08:58Z", "name": "Goodie Bag", "artist": "Still Woozy"}
+{"track_id": "5887", "play_count": "9", "play_date_utc": "2019-09-17T17:04:55Z", "name": "Jesus Forgive Me, I Am A Thot", "artist": "JPEGMAFIA"}
+{"track_id": "4691", "play_count": "6", "play_date_utc": "2019-09-17T17:08:28Z", "name": "Deserted Dunes Welcome Weary Feet", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5277", "play_count": "2", "play_date_utc": "2019-09-17T17:11:44Z", "name": "All Around The World or The Myth Of Fingerprints", "artist": "Paul Simon"}
+{"track_id": "4319", "play_count": "27", "play_date_utc": "2019-09-17T17:16:13Z", "name": "Raconteur, Troubadour", "artist": "Gentle Giant"}
+{"track_id": "5065", "skip_count": "4", "skip_date": "2019-09-17T18:53:52Z", "name": "Butter", "artist": "A Tribe Called Quest"}
+{"track_id": "5337", "play_count": "8", "play_date_utc": "2019-09-17T18:53:37Z", "name": "Whateva Will Be", "artist": "A Tribe Called Quest"}
+{"track_id": "5083", "play_count": "81", "play_date_utc": "2019-09-17T18:56:21Z", "name": "What?", "artist": "A Tribe Called Quest"}
+{"track_id": "5703", "play_count": "4", "play_date_utc": "2019-09-17T19:00:34Z", "name": "Can I Kick It?", "artist": "A Tribe Called Quest"}
+{"track_id": "5351", "play_count": "7", "play_date_utc": "2019-09-17T19:03:38Z", "name": "Black Spasmodic", "artist": "A Tribe Called Quest"}
+{"track_id": "5701", "play_count": "9", "play_date_utc": "2019-09-18T06:39:47Z", "name": "Youthful Expression", "artist": "A Tribe Called Quest"}
+{"track_id": "5333", "play_count": "11", "play_date_utc": "2019-09-18T06:42:39Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "5073", "play_count": "31", "play_date_utc": "2019-09-18T06:46:16Z", "name": "Check The Rhime", "artist": "A Tribe Called Quest"}
+{"track_id": "2737", "play_count": "84", "play_date_utc": "2019-09-18T09:44:56Z", "name": "Mii Channel", "artist": "Kazumi Totaka"}
+{"track_id": "4891", "skip_count": "3", "skip_date": "2019-09-18T09:45:01Z", "name": "Blood Creepin", "artist": "Death Grips"}
+{"track_id": "5057", "play_count": "19", "play_date_utc": "2019-09-18T10:34:01Z", "name": "Excursions", "artist": "A Tribe Called Quest"}
+{"track_id": "3327", "skip_count": "6", "skip_date": "2019-09-18T15:18:37Z", "name": "Cheerful Journey", "artist": "Yugo Kanno"}
+{"track_id": "5683", "play_count": "5", "play_date_utc": "2019-09-18T15:18:21Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "5333", "play_count": "12", "play_date_utc": "2019-09-18T16:48:40Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "3883", "play_count": "6", "play_date_utc": "2019-09-18T16:54:33Z", "name": "Scattered and Lost", "artist": "Lena Raine"}
+{"track_id": "4605", "skip_count": "11", "skip_date": "2019-09-18T17:48:38Z", "name": "Robot Stop", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5083", "skip_count": "9", "skip_date": "2019-09-18T17:48:43Z", "name": "Scenario", "artist": "A Tribe Called Quest"}
+{"track_id": "5765", "skip_count": "2", "skip_date": "2019-09-18T17:48:30Z", "name": "Floor 5-3: Tell It To My Cardiologist, Why Dontcha", "artist": "Craig Barnes"}
+{"track_id": "5885", "play_count": "3", "play_date_utc": "2019-09-18T17:52:07Z", "name": "All My Heroes Are Cornballs", "artist": "JPEGMAFIA"}
+{"track_id": "5907", "play_count": "2", "play_date_utc": "2019-09-19T06:31:59Z", "name": "Thot Tactics", "artist": "JPEGMAFIA"}
+{"track_id": "3351", "skip_count": "10", "skip_date": "2019-09-19T06:35:45Z", "name": "Great Days", "artist": "JO☆UNITED"}
+{"track_id": "5919", "play_count": "3", "play_date_utc": "2019-09-19T06:35:39Z", "name": "When the Fires Come", "artist": "Kero Kero Bonito"}
+{"track_id": "5919", "play_count": "4", "play_date_utc": "2019-09-19T06:57:20Z", "name": "When the Fires Come", "artist": "Kero Kero Bonito"}
+{"track_id": "5693", "play_count": "5", "play_date_utc": "2019-09-19T07:36:42Z", "name": "I Left My Wallet In El Segundo", "artist": "A Tribe Called Quest"}
+{"track_id": "5489", "play_count": "30", "play_date_utc": "2019-09-19T07:38:49Z", "name": "Ipanema", "artist": "Still Woozy ft. Omar Apollo &#38; Elujay"}
+{"track_id": "5261", "play_count": "4", "play_date_utc": "2019-09-19T07:41:13Z", "name": "Wouldn't It Be Nice", "artist": "The Beach Boys"}
+{"track_id": "3737", "skip_count": "3", "skip_date": "2019-09-19T10:30:28Z", "name": "New Donk City: Daytime", "artist": "Naoto Kubo, Shiho Fuiji, Koji Kondo"}
+{"track_id": "5919", "play_count": "5", "play_date_utc": "2019-09-19T10:30:14Z", "name": "When the Fires Come", "artist": "Kero Kero Bonito"}
+{"track_id": "5393", "play_count": "2", "play_date_utc": "2019-09-19T10:33:00Z", "name": "Youth Decay", "artist": "Sleater-Kinney"}
+{"track_id": "5447", "skip_count": "5", "skip_date": "2019-09-19T11:00:21Z", "name": "Dilemma", "artist": "Death Grips"}
+{"track_id": "4189", "skip_count": "11", "skip_date": "2019-09-19T11:00:26Z", "name": "One More Red Nightmare", "artist": "King Crimson"}
+{"track_id": "5197", "play_count": "5", "play_date_utc": "2019-09-19T11:05:53Z", "name": "Dream", "artist": "clipping."}
+{"track_id": "4635", "skip_count": "5", "skip_date": "2019-09-19T11:25:05Z", "name": "Sleep Drifter", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5785", "play_count": "3", "play_date_utc": "2019-09-19T11:29:14Z", "name": "Norman fucking Rockwell", "artist": "Lana Del Rey"}
+{"track_id": "4367", "play_count": "78", "play_date_utc": "2019-09-19T11:31:11Z", "name": "BLACKJACK", "artist": "Aminé"}
+{"track_id": "1103", "skip_count": "24", "skip_date": "2019-09-19T12:13:15Z", "name": "Wrong Enemy", "artist": "Toby Fox"}
+{"track_id": "5683", "play_count": "6", "play_date_utc": "2019-09-19T13:39:03Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "3005", "skip_count": "18", "skip_date": "2019-09-19T13:41:28Z", "name": "Gear Getaway", "artist": "Noriyuki Iwadare"}
+{"track_id": "5675", "skip_count": "2", "skip_date": "2019-09-19T16:32:01Z", "name": "On GP", "artist": "Death Grips"}
+{"track_id": "3945", "play_count": "42", "play_date_utc": "2019-09-19T16:41:12Z", "name": "Then", "artist": "Yes"}
+{"track_id": "5069", "play_count": "15", "play_date_utc": "2019-09-19T16:45:47Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "5327", "skip_count": "4", "skip_date": "2019-09-19T16:49:15Z", "name": "The Chase, Part II", "artist": "A Tribe Called Quest"}
+{"track_id": "5359", "play_count": "9", "play_date_utc": "2019-09-19T16:49:08Z", "name": "Ego", "artist": "A Tribe Called Quest"}
+{"track_id": "5355", "play_count": "31", "play_date_utc": "2019-09-19T16:54:14Z", "name": "Movin Backwards", "artist": "A Tribe Called Quest"}
+{"track_id": "5067", "play_count": "14", "play_date_utc": "2019-09-19T16:58:07Z", "name": "Show Business", "artist": "A Tribe Called Quest"}
+{"track_id": "5345", "play_count": "12", "play_date_utc": "2019-09-19T17:01:28Z", "name": "Enough!!", "artist": "A Tribe Called Quest"}
+{"track_id": "5693", "play_count": "6", "play_date_utc": "2019-09-19T17:05:35Z", "name": "I Left My Wallet In El Segundo", "artist": "A Tribe Called Quest"}
+{"track_id": "5337", "play_count": "8", "play_date_utc": "2019-09-19T17:09:18Z", "name": "Solid Wall of Sound", "artist": "A Tribe Called Quest"}
+{"track_id": "5897", "play_count": "2", "play_date_utc": "2019-09-19T17:32:14Z", "name": "Juicy", "artist": "Doja Cat"}
+{"track_id": "983", "play_count": "35", "play_date_utc": "2019-09-19T17:34:54Z", "name": "Bowser's Lava Lake Keep", "artist": "Mahito Yokota, Toru Minegishi, Yasuaki Iwata, and Koji Kondo"}
+{"track_id": "4907", "play_count": "4", "play_date_utc": "2019-09-19T17:36:02Z", "name": "(Da Da Da Da)", "artist": "Feed Me Jack"}
+{"track_id": "3591", "play_count": "7", "play_date_utc": "2019-09-19T17:38:16Z", "name": "Bracketeering: Lobby", "artist": "Jackbox Games"}
+{"track_id": "2721", "play_count": "15", "play_date_utc": "2019-09-19T17:40:31Z", "name": "Gourmet Race [Cover]", "artist": "RichaadEB"}
+{"track_id": "5689", "play_count": "2", "play_date_utc": "2019-09-19T17:45:13Z", "name": "After Hours", "artist": "A Tribe Called Quest"}
+{"track_id": "2627", "play_count": "13", "play_date_utc": "2019-09-19T17:48:11Z", "name": "The Town", "artist": "Stuart Chatwood"}
+{"track_id": "1141", "play_count": "66", "play_date_utc": "2019-09-19T17:56:00Z", "name": "Pathetic House", "artist": "Toby Fox"}
+{"track_id": "3111", "play_count": "31", "play_date_utc": "2019-09-19T18:38:32Z", "name": "Sono Chi no Sadame", "artist": "Hiroaki Tominaga"}
+{"track_id": "3621", "skip_count": "4", "skip_date": "2019-09-19T18:38:36Z", "name": "A Walk to Remember", "artist": "Vulfpeck"}
+{"track_id": "3201", "play_count": "11", "play_date_utc": "2019-09-19T18:40:15Z", "name": "The Temple of Istus", "artist": "Griffin McElroy"}
+{"track_id": "971", "play_count": "74", "play_date_utc": "2019-09-19T18:41:18Z", "name": "Muda Kingdom", "artist": "Hirokazu Tanaka"}
+{"track_id": "2089", "play_count": "30", "play_date_utc": "2019-09-19T18:44:41Z", "name": "Suddenly I See", "artist": "KT Tunstall"}
+{"track_id": "5651", "play_count": "3", "play_date_utc": "2019-09-19T18:48:04Z", "name": "It Aint Hard to Tell", "artist": "Nas"}
+{"track_id": "1285", "play_count": "45", "play_date_utc": "2019-09-19T18:49:36Z", "name": "Sunsetter", "artist": "Toby Fox"}
+{"track_id": "1621", "play_count": "17", "play_date_utc": "2019-09-19T18:53:24Z", "name": "Flow", "artist": "Richard Vreeland"}
+{"track_id": "857", "play_count": "38", "play_date_utc": "2019-09-19T18:57:22Z", "name": "Holiday", "artist": "Green Day"}
+{"track_id": "5407", "skip_count": "2", "skip_date": "2019-09-20T08:29:55Z", "name": "PUPPET", "artist": "Tyler, The Creator"}
+{"track_id": "5081", "play_count": "82", "play_date_utc": "2019-09-20T10:44:23Z", "name": "What?", "artist": "A Tribe Called Quest"}
+{"track_id": "4589", "play_count": "52", "play_date_utc": "2019-09-20T11:40:07Z", "name": "Cooks", "artist": "Still Woozy"}
+{"track_id": "1477", "skip_count": "20", "skip_date": "2019-09-20T13:31:15Z", "name": "Unfounded Revenge", "artist": "Shogo Sakai"}
+{"track_id": "2297", "skip_count": "5", "skip_date": "2019-09-20T13:31:38Z", "name": "Hag Overture", "artist": "Grant Kirkhope"}
+{"track_id": "5059", "skip_count": "4", "skip_date": "2019-09-20T13:31:25Z", "name": "Buggin' Out", "artist": "A Tribe Called Quest"}
+{"track_id": "5685", "skip_count": "4", "skip_date": "2019-09-20T13:31:31Z", "name": "Push It Along", "artist": "A Tribe Called Quest"}
+{"track_id": "5857", "play_count": "10", "play_date_utc": "2019-09-20T13:31:06Z", "name": "Jesus Forgive Me, I Am A Thot", "artist": "JPEGMAFIA"}
+{"track_id": "3599", "play_count": "28", "play_date_utc": "2019-09-20T13:36:32Z", "name": "It Gets Funkier", "artist": "Vulfpeck"}
+{"track_id": "5333", "play_count": "13", "play_date_utc": "2019-09-20T16:28:25Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "3869", "skip_count": "5", "skip_date": "2019-09-20T16:51:21Z", "name": "My Dearest Friends", "artist": "Lena Raine"}
+{"track_id": "5333", "play_count": "14", "play_date_utc": "2019-09-20T16:54:14Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "1059", "skip_count": "31", "skip_date": "2019-09-20T16:55:31Z", "name": "Spear of Justice", "artist": "Toby Fox"}
+{"track_id": "5065", "skip_count": "6", "skip_date": "2019-09-20T16:55:47Z", "name": "Verses From The Abstract", "artist": "A Tribe Called Quest"}
+{"track_id": "5069", "play_count": "16", "play_date_utc": "2019-09-20T17:00:06Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "1157", "play_count": "39", "play_date_utc": "2019-09-20T17:02:37Z", "name": "Dummy! [Cover]", "artist": "RichaadEB"}
+{"track_id": "4681", "play_count": "9", "play_date_utc": "2019-09-20T17:08:38Z", "name": "Horology", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "4115", "play_count": "16", "play_date_utc": "2019-09-20T17:12:04Z", "name": "Whistling in the Dark", "artist": "They Might Be Giants"}
+{"track_id": "4039", "skip_count": "8", "skip_date": "2019-09-20T17:14:47Z", "name": "SLOW DANCING IN THE DARK", "artist": "Joji"}
+{"track_id": "5359", "skip_count": "3", "skip_date": "2019-09-20T17:14:52Z", "name": "Ego", "artist": "A Tribe Called Quest"}
+{"track_id": "5471", "play_count": "4", "play_date_utc": "2019-09-20T17:19:12Z", "name": "Fat Bottomed Girls", "artist": "Queen"}
+{"track_id": "2095", "play_count": "18", "play_date_utc": "2019-09-20T17:26:40Z", "name": "Tunak Tunak Tun", "artist": "Daler Mehndi"}
+{"track_id": "5103", "skip_count": "4", "skip_date": "2019-09-20T17:27:50Z", "name": "Hold It Now, Hit It", "artist": "Beastie Boys"}
+{"track_id": "3949", "play_count": "215", "play_date_utc": "2019-09-20T17:37:03Z", "name": "Flamingo", "artist": "Kero Kero Bonito"}
+{"track_id": "5573", "play_count": "16", "play_date_utc": "2019-09-20T17:40:41Z", "name": "The Bird", "artist": "Anderson .Paak"}
+{"track_id": "5227", "play_count": "5", "play_date_utc": "2019-09-20T17:45:09Z", "name": "Hunnybee", "artist": "Unknown Mortal Orchestra"}
+{"track_id": "3957", "play_count": "26", "play_date_utc": "2019-09-20T17:49:26Z", "name": "Sweatpants", "artist": "Childish Gambino ft. Problem"}
+{"track_id": "5029", "play_count": "27", "play_date_utc": "2019-09-20T17:56:56Z", "name": "No Love", "artist": "Death Grips"}
+{"track_id": "3969", "skip_count": "2", "skip_date": "2019-09-21T12:05:20Z", "name": "Forest Theme", "artist": "Shiho Fujii, Ryo Nagamatsu, Kenta Nagata"}
+{"track_id": "5069", "play_count": "17", "play_date_utc": "2019-09-21T12:35:17Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "1865", "play_count": "18", "play_date_utc": "2019-09-21T12:36:14Z", "name": "Playful", "artist": "Eric Barone"}
+{"track_id": "4833", "skip_count": "4", "skip_date": "2019-09-21T12:36:24Z", "name": "The Overload", "artist": "Talking Heads"}
+{"track_id": "5353", "skip_count": "2", "skip_date": "2019-09-21T12:36:28Z", "name": "Lost Somebody", "artist": "A Tribe Called Quest"}
+{"track_id": "5333", "play_count": "15", "play_date_utc": "2019-09-21T16:59:46Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "5687", "play_count": "5", "play_date_utc": "2019-09-21T17:04:19Z", "name": "Luck of Lucien", "artist": "A Tribe Called Quest"}
+{"track_id": "5309", "play_count": "5", "play_date_utc": "2019-09-21T17:08:38Z", "name": "We Can Get Down", "artist": "A Tribe Called Quest"}
+{"track_id": "5075", "play_count": "7", "play_date_utc": "2019-09-21T17:11:36Z", "name": "Everything Is Fair", "artist": "A Tribe Called Quest"}
+{"track_id": "5357", "play_count": "11", "play_date_utc": "2019-09-21T17:15:08Z", "name": "Conrad Tokyo", "artist": "A Tribe Called Quest"}
+{"track_id": "5355", "play_count": "32", "play_date_utc": "2019-09-21T17:19:50Z", "name": "Movin Backwards", "artist": "A Tribe Called Quest"}
+{"track_id": "5323", "play_count": "8", "play_date_utc": "2019-09-21T17:23:20Z", "name": "Oh My God", "artist": "A Tribe Called Quest ft. Busta Rhymes"}
+{"track_id": "5083", "play_count": "25", "play_date_utc": "2019-09-21T17:27:31Z", "name": "Scenario", "artist": "A Tribe Called Quest"}
+{"track_id": "5073", "play_count": "32", "play_date_utc": "2019-09-21T17:31:08Z", "name": "Check The Rhime", "artist": "A Tribe Called Quest"}
+{"track_id": "5351", "play_count": "8", "play_date_utc": "2019-09-21T17:33:52Z", "name": "The Killing Season", "artist": "A Tribe Called Quest"}
+{"track_id": "5685", "play_count": "2", "play_date_utc": "2019-09-21T17:41:35Z", "name": "Push It Along", "artist": "A Tribe Called Quest"}
+{"track_id": "5693", "play_count": "7", "play_date_utc": "2019-09-21T17:45:43Z", "name": "I Left My Wallet In El Segundo", "artist": "A Tribe Called Quest"}
+{"track_id": "5327", "play_count": "6", "play_date_utc": "2019-09-21T17:49:45Z", "name": "The Chase, Part II", "artist": "A Tribe Called Quest"}
+{"track_id": "5063", "play_count": "18", "play_date_utc": "2019-09-21T17:53:24Z", "name": "Butter", "artist": "A Tribe Called Quest"}
+{"track_id": "5317", "play_count": "5", "play_date_utc": "2019-09-21T17:57:48Z", "name": "Midnight", "artist": "A Tribe Called Quest"}
+{"track_id": "5311", "play_count": "4", "play_date_utc": "2019-09-21T18:02:56Z", "name": "Lyrics To Go", "artist": "A Tribe Called Quest"}
+{"track_id": "5337", "play_count": "9", "play_date_utc": "2019-09-21T18:06:40Z", "name": "Solid Wall of Sound", "artist": "A Tribe Called Quest"}
+{"track_id": "5713", "play_count": "7", "play_date_utc": "2019-09-22T07:02:28Z", "name": "Campfire", "artist": "Aminé ft. Injury Reserve"}
+{"track_id": "3913", "play_count": "59", "play_date_utc": "2019-09-22T07:05:02Z", "name": "Dream of Mahjong", "artist": "sungazer"}
+{"track_id": "3597", "skip_count": "8", "skip_date": "2019-09-22T07:07:48Z", "name": "Déjà Vu", "artist": "Dave Rodgers"}
+{"track_id": "4909", "skip_count": "3", "skip_date": "2019-09-22T07:07:38Z", "name": "Berring Stone", "artist": "Feed Me Jack"}
+{"track_id": "4375", "skip_count": "9", "skip_date": "2019-09-22T07:10:10Z", "name": "REEL IT IN", "artist": "Aminé"}
+{"track_id": "5235", "skip_count": "3", "skip_date": "2019-09-22T07:10:19Z", "name": "The Sinking Feeling", "artist": "The The"}
+{"track_id": "5501", "play_count": "22", "play_date_utc": "2019-09-22T07:10:06Z", "name": "Milionària", "artist": "Rosalía"}
+{"track_id": "5657", "skip_count": "3", "skip_date": "2019-09-22T07:12:36Z", "name": "Selfish", "artist": "Little Simz ft. Cleo Sol"}
+{"track_id": "2085", "skip_count": "11", "skip_date": "2019-09-22T07:18:26Z", "name": "Heavenly Day", "artist": "Patty Griffin"}
+{"track_id": "4609", "skip_count": "5", "skip_date": "2019-09-22T07:18:40Z", "name": "Gamma Knife", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "4967", "skip_count": "4", "skip_date": "2019-09-22T07:18:34Z", "name": "I Ain't Got Time!", "artist": "Tyler, The Creator"}
+{"track_id": "5265", "skip_count": "2", "skip_date": "2019-09-22T07:18:22Z", "name": "Gravity", "artist": "John Mayer"}
+{"track_id": "4875", "skip_count": "8", "skip_date": "2019-09-22T07:24:54Z", "name": "Guillotine", "artist": "Death Grips"}
+{"track_id": "4899", "play_count": "32", "play_date_utc": "2019-09-22T07:27:34Z", "name": "Lava", "artist": "Still Woozy"}
+{"track_id": "3701", "play_count": "48", "play_date_utc": "2019-09-22T07:36:24Z", "name": "Perpetual Change", "artist": "Yes"}
+{"track_id": "5231", "skip_count": "8", "skip_date": "2019-09-22T07:37:18Z", "name": "Ikoyi Mentality Versus Mushin Mentality", "artist": "Fela Kuti"}
+{"track_id": "4803", "skip_count": "3", "skip_date": "2019-09-22T07:37:45Z", "name": "On The Run", "artist": "Pink Floyd"}
+{"track_id": "5405", "skip_count": "3", "skip_date": "2019-09-22T07:37:36Z", "name": "A BOY IS A GUN", "artist": "Tyler, The Creator"}
+{"track_id": "4603", "play_count": "35", "play_date_utc": "2019-09-22T07:40:19Z", "name": "Habit", "artist": "Still Woozy"}
+{"track_id": "5081", "play_count": "83", "play_date_utc": "2019-09-22T07:42:47Z", "name": "What?", "artist": "A Tribe Called Quest"}
+{"track_id": "4311", "play_count": "21", "play_date_utc": "2019-09-22T07:46:22Z", "name": "Curbside Prophet", "artist": "Jason Mraz"}
+{"track_id": "5699", "play_count": "5", "play_date_utc": "2019-09-22T07:50:35Z", "name": "Can I Kick It?", "artist": "A Tribe Called Quest"}
+{"track_id": "5063", "play_count": "19", "play_date_utc": "2019-09-22T07:54:14Z", "name": "Butter", "artist": "A Tribe Called Quest"}
+{"track_id": "5253", "play_count": "14", "play_date_utc": "2019-09-22T07:57:42Z", "name": "Gold Digger", "artist": "Kanye West ft. Jamie Foxx"}
+{"track_id": "4919", "play_count": "11", "play_date_utc": "2019-09-22T08:01:06Z", "name": "bad guy", "artist": "Billie Eilish"}
+{"track_id": "5255", "play_count": "3", "play_date_utc": "2019-09-22T08:05:11Z", "name": "Burning Down the House", "artist": "Talking Heads"}
+{"track_id": "4351", "skip_count": "4", "skip_date": "2019-09-22T08:08:52Z", "name": "Nobody", "artist": "Mitski"}
+{"track_id": "5459", "skip_count": "2", "skip_date": "2019-09-22T08:08:48Z", "name": "Dat $tick [Remix]", "artist": "Rich Brian ft. Ghostface Killah &#38; Pouya"}
+{"track_id": "4709", "play_count": "25", "play_date_utc": "2019-09-22T08:12:14Z", "name": "Hand Of God (Outro)", "artist": "Jon Bellion"}
+{"track_id": "3499", "play_count": "32", "play_date_utc": "2019-09-22T08:17:34Z", "name": "Sir Duke", "artist": "Stevie Wonder"}
+{"track_id": "4081", "play_count": "40", "play_date_utc": "2019-09-22T08:20:39Z", "name": "Everybody Wants To Be Famous", "artist": "Superorganism"}
+{"track_id": "4587", "play_count": "95", "play_date_utc": "2019-09-22T08:23:07Z", "name": "Goodie Bag", "artist": "Still Woozy"}
+{"track_id": "5497", "play_count": "9", "play_date_utc": "2019-09-22T08:25:02Z", "name": "money machine", "artist": "100 gecs"}
+{"track_id": "5471", "play_count": "5", "play_date_utc": "2019-09-22T08:29:19Z", "name": "Fat Bottomed Girls", "artist": "Queen"}
+{"track_id": "5065", "play_count": "8", "play_date_utc": "2019-09-22T08:33:18Z", "name": "Verses From The Abstract", "artist": "A Tribe Called Quest"}
+{"track_id": "5051", "skip_count": "4", "skip_date": "2019-09-22T08:35:46Z", "name": "Cat", "artist": "C418"}
+{"track_id": "5053", "skip_count": "6", "skip_date": "2019-09-22T08:35:43Z", "name": "Sweden", "artist": "C418"}
+{"track_id": "3665", "play_count": "164", "play_date_utc": "2019-09-22T08:42:43Z", "name": "Long Distance Runaround", "artist": "Yes"}
+{"track_id": "5249", "skip_count": "2", "skip_date": "2019-09-22T08:44:28Z", "name": "Shakara", "artist": "Fela Kuti"}
+{"track_id": "4365", "skip_count": "9", "skip_date": "2019-09-22T08:45:06Z", "name": "Spice Girl", "artist": "Aminé"}
+{"track_id": "5463", "skip_count": "5", "skip_date": "2019-09-22T08:45:16Z", "name": "Crank That (Soulja Boy)", "artist": "Soulja Boy Tell Em'"}
+{"track_id": "5337", "skip_count": "2", "skip_date": "2019-09-22T08:46:02Z", "name": "Solid Wall of Sound", "artist": "A Tribe Called Quest"}
+{"track_id": "5359", "skip_count": "4", "skip_date": "2019-09-22T08:46:20Z", "name": "Ego", "artist": "A Tribe Called Quest"}
+{"track_id": "5711", "skip_count": "6", "skip_date": "2019-09-22T08:46:30Z", "name": "Description of a Fool", "artist": "A Tribe Called Quest"}
+{"track_id": "5333", "play_count": "16", "play_date_utc": "2019-09-22T08:48:05Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "5345", "play_count": "13", "play_date_utc": "2019-09-22T08:51:31Z", "name": "Enough!!", "artist": "A Tribe Called Quest"}
+{"track_id": "5063", "play_count": "20", "play_date_utc": "2019-09-22T08:55:09Z", "name": "Butter", "artist": "A Tribe Called Quest"}
+{"track_id": "5697", "play_count": "3", "play_date_utc": "2019-09-22T08:59:23Z", "name": "Bonita Applebum", "artist": "A Tribe Called Quest"}
+{"track_id": "5339", "play_count": "4", "play_date_utc": "2019-09-22T09:02:56Z", "name": "Dis Generation", "artist": "A Tribe Called Quest"}
+{"track_id": "5347", "play_count": "2", "play_date_utc": "2019-09-22T09:06:02Z", "name": "Mobius", "artist": "A Tribe Called Quest"}
+{"track_id": "5323", "play_count": "9", "play_date_utc": "2019-09-22T09:09:33Z", "name": "Oh My God", "artist": "A Tribe Called Quest ft. Busta Rhymes"}
+{"track_id": "5081", "play_count": "84", "play_date_utc": "2019-09-22T09:12:28Z", "name": "What?", "artist": "A Tribe Called Quest"}
+{"track_id": "5083", "play_count": "26", "play_date_utc": "2019-09-22T09:16:39Z", "name": "Scenario", "artist": "A Tribe Called Quest"}
+{"track_id": "5359", "play_count": "10", "play_date_utc": "2019-09-22T09:19:57Z", "name": "Ego", "artist": "A Tribe Called Quest"}
+{"track_id": "5067", "play_count": "15", "play_date_utc": "2019-09-22T09:23:50Z", "name": "Show Business", "artist": "A Tribe Called Quest"}
+{"track_id": "5323", "play_count": "10", "play_date_utc": "2019-09-22T09:27:21Z", "name": "Oh My God", "artist": "A Tribe Called Quest ft. Busta Rhymes"}
+{"track_id": "5319", "play_count": "7", "play_date_utc": "2019-09-22T10:30:38Z", "name": "Electric Relaxation", "artist": "A Tribe Called Quest"}
+{"track_id": "5355", "play_count": "33", "play_date_utc": "2019-09-22T10:35:22Z", "name": "Movin Backwards", "artist": "A Tribe Called Quest"}
+{"track_id": "5071", "play_count": "8", "play_date_utc": "2019-09-22T10:38:16Z", "name": "The Infamous Date Rape", "artist": "A Tribe Called Quest"}
+{"track_id": "5345", "play_count": "14", "play_date_utc": "2019-09-22T16:45:04Z", "name": "Enough!!", "artist": "A Tribe Called Quest"}
+{"track_id": "5315", "play_count": "4", "play_date_utc": "2019-09-22T16:48:15Z", "name": "Steve Biko (Stir It Up)", "artist": "A Tribe Called Quest"}
+{"track_id": "5063", "play_count": "21", "play_date_utc": "2019-09-22T16:51:54Z", "name": "Butter", "artist": "A Tribe Called Quest"}
+{"track_id": "4049", "skip_count": "5", "skip_date": "2019-09-23T05:43:41Z", "name": "Exordium", "artist": "Clark Aboud"}
+{"track_id": "4051", "skip_count": "3", "skip_date": "2019-09-23T05:43:56Z", "name": "The Guardian Emerges", "artist": "Clark Aboud"}
+{"track_id": "4057", "skip_count": "3", "skip_date": "2019-09-23T05:43:49Z", "name": "Escape Plan", "artist": "Clark Aboud"}
+{"track_id": "5311", "skip_count": "4", "skip_date": "2019-09-23T05:43:33Z", "name": "Lyrics To Go", "artist": "A Tribe Called Quest"}
+{"track_id": "4049", "skip_count": "6", "skip_date": "2019-09-23T05:44:08Z", "name": "Exordium", "artist": "Clark Aboud"}
+{"track_id": "4061", "skip_count": "3", "skip_date": "2019-09-23T05:44:37Z", "name": "The Credits", "artist": "Clark Aboud"}
+{"track_id": "5463", "skip_count": "6", "skip_date": "2019-09-23T09:00:05Z", "name": "Crank That (Soulja Boy)", "artist": "Soulja Boy Tell Em'"}
+{"track_id": "5069", "skip_count": "3", "skip_date": "2019-09-23T09:01:02Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "4941", "skip_count": "4", "skip_date": "2019-09-23T09:05:27Z", "name": "Mr. Brightside", "artist": "The Killers"}
+{"track_id": "4253", "play_count": "6", "play_date_utc": "2019-09-23T09:16:25Z", "name": "Mad World", "artist": "Tears For Fears"}
+{"track_id": "2511", "skip_count": "8", "skip_date": "2019-09-23T09:23:11Z", "name": "Notorious D.I.G.", "artist": "A_Rival"}
+{"track_id": "4065", "play_count": "12", "play_date_utc": "2019-09-23T09:23:05Z", "name": "Captain Stupido", "artist": "Thundercat"}
+{"track_id": "4073", "skip_count": "13", "skip_date": "2019-09-23T09:23:34Z", "name": "Intro Bonito", "artist": "Kero Kero Bonito"}
+{"track_id": "5253", "play_count": "15", "play_date_utc": "2019-09-23T09:26:45Z", "name": "Gold Digger", "artist": "Kanye West ft. Jamie Foxx"}
+{"track_id": "5351", "skip_count": "4", "skip_date": "2019-09-23T09:27:11Z", "name": "The Killing Season", "artist": "A Tribe Called Quest"}
+{"track_id": "5705", "skip_count": "2", "skip_date": "2019-09-23T09:27:01Z", "name": "Mr. Muhammad", "artist": "A Tribe Called Quest"}
+{"track_id": "5779", "skip_count": "4", "skip_date": "2019-09-23T09:26:51Z", "name": "You might think he loves you for your money but I know what he really loves you for it's your brand new leopard skin pillbox hat", "artist": "Death Grips"}
+{"track_id": "5699", "play_count": "6", "play_date_utc": "2019-09-23T09:31:24Z", "name": "Can I Kick It?", "artist": "A Tribe Called Quest"}
+{"track_id": "5075", "skip_count": "5", "skip_date": "2019-09-23T09:33:28Z", "name": "Everything Is Fair", "artist": "A Tribe Called Quest"}
+{"track_id": "5697", "skip_count": "2", "skip_date": "2019-09-23T09:33:36Z", "name": "Bonita Applebum", "artist": "A Tribe Called Quest"}
+{"track_id": "5069", "skip_count": "4", "skip_date": "2019-09-23T09:34:01Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "5073", "skip_count": "10", "skip_date": "2019-09-23T09:33:57Z", "name": "Check The Rhime", "artist": "A Tribe Called Quest"}
+{"track_id": "5691", "skip_count": "2", "skip_date": "2019-09-23T09:33:49Z", "name": "Footprints", "artist": "A Tribe Called Quest"}
+{"track_id": "5685", "skip_count": "5", "skip_date": "2019-09-23T09:35:38Z", "name": "Push It Along", "artist": "A Tribe Called Quest"}
+{"track_id": "5081", "play_count": "85", "play_date_utc": "2019-09-23T09:38:12Z", "name": "What?", "artist": "A Tribe Called Quest"}
+{"track_id": "4091", "play_count": "27", "play_date_utc": "2019-09-23T09:44:04Z", "name": "The Prawn Song", "artist": "Superorganism"}
+{"track_id": "5355", "play_count": "34", "play_date_utc": "2019-09-23T09:51:40Z", "name": "Movin Backwards", "artist": "A Tribe Called Quest"}
+{"track_id": "5315", "play_count": "5", "play_date_utc": "2019-09-23T09:54:51Z", "name": "Steve Biko (Stir It Up)", "artist": "A Tribe Called Quest"}
+{"track_id": "4723", "play_count": "4", "play_date_utc": "2019-09-23T09:56:15Z", "name": "Cheap Day Return", "artist": "Jethro Tull"}
+{"track_id": "5607", "play_count": "3", "play_date_utc": "2019-09-23T10:00:50Z", "name": "DNA", "artist": "Kendrick Lamar"}
+{"track_id": "5309", "skip_count": "6", "skip_date": "2019-09-23T11:55:21Z", "name": "We Can Get Down", "artist": "A Tribe Called Quest"}
+{"track_id": "4585", "play_count": "31", "play_date_utc": "2019-09-23T11:59:19Z", "name": "Vacation", "artist": "Still Woozy"}
+{"track_id": "4601", "play_count": "30", "play_date_utc": "2019-09-23T12:01:41Z", "name": "Lucy", "artist": "Still Woozy ft. ODIE"}
+{"track_id": "4587", "play_count": "96", "play_date_utc": "2019-09-23T12:04:09Z", "name": "Goodie Bag", "artist": "Still Woozy"}
+{"track_id": "5493", "play_count": "23", "play_date_utc": "2019-09-23T12:06:58Z", "name": "Maybe She", "artist": "Still Woozy"}
+{"track_id": "4585", "play_count": "32", "play_date_utc": "2019-09-24T02:37:22Z", "name": "Vacation", "artist": "Still Woozy"}
+{"track_id": "4587", "play_count": "97", "play_date_utc": "2019-09-24T02:44:55Z", "name": "Goodie Bag", "artist": "Still Woozy"}
+{"track_id": "4589", "play_count": "53", "play_date_utc": "2019-09-24T02:40:16Z", "name": "Cooks", "artist": "Still Woozy"}
+{"track_id": "4599", "play_count": "21", "play_date_utc": "2019-09-24T02:53:18Z", "name": "Wolfcat", "artist": "Still Woozy"}
+{"track_id": "4601", "play_count": "31", "play_date_utc": "2019-09-24T02:55:41Z", "name": "Lucy", "artist": "Still Woozy ft. ODIE"}
+{"track_id": "4603", "play_count": "36", "play_date_utc": "2019-09-24T02:33:28Z", "name": "Habit", "artist": "Still Woozy"}
+{"track_id": "4863", "skip_count": "7", "skip_date": "2019-09-19T14:42:18Z", "name": "Houdini", "artist": "Death Grips"}
+{"track_id": "4899", "play_count": "33", "play_date_utc": "2019-09-24T02:47:31Z", "name": "Lava", "artist": "Still Woozy"}
+{"track_id": "5009", "skip_count": "6", "skip_date": "2019-09-19T14:42:25Z", "name": "All Of The Lights (Interlude)", "artist": "Kanye West"}
+{"track_id": "5069", "play_count": "18", "play_date_utc": "2019-09-21T12:35:17Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "5079", "play_count": "7", "play_date_utc": "2019-09-24T06:27:39Z", "name": "Skypager", "artist": "A Tribe Called Quest"}
+{"track_id": "5081", "play_count": "88", "play_date_utc": "2019-09-24T02:24:02Z", "name": "What?", "artist": "A Tribe Called Quest"}
+{"track_id": "5313", "play_count": "5", "play_date_utc": "2019-09-24T06:31:54Z", "name": "God Lives Through", "artist": "A Tribe Called Quest"}
+{"track_id": "5315", "skip_count": "3", "skip_date": "2019-09-24T02:24:06Z", "name": "Steve Biko (Stir It Up)", "artist": "A Tribe Called Quest"}
+{"track_id": "5323", "play_count": "12", "play_date_utc": "2019-09-24T06:21:19Z", "name": "Oh My God", "artist": "A Tribe Called Quest ft. Busta Rhymes"}
+{"track_id": "5327", "play_count": "7", "play_date_utc": "2019-09-24T06:35:57Z", "name": "The Chase, Part II", "artist": "A Tribe Called Quest"}
+{"track_id": "5331", "play_count": "6", "play_date_utc": "2019-09-24T06:41:38Z", "name": "The Space Program", "artist": "A Tribe Called Quest"}
+{"track_id": "5333", "play_count": "17", "play_date_utc": "2019-09-24T06:45:05Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "5335", "play_count": "9", "play_date_utc": "2019-09-24T06:47:57Z", "name": "Whateva Will Be", "artist": "A Tribe Called Quest"}
+{"track_id": "5335", "skip_count": "4", "skip_date": "2019-09-24T02:21:31Z", "name": "Whateva Will Be", "artist": "A Tribe Called Quest"}
+{"track_id": "5337", "play_count": "10", "play_date_utc": "2019-09-24T06:51:40Z", "name": "Solid Wall of Sound", "artist": "A Tribe Called Quest"}
+{"track_id": "5339", "play_count": "5", "play_date_utc": "2019-09-24T06:55:20Z", "name": "Dis Generation", "artist": "A Tribe Called Quest"}
+{"track_id": "5355", "play_count": "35", "play_date_utc": "2019-09-23T09:51:40Z", "name": "Movin Backwards", "artist": "A Tribe Called Quest"}
+{"track_id": "5359", "play_count": "11", "play_date_utc": "2019-09-22T09:19:57Z", "name": "Ego", "artist": "A Tribe Called Quest"}
+{"track_id": "5475", "skip_count": "2", "skip_date": "2019-09-19T14:42:25Z", "name": "Somebody To Love", "artist": "Queen"}
+{"track_id": "5489", "play_count": "31", "play_date_utc": "2019-09-24T02:42:25Z", "name": "Ipanema", "artist": "Still Woozy ft. Omar Apollo &#38; Elujay"}
+{"track_id": "5491", "play_count": "13", "play_date_utc": "2019-09-24T02:30:54Z", "name": "Foolsong", "artist": "Still Woozy"}
+{"track_id": "5493", "play_count": "24", "play_date_utc": "2019-09-24T02:50:23Z", "name": "Maybe She", "artist": "Still Woozy"}
+{"track_id": "5693", "play_count": "8", "play_date_utc": "2019-09-24T06:25:26Z", "name": "I Left My Wallet In El Segundo", "artist": "A Tribe Called Quest"}
+{"track_id": "5707", "skip_count": "3", "skip_date": "2019-09-24T02:55:53Z", "name": "Ham 'n' Eggs", "artist": "A Tribe Called Quest"}
+{"track_id": "5785", "play_count": "4", "play_date_utc": "2019-09-19T14:46:48Z", "name": "Norman fucking Rockwell", "artist": "Lana Del Rey"}
+{"track_id": "5857", "play_count": "11", "play_date_utc": "2019-09-21T05:57:39Z", "name": "Jesus Forgive Me, I Am A Thot", "artist": "JPEGMAFIA"}
+{"track_id": "3679", "play_count": "22", "play_date_utc": "2019-09-24T08:59:46Z", "name": "You Should Be Dancing", "artist": "Bee Gees"}
+{"track_id": "5071", "skip_count": "7", "skip_date": "2019-09-24T08:59:53Z", "name": "The Infamous Date Rape", "artist": "A Tribe Called Quest"}
+{"track_id": "5323", "play_count": "13", "play_date_utc": "2019-09-24T09:03:24Z", "name": "Oh My God", "artist": "A Tribe Called Quest ft. Busta Rhymes"}
+{"track_id": "5073", "skip_count": "11", "skip_date": "2019-09-24T09:06:20Z", "name": "Check The Rhime", "artist": "A Tribe Called Quest"}
+{"track_id": "5333", "play_count": "18", "play_date_utc": "2019-09-24T09:06:16Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "5069", "play_count": "19", "play_date_utc": "2019-09-24T09:10:39Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "1025", "skip_count": "28", "skip_date": "2019-09-24T14:39:18Z", "name": "Conkdor Canyon", "artist": "Mahito Yokota, Toru Minegishi, Yasuaki Iwata, and Koji Kondo"}
+{"track_id": "3863", "skip_count": "5", "skip_date": "2019-09-24T14:39:30Z", "name": "Heart of the Mountain", "artist": "Lena Raine"}
+{"track_id": "3957", "skip_count": "9", "skip_date": "2019-09-24T14:39:33Z", "name": "Sweatpants", "artist": "Childish Gambino ft. Problem"}
+{"track_id": "4841", "skip_count": "5", "skip_date": "2019-09-24T14:39:37Z", "name": "dad dance", "artist": "nelward"}
+{"track_id": "5223", "skip_count": "3", "skip_date": "2019-09-24T14:39:10Z", "name": "Venus", "artist": "Television"}
+{"track_id": "3957", "play_count": "27", "play_date_utc": "2019-09-24T14:43:54Z", "name": "Sweatpants", "artist": "Childish Gambino ft. Problem"}

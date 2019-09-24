@@ -1,5 +1,6 @@
-from parser import parse_itunes_xml
+from parser import parse_itunes_xml, get_vocal_tracks, get_action_items
 import matplotlib.pyplot as plt
+import datetime
 import numpy as np
 import math
 
@@ -20,7 +21,6 @@ def artist_plot():
 
 def play_plot():
     arr = parse_itunes_xml("Play Count")
-
     l = [int(x["Play Count"]) for x in arr]
 
     print(l)
@@ -36,19 +36,17 @@ def play_plot():
             val_list.append(l[val - 1])
             freq_list.append(count)
             count = 1
-            # if val == len(l) - 1 and l[val] != l[val - 1]:
-            #     print(str(l[val]) + ": " + str(count))
-            #     val_list.append(l[val])
-            #     freq_list.append(count)
-
-            # just horrible code but it's 11:42 and my brain is asleep, fix this off more elegantly by one later
-            #also commented because I know the last song is bonetrousle and a huge outlier; handle this better later, see ^
         else:
             count+=1
 
     plt.scatter(val_list, freq_list)
     plt.show()
 
+def plot_actions():
+    played, skipped = get_action_items()
+    played.sort(key=lambda x: datetime.datetime.strptime(x['play_date_utc'], "%Y-%m-%dT%H:%M:%SZ").timestamp() + 19800)
+    skipped.sort(key=lambda x: datetime.datetime.strptime(x['skip_date'], "%Y-%m-%dT%H:%M:%SZ").timestamp() + 19800)
+
 if __name__ == "__main__":
-    play_plot()
+    plot_actions()
     pass

@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import subprocess
 import os
+import json
 
 
 numerical = [
@@ -39,14 +40,26 @@ def get_vocal_tracks():
         i+=1
         location = items[i]
         i+=1
+        # plays = items[i]
+        # i+=1
 
         arr.append({
             "Artist":artist,
             "Name":name,
             "Location":location
+            # "Plays":plays
         })
 
     return arr
+
+def get_action_items():
+    with open(os.path.join(os.path.dirname(__file__), "data", "log.txt"), 'r+') as rf:
+        action_list = [json.loads(l) for l in rf.readlines()]
+    play_list = [item for item in action_list if "play_count" in item]
+    skip_list = [item for item in action_list if "skip_count" in item]
+
+    return play_list, skip_list
+
 
 def sort_arr(l, method="Play Count"):
     if method in numerical:
