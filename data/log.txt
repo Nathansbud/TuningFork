@@ -1032,3 +1032,441 @@
 {"track_id": "4055", "play_count": "14", "play_date_utc": "2019-10-13T15:37:52Z", "name": "SLOW DANCING IN THE DARK", "artist": "Joji"}
 {"track_id": "5065", "play_count": "2", "play_date_utc": "2019-10-13T15:41:51Z", "name": "See No Evil", "artist": "Television"}
 {"track_id": "5681", "play_count": "2", "play_date_utc": "2019-10-13T15:44:38Z", "name": "Rap Grow Old &#38; Die x No Child Left Behind", "artist": "JPEGMAFIA"}
+{"track_id": "5269", "play_count": "8", "play_date_utc": "2019-10-13T15:48:23Z", "name": "Gutter Girl", "artist": "Hot Flash Heat Wave"}
+{"track_id": "4695", "play_count": "16", "play_date_utc": "2019-10-13T15:51:32Z", "name": "Giving Bad People Good Ideas", "artist": "Death Grips"}
+{"track_id": "5535", "play_count": "13", "play_date_utc": "2019-10-13T15:55:40Z", "name": "I Left My Wallet In El Segundo", "artist": "A Tribe Called Quest"}
+{"track_id": "4265", "play_count": "16", "play_date_utc": "2019-10-13T15:59:36Z", "name": "Y.M.C.A.", "artist": "Village People"}
+{"track_id": "4677", "play_count": "15", "play_date_utc": "2019-10-13T16:07:00Z", "name": "Seen and Not Seen", "artist": "Talking Heads"}
+{"track_id": "1969", "play_count": "44", "play_date_utc": "2019-10-13T16:10:06Z", "name": "Chief", "artist": "Patty Griffin"}
+{"track_id": "881", "play_count": "56", "play_date_utc": "2019-10-13T16:13:41Z", "name": "Animal", "artist": "Miike Snow"}
+{"track_id": "5913", "play_count": "2", "play_date_utc": "2019-10-13T16:16:38Z", "name": "Believe", "artist": "Q-Tip"}
+{"track_id": "4185", "play_count": "15", "play_date_utc": "2019-10-13T16:19:34Z", "name": "Book Of Saturday", "artist": "King Crimson"}
+{"track_id": "4801", "play_count": "14", "play_date_utc": "2019-10-13T16:22:35Z", "name": "See You Again", "artist": "Tyler, The Creator"}
+{"track_id": "2725", "play_count": "14", "play_date_utc": "2019-10-13T16:26:51Z", "name": "It's My Life What Ever I Wanna Do", "artist": "Vennu Mallesh"}
+{"track_id": "5003", "play_count": "3", "play_date_utc": "2019-10-13T16:31:48Z", "name": "The Cruel Millennial", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5465", "play_count": "2", "play_date_utc": "2019-10-13T16:43:02Z", "name": "Love", "artist": "Kendrick Lamar ft. Zacari"}
+{"track_id": "3969", "play_count": "41", "play_date_utc": "2019-10-13T16:45:25Z", "name": "Mr. Sandman", "artist": "The Chordettes"}
+{"track_id": "4593", "play_count": "4", "play_date_utc": "2019-10-13T17:01:25Z", "name": "Head On/Pill", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "3693", "play_count": "34", "play_date_utc": "2019-10-13T17:04:52Z", "name": "Stuck in the Middle With You", "artist": "Stealers Wheel"}
+{"track_id": "4543", "play_count": "4", "play_date_utc": "2019-10-13T17:11:04Z", "name": "The Fourth Colour", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5629", "play_count": "2", "play_date_utc": "2019-10-13T17:13:28Z", "name": "Altered Beast I", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "3941", "play_count": "20", "play_date_utc": "2019-10-13T17:16:30Z", "name": "Killer Queen", "artist": "Queen"}
+{"track_id": "5325", "play_count": "4", "play_date_utc": "2019-10-13T17:25:02Z", "name": "7 Nation Army", "artist": "The White Stripes"}
+{"track_id": "5087", "play_count": "3", "play_date_utc": "2019-10-13T17:30:51Z", "name": "Perfect", "artist": "The The"}
+{"track_id": "1569", "play_count": "26", "play_date_utc": "2019-10-13T17:35:03Z", "name": "The Remedy (I Won't Worry)", "artist": "Jason Mraz"}
+{"track_id": "5237", "play_count": "3", "play_date_utc": "2019-10-13T17:37:33Z", "name": "Youth Decay", "artist": "Sleater-Kinney"}
+{"track_id": "4123", "play_count": "18", "play_date_utc": "2019-10-13T17:40:51Z", "name": "Birdhouse in Your Soul", "artist": "They Might Be Giants"}
+{"track_id": "4209", "play_count": "9", "play_date_utc": "2019-10-13T17:45:44Z", "name": "Cat Food", "artist": "King Crimson"}
+{"track_id": "4199", "play_count": "7", "play_date_utc": "2019-10-13T17:49:18Z", "name": "Meeting (Garden Of Geda) / Sound Out The Galleon", "artist": "Jon Anderson"}
+{"track_id": "5411", "play_count": "2", "play_date_utc": "2019-10-13T17:52:23Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "2453", "play_count": "29", "play_date_utc": "2019-10-13T17:55:55Z", "name": "Don't Stop Me Now", "artist": "Queen"}
+{"track_id": "5901", "play_count": "2", "play_date_utc": "2019-10-13T18:04:31Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "5901", "play_count": "3", "play_date_utc": "2019-10-13T18:09:03Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "3113", "play_count": "14", "play_date_utc": "2019-10-13T18:11:57Z", "name": "The Starting Line", "artist": "Neil Cicierega"}
+{"track_id": "5933", "play_count": "2", "play_date_utc": "2019-10-13T18:14:39Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "1535", "play_count": "24", "play_date_utc": "2019-10-07T11:53:36Z", "name": "Jungle", "artist": "Jon Bellion"}
+{"track_id": "3675", "skip_count": "30", "skip_date": "2019-10-11T10:52:33Z", "name": "Heart of the Sunrise", "artist": "Yes"}
+{"track_id": "3681", "play_count": "165", "play_date_utc": "2019-10-11T06:23:05Z", "name": "Long Distance Runaround", "artist": "Yes"}
+{"track_id": "3695", "play_count": "23", "play_date_utc": "2019-10-08T03:19:21Z", "name": "You Should Be Dancing", "artist": "Bee Gees"}
+{"track_id": "3713", "play_count": "64", "play_date_utc": "2019-10-08T06:59:13Z", "name": "I've Seen All Good People", "artist": "Yes"}
+{"track_id": "3721", "skip_count": "8", "skip_date": "2019-10-08T05:20:45Z", "name": "Everybody Talks", "artist": "Neon Trees"}
+{"track_id": "3941", "skip_count": "12", "skip_date": "2019-10-07T11:54:22Z", "name": "Killer Queen", "artist": "Queen"}
+{"track_id": "3969", "play_count": "42", "play_date_utc": "2019-10-13T16:45:25Z", "name": "Mr. Sandman", "artist": "The Chordettes"}
+{"track_id": "3973", "play_count": "28", "play_date_utc": "2019-10-07T12:04:46Z", "name": "Sweatpants", "artist": "Childish Gambino ft. Problem"}
+{"track_id": "3973", "skip_count": "10", "skip_date": "2019-10-07T02:30:48Z", "name": "Sweatpants", "artist": "Childish Gambino ft. Problem"}
+{"track_id": "4045", "play_count": "14", "play_date_utc": "2019-10-07T12:01:05Z", "name": "La de da de da de da de day oh", "artist": "Bill Wurtz"}
+{"track_id": "4087", "play_count": "26", "play_date_utc": "2019-10-07T12:20:25Z", "name": "Picture This", "artist": "Kero Kero Bonito"}
+{"track_id": "4103", "play_count": "61", "play_date_utc": "2019-10-08T06:51:58Z", "name": "Something For Your M.I.N.D.", "artist": "Superorganism"}
+{"track_id": "4107", "skip_count": "4", "skip_date": "2019-10-08T05:20:45Z", "name": "The Prawn Song", "artist": "Superorganism"}
+{"track_id": "4185", "play_count": "16", "play_date_utc": "2019-10-13T16:19:34Z", "name": "Book Of Saturday", "artist": "King Crimson"}
+{"track_id": "4229", "skip_count": "4", "skip_date": "2019-10-08T05:20:31Z", "name": "Thick As A Brick, Part 1", "artist": "Jethro Tull"}
+{"track_id": "4265", "play_count": "17", "play_date_utc": "2019-10-13T15:59:36Z", "name": "Y.M.C.A.", "artist": "Village People"}
+{"track_id": "4267", "play_count": "13", "play_date_utc": "2019-10-07T12:29:51Z", "name": "Time Today", "artist": "Kero Kero Bonito"}
+{"track_id": "4359", "skip_count": "5", "skip_date": "2019-10-08T05:19:58Z", "name": "Peel the Paint", "artist": "Gentle Giant"}
+{"track_id": "4459", "skip_count": "6", "skip_date": "2019-10-08T05:18:57Z", "name": "People-Vultures", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "4477", "play_count": "14", "play_date_utc": "2019-10-07T02:54:30Z", "name": "Melting", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "4493", "play_count": "30", "play_date_utc": "2019-10-08T06:38:53Z", "name": "Takyon (Death Yon)", "artist": "Death Grips"}
+{"track_id": "4501", "play_count": "48", "play_date_utc": "2019-10-07T02:33:57Z", "name": "The Fever (Aye Aye)", "artist": "Death Grips"}
+{"track_id": "4503", "skip_count": "7", "skip_date": "2019-10-07T02:41:47Z", "name": "Lost Boys", "artist": "Death Grips"}
+{"track_id": "4509", "play_count": "30", "play_date_utc": "2019-10-11T10:56:02Z", "name": "I've Seen Footage", "artist": "Death Grips"}
+{"track_id": "4523", "skip_count": "6", "skip_date": "2019-10-07T02:34:05Z", "name": "Crumbling Castle", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "4539", "skip_count": "3", "skip_date": "2019-10-07T02:38:06Z", "name": "Loyalty", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "4605", "skip_count": "4", "skip_date": "2019-10-08T05:20:09Z", "name": "Elstree", "artist": "Buggles"}
+{"track_id": "4689", "play_count": "8", "play_date_utc": "2019-10-07T12:12:09Z", "name": "Gangsta's Paradise", "artist": "Coolio"}
+{"track_id": "4697", "skip_count": "3", "skip_date": "2019-10-08T05:20:54Z", "name": "Hot Head", "artist": "Death Grips"}
+{"track_id": "4743", "skip_count": "5", "skip_date": "2019-10-07T11:54:22Z", "name": "I Want It I Need It (Death Heated)", "artist": "Death Grips"}
+{"track_id": "4749", "skip_count": "3", "skip_date": "2019-10-07T02:41:42Z", "name": "Definitely You", "artist": "Feed Me Jack"}
+{"track_id": "4753", "skip_count": "3", "skip_date": "2019-10-13T14:58:33Z", "name": "(Da Da Da Da)", "artist": "Feed Me Jack"}
+{"track_id": "4777", "play_count": "5", "play_date_utc": "2019-10-07T12:27:38Z", "name": "when the party's over", "artist": "Billie Eilish"}
+{"track_id": "4809", "play_count": "20", "play_date_utc": "2019-10-11T10:46:33Z", "name": "Boredom", "artist": "Tyler, The Creator"}
+{"track_id": "4903", "play_count": "17", "play_date_utc": "2019-10-13T12:54:05Z", "name": "Buggin' Out", "artist": "A Tribe Called Quest"}
+{"track_id": "4913", "play_count": "25", "play_date_utc": "2019-10-10T02:28:11Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "4919", "play_count": "10", "play_date_utc": "2019-10-08T03:14:46Z", "name": "Everything Is Fair", "artist": "A Tribe Called Quest"}
+{"track_id": "4923", "skip_count": "6", "skip_date": "2019-10-08T06:52:16Z", "name": "Skypager", "artist": "A Tribe Called Quest"}
+{"track_id": "4925", "play_count": "107", "play_date_utc": "2019-10-13T13:08:17Z", "name": "What?", "artist": "A Tribe Called Quest"}
+{"track_id": "4927", "play_count": "32", "play_date_utc": "2019-10-13T12:43:55Z", "name": "Scenario", "artist": "A Tribe Called Quest"}
+{"track_id": "5007", "play_count": "4", "play_date_utc": "2019-10-07T12:24:22Z", "name": "This Thing", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5063", "play_count": "2", "play_date_utc": "2019-10-08T03:31:18Z", "name": "Torn Curtain", "artist": "Television"}
+{"track_id": "5095", "play_count": "21", "play_date_utc": "2019-10-11T14:58:09Z", "name": "You Can Call Me Al", "artist": "Paul Simon"}
+{"track_id": "5097", "play_count": "16", "play_date_utc": "2019-10-07T02:37:46Z", "name": "Gold Digger", "artist": "Kanye West ft. Jamie Foxx"}
+{"track_id": "5121", "skip_count": "3", "skip_date": "2019-10-11T10:32:06Z", "name": "Under African Skies", "artist": "Paul Simon"}
+{"track_id": "5127", "play_count": "6", "play_date_utc": "2019-10-09T16:35:25Z", "name": "The Boy In The Bubble", "artist": "Paul Simon"}
+{"track_id": "5129", "skip_count": "3", "skip_date": "2019-10-11T10:52:21Z", "name": "Graceland", "artist": "Paul Simon"}
+{"track_id": "5135", "skip_count": "2", "skip_date": "2019-10-08T05:20:14Z", "name": "Diamonds On The Soles Of Her Shoes", "artist": "Paul Simon"}
+{"track_id": "5155", "skip_count": "6", "skip_date": "2019-10-11T16:44:14Z", "name": "Lyrics To Go", "artist": "A Tribe Called Quest"}
+{"track_id": "5165", "play_count": "11", "play_date_utc": "2019-10-11T15:40:16Z", "name": "Clap Your Hands", "artist": "A Tribe Called Quest"}
+{"track_id": "5177", "play_count": "26", "play_date_utc": "2019-10-10T06:52:11Z", "name": "We The People....", "artist": "A Tribe Called Quest"}
+{"track_id": "5189", "play_count": "18", "play_date_utc": "2019-10-07T13:04:36Z", "name": "Enough!!", "artist": "A Tribe Called Quest"}
+{"track_id": "5193", "play_count": "10", "play_date_utc": "2019-10-11T17:36:06Z", "name": "Black Spasmodic", "artist": "A Tribe Called Quest"}
+{"track_id": "5199", "play_count": "49", "play_date_utc": "2019-10-13T07:44:08Z", "name": "Movin Backwards", "artist": "A Tribe Called Quest"}
+{"track_id": "5203", "play_count": "25", "play_date_utc": "2019-10-11T17:33:02Z", "name": "Ego", "artist": "A Tribe Called Quest"}
+{"track_id": "5209", "skip_count": "3", "skip_date": "2019-10-07T02:34:15Z", "name": "You Still Believe in Me", "artist": "The Beach Boys"}
+{"track_id": "5211", "play_count": "17", "play_date_utc": "2019-10-11T10:41:12Z", "name": "That's Not Me", "artist": "The Beach Boys"}
+{"track_id": "5225", "play_count": "9", "play_date_utc": "2019-10-08T03:34:12Z", "name": "Here Today", "artist": "The Beach Boys"}
+{"track_id": "5237", "play_count": "4", "play_date_utc": "2019-10-13T17:37:33Z", "name": "Youth Decay", "artist": "Sleater-Kinney"}
+{"track_id": "5267", "play_count": "8", "play_date_utc": "2019-10-07T02:41:16Z", "name": "Ultimate", "artist": "Denzel Curry"}
+{"track_id": "5269", "play_count": "11", "play_date_utc": "2019-10-13T15:48:23Z", "name": "Gutter Girl", "artist": "Hot Flash Heat Wave"}
+{"track_id": "5269", "skip_count": "3", "skip_date": "2019-10-07T11:45:56Z", "name": "Gutter Girl", "artist": "Hot Flash Heat Wave"}
+{"track_id": "5339", "play_count": "11", "play_date_utc": "2019-10-11T02:58:55Z", "name": "money machine", "artist": "100 gecs"}
+{"track_id": "5375", "play_count": "3", "play_date_utc": "2019-10-07T12:17:01Z", "name": "For Sale? (Interlude)", "artist": "Kendrick Lamar"}
+{"track_id": "5415", "play_count": "20", "play_date_utc": "2019-10-13T07:52:08Z", "name": "The Bird", "artist": "Anderson .Paak"}
+{"track_id": "5449", "play_count": "9", "play_date_utc": "2019-10-07T02:30:36Z", "name": "DNA", "artist": "Kendrick Lamar"}
+{"track_id": "5453", "play_count": "2", "play_date_utc": "2019-10-07T02:49:01Z", "name": "Element", "artist": "Kendrick Lamar"}
+{"track_id": "5453", "skip_count": "2", "skip_date": "2019-10-07T12:57:24Z", "name": "Element", "artist": "Kendrick Lamar"}
+{"track_id": "5487", "play_count": "4", "play_date_utc": "2019-10-11T10:52:19Z", "name": "One Love", "artist": "Nas"}
+{"track_id": "5531", "play_count": "7", "play_date_utc": "2019-10-10T05:14:00Z", "name": "After Hours", "artist": "A Tribe Called Quest"}
+{"track_id": "5549", "play_count": "9", "play_date_utc": "2019-10-13T13:13:46Z", "name": "Ham 'n' Eggs", "artist": "A Tribe Called Quest"}
+{"track_id": "5959", "play_count": "3", "play_date_utc": "2019-10-07T13:53:05Z", "name": "Bottom Bitch", "artist": "Doja Cat"}
+{"track_id": "3677", "skip_count": "31", "skip_date": "2019-10-14T06:24:33Z", "name": "Owner of a Lonely Heart", "artist": "Yes"}
+{"track_id": "5901", "play_count": "4", "play_date_utc": "2019-10-14T06:28:50Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "1533", "skip_count": "29", "skip_date": "2019-10-14T10:36:58Z", "name": "Morning in America", "artist": "Jon Bellion"}
+{"track_id": "5901", "play_count": "5", "play_date_utc": "2019-10-14T10:36:42Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "5969", "play_count": "2", "play_date_utc": "2019-10-14T10:43:44Z", "name": "ringtone", "artist": "100 gecs"}
+{"track_id": "5987", "play_count": "5", "play_date_utc": "2019-10-14T10:41:21Z", "name": "Best Friend", "artist": "Rex Orange County"}
+{"track_id": "5933", "play_count": "3", "play_date_utc": "2019-10-14T10:48:32Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5969", "play_count": "3", "play_date_utc": "2019-10-14T10:52:06Z", "name": "ringtone", "artist": "100 gecs"}
+{"track_id": "4803", "play_count": "6", "play_date_utc": "2019-10-14T11:03:34Z", "name": "Who Dat Boy?", "artist": "Tyler, The Creator"}
+{"track_id": "5933", "play_count": "4", "play_date_utc": "2019-10-14T14:53:32Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5933", "play_count": "5", "play_date_utc": "2019-10-14T14:56:28Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5933", "play_count": "6", "play_date_utc": "2019-10-14T14:59:40Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5933", "play_count": "7", "play_date_utc": "2019-10-14T15:02:22Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5901", "play_count": "6", "play_date_utc": "2019-10-14T15:35:37Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "5933", "play_count": "8", "play_date_utc": "2019-10-14T15:38:19Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "4953", "play_count": "5", "play_date_utc": "2019-10-14T15:41:56Z", "name": "Time to Get Ill", "artist": "Beastie Boys"}
+{"track_id": "5933", "play_count": "9", "play_date_utc": "2019-10-14T16:14:59Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5933", "play_count": "10", "play_date_utc": "2019-10-14T17:49:18Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5933", "play_count": "11", "play_date_utc": "2019-10-15T12:09:02Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5933", "play_count": "12", "play_date_utc": "2019-10-15T12:11:43Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5901", "play_count": "7", "play_date_utc": "2019-10-15T12:16:00Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "3755", "play_count": "5", "play_date_utc": "2019-10-15T12:19:06Z", "name": "New Donk City (Band Performance)", "artist": "Naoto Kubo, Shiho Fuiji, Koji Kondo"}
+{"track_id": "5933", "play_count": "13", "play_date_utc": "2019-10-15T12:35:44Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5933", "play_count": "14", "play_date_utc": "2019-10-15T12:38:26Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5933", "play_count": "15", "play_date_utc": "2019-10-15T12:51:36Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "2691", "play_count": "8", "play_date_utc": "2019-10-15T12:56:09Z", "name": "The Magic Mirror", "artist": "Jake Kaufman"}
+{"track_id": "2615", "skip_count": "5", "skip_date": "2019-10-15T13:05:07Z", "name": "Fury of the Crypt", "artist": "FamilyJules"}
+{"track_id": "2691", "skip_count": "3", "skip_date": "2019-10-15T13:05:16Z", "name": "The Magic Mirror", "artist": "Jake Kaufman"}
+{"track_id": "5933", "play_count": "16", "play_date_utc": "2019-10-15T13:07:58Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5901", "play_count": "8", "play_date_utc": "2019-10-15T13:12:16Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "5605", "skip_count": "2", "skip_date": "2019-10-15T13:43:20Z", "name": "Floor 5-2: Gonna Bust a Blood Vessel", "artist": "Craig Barnes"}
+{"track_id": "5933", "play_count": "17", "play_date_utc": "2019-10-15T17:13:46Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "3405", "skip_count": "3", "skip_date": "2019-10-15T17:13:58Z", "name": "Complicated Columns", "artist": "Jonathan van den Wijngaarden"}
+{"track_id": "5921", "skip_count": "2", "skip_date": "2019-10-15T17:14:05Z", "name": "Life is Better", "artist": "Q-Tip"}
+{"track_id": "5935", "skip_count": "2", "skip_date": "2019-10-15T17:14:10Z", "name": "You", "artist": "Q-Tip"}
+{"track_id": "5925", "skip_count": "2", "skip_date": "2019-10-15T17:14:58Z", "name": "Move", "artist": "Q-Tip"}
+{"track_id": "5901", "play_count": "9", "play_date_utc": "2019-10-16T03:49:36Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "5933", "play_count": "18", "play_date_utc": "2019-10-16T12:06:25Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "3613", "skip_count": "9", "skip_date": "2019-10-16T12:09:16Z", "name": "D\u00e9j\u00e0 Vu", "artist": "Dave Rodgers"}
+{"track_id": "4635", "skip_count": "6", "skip_date": "2019-10-16T12:09:27Z", "name": "Life In The Fast Lane", "artist": "The Eagles"}
+{"track_id": "5339", "skip_count": "3", "skip_date": "2019-10-16T12:09:22Z", "name": "money machine", "artist": "100 gecs"}
+{"track_id": "5933", "play_count": "19", "play_date_utc": "2019-10-16T12:09:06Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5987", "play_count": "6", "play_date_utc": "2019-10-16T12:14:23Z", "name": "Best Friend", "artist": "Rex Orange County"}
+{"track_id": "5063", "skip_count": "5", "skip_date": "2019-10-16T12:14:33Z", "name": "Torn Curtain", "artist": "Television"}
+{"track_id": "5929", "play_count": "20", "play_date_utc": "2019-10-16T12:51:41Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5235", "skip_count": "2", "skip_date": "2019-10-16T13:36:56Z", "name": "Youth Decay", "artist": "Sleater-Kinney"}
+{"track_id": "5899", "play_count": "10", "play_date_utc": "2019-10-16T13:41:13Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "5067", "play_count": "2", "play_date_utc": "2019-10-16T13:50:55Z", "name": "Marquee Moon", "artist": "Television"}
+{"track_id": "5929", "play_count": "21", "play_date_utc": "2019-10-16T13:57:57Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5929", "play_count": "22", "play_date_utc": "2019-10-16T14:00:41Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5929", "play_count": "23", "play_date_utc": "2019-10-16T14:07:01Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "1703", "skip_count": "9", "skip_date": "2019-10-16T14:22:57Z", "name": "Scourge", "artist": "BASHI BOIZU"}
+{"track_id": "5929", "play_count": "24", "play_date_utc": "2019-10-16T14:54:44Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "3025", "play_count": "9", "play_date_utc": "2019-10-16T14:59:04Z", "name": "Main Theme Ver. 2 (The Legend of Zelda)", "artist": "Yuzo Koshiro"}
+{"track_id": "3987", "play_count": "4", "play_date_utc": "2019-10-16T15:02:08Z", "name": "Main Theme", "artist": "Hideki Sakomoto"}
+{"track_id": "4259", "play_count": "57", "play_date_utc": "2019-10-16T15:07:37Z", "name": "Mr. Roboto", "artist": "Styx"}
+{"track_id": "4627", "play_count": "8", "play_date_utc": "2019-10-16T15:14:40Z", "name": "The Tallest Man, the Broadest Shoulders (Part I: The Great Frontier \u2013 Part II: Come to Me Only with Playthings Now)", "artist": "Sufjan Stevens"}
+{"track_id": "2577", "play_count": "7", "play_date_utc": "2019-10-16T15:20:21Z", "name": "Diesel Desert", "artist": "Karl Flodin"}
+{"track_id": "5899", "play_count": "12", "play_date_utc": "2019-10-16T15:36:04Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "1071", "play_count": "37", "play_date_utc": "2019-10-16T15:38:50Z", "name": "CORE", "artist": "Toby Fox"}
+{"track_id": "3395", "play_count": "6", "play_date_utc": "2019-10-16T15:41:45Z", "name": "Hets Theme", "artist": "Regular Graphics"}
+{"track_id": "2593", "skip_count": "6", "skip_date": "2019-10-16T15:43:53Z", "name": "The Spine", "artist": "Darren Korb"}
+{"track_id": "3439", "play_count": "10", "play_date_utc": "2019-10-16T15:43:45Z", "name": "Working In The Rain", "artist": "Vince de Vera and Jason Garner"}
+{"track_id": "3933", "skip_count": "2", "skip_date": "2019-10-16T15:43:48Z", "name": "I Walk Alone (feat. Justina Soto)", "artist": "sungazer"}
+{"track_id": "5929", "play_count": "25", "play_date_utc": "2019-10-17T11:59:03Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "1461", "skip_count": "16", "skip_date": "2019-10-17T12:43:38Z", "name": "The Fateful Return", "artist": "Jake Kaufman"}
+{"track_id": "4327", "skip_count": "5", "skip_date": "2019-10-17T12:59:40Z", "name": "People Go Home", "artist": "Jukebox the Ghost"}
+{"track_id": "5929", "play_count": "26", "play_date_utc": "2019-10-17T12:59:38Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5899", "play_count": "13", "play_date_utc": "2019-10-17T13:04:24Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "931", "play_count": "45", "play_date_utc": "2019-10-17T13:06:40Z", "name": "The Starship Sails", "artist": "Mahito Yokota"}
+{"track_id": "1903", "play_count": "35", "play_date_utc": "2019-10-18T04:35:07Z", "name": "Rooftop", "artist": "Vibe Avenue"}
+{"track_id": "29375", "play_count": "12", "play_date_utc": "2019-10-18T04:33:01Z", "name": "Nothing is Safe", "artist": "clipping."}
+{"track_id": "2453", "play_count": "23", "play_date_utc": "2019-10-18T04:38:47Z", "name": "Hot 'n Cold", "artist": "Katy Perry"}
+{"track_id": "1271", "play_count": "24", "play_date_utc": "2019-10-18T04:41:40Z", "name": "Everlasting Hymn", "artist": "Ridiculon"}
+{"track_id": "2287", "skip_count": "3", "skip_date": "2019-10-18T04:41:44Z", "name": "Climbing the Ginso Tree", "artist": "Gareth Coker"}
+{"track_id": "4229", "skip_count": "9", "skip_date": "2019-10-18T04:41:57Z", "name": "Thick As A Brick, Part 2", "artist": "Jethro Tull"}
+{"track_id": "5257", "skip_count": "2", "skip_date": "2019-10-18T04:44:27Z", "name": "ARE WE STILL FRIENDS?", "artist": "Tyler, The Creator"}
+{"track_id": "5091", "skip_count": "3", "skip_date": "2019-10-18T04:47:35Z", "name": "Shakara", "artist": "Fela Kuti"}
+{"track_id": "5409", "play_count": "3", "play_date_utc": "2019-10-18T04:47:33Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5393", "play_count": "2", "play_date_utc": "2019-10-18T04:58:14Z", "name": "Juice", "artist": "Chance the Rapper"}
+{"track_id": "5409", "play_count": "4", "play_date_utc": "2019-10-18T06:29:47Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5361", "play_count": "8", "play_date_utc": "2019-10-18T06:31:57Z", "name": "For Free? (Interlude)", "artist": "Kendrick Lamar"}
+{"track_id": "4959", "skip_count": "7", "skip_date": "2019-10-18T06:32:35Z", "name": "A Reunion", "artist": "Gentle Giant"}
+{"track_id": "931", "skip_count": "32", "skip_date": "2019-10-18T06:35:43Z", "name": "The Starship Sails", "artist": "Mahito Yokota"}
+{"track_id": "3741", "skip_count": "3", "skip_date": "2019-10-18T06:35:51Z", "name": "The Legend Comes to Life", "artist": "John Lissauer, Ralph Schuckett"}
+{"track_id": "4367", "skip_count": "4", "skip_date": "2019-10-18T06:35:59Z", "name": "Hey Ya", "artist": "Outkast"}
+{"track_id": "5409", "play_count": "5", "play_date_utc": "2019-10-18T06:35:40Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5929", "play_count": "27", "play_date_utc": "2019-10-18T06:38:41Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5927", "play_count": "28", "play_date_utc": "2019-10-18T06:44:02Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5927", "play_count": "29", "play_date_utc": "2019-10-18T09:36:04Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5409", "play_count": "6", "play_date_utc": "2019-10-18T09:39:09Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5897", "play_count": "14", "play_date_utc": "2019-10-18T09:43:26Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "5095", "play_count": "17", "play_date_utc": "2019-10-18T09:47:54Z", "name": "Gold Digger", "artist": "Kanye West ft. Jamie Foxx"}
+{"track_id": "5629", "skip_count": "4", "skip_date": "2019-10-18T09:48:39Z", "name": "The Lord Of Lightning", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5409", "play_count": "7", "play_date_utc": "2019-10-18T10:21:45Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5327", "play_count": "6", "play_date_utc": "2019-10-18T10:24:29Z", "name": "getting better", "artist": "nelward"}
+{"track_id": "4847", "play_count": "5", "play_date_utc": "2019-10-18T10:29:02Z", "name": "Dark Fantasy", "artist": "Kanye West"}
+{"track_id": "5123", "skip_count": "4", "skip_date": "2019-10-18T10:29:09Z", "name": "Crazy Love, Vol. II", "artist": "Paul Simon"}
+{"track_id": "5689", "play_count": "4", "play_date_utc": "2019-10-18T10:32:45Z", "name": "Post Verified Lifestyle", "artist": "JPEGMAFIA"}
+{"track_id": "5145", "play_count": "5", "play_date_utc": "2019-10-18T10:36:41Z", "name": "Award Tour", "artist": "A Tribe Called Quest"}
+{"track_id": "4795", "play_count": "5", "play_date_utc": "2019-10-18T10:39:56Z", "name": "Where This Flower Blooms", "artist": "Tyler, The Creator"}
+{"track_id": "5409", "play_count": "8", "play_date_utc": "2019-10-18T11:24:13Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "3951", "skip_count": "9", "skip_date": "2019-10-18T11:26:45Z", "name": "The Knife", "artist": "Genesis"}
+{"track_id": "5341", "play_count": "25", "play_date_utc": "2019-10-18T11:26:43Z", "name": "Milion\u00e0ria", "artist": "Rosal\u00eda"}
+{"track_id": "4891", "skip_count": "3", "skip_date": "2019-10-18T11:31:32Z", "name": "Method Man", "artist": "Wu-Tang Clan"}
+{"track_id": "5299", "skip_count": "3", "skip_date": "2019-10-18T11:31:45Z", "name": "Dat $tick [Remix]", "artist": "Rich Brian ft. Ghostface Killah &#38; Pouya"}
+{"track_id": "5349", "play_count": "10", "play_date_utc": "2019-10-18T11:35:50Z", "name": "Good Ass Intro", "artist": "Chance the Rapper"}
+{"track_id": "4759", "play_count": "14", "play_date_utc": "2019-10-18T11:39:32Z", "name": "Fergalicious", "artist": "Fergie ft. will.i.am"}
+{"track_id": "5409", "play_count": "9", "play_date_utc": "2019-10-18T11:46:06Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "3591", "play_count": "6", "play_date_utc": "2019-10-18T11:47:36Z", "name": "Monster Seeking Monster: Chat 2", "artist": "Jackbox Games"}
+{"track_id": "2807", "play_count": "9", "play_date_utc": "2019-10-18T11:48:09Z", "name": "Store", "artist": "Eirik Suhrke"}
+{"track_id": "879", "skip_count": "43", "skip_date": "2019-10-18T11:52:52Z", "name": "Animal", "artist": "Miike Snow"}
+{"track_id": "5439", "skip_count": "2", "skip_date": "2019-10-18T11:52:33Z", "name": "Silicon Valley", "artist": "Anderson .Paak"}
+{"track_id": "5705", "play_count": "4", "play_date_utc": "2019-10-18T11:52:29Z", "name": "It Was A Good Day", "artist": "Ice Cube"}
+{"track_id": "917", "skip_count": "45", "skip_date": "2019-10-18T11:59:30Z", "name": "Overture", "artist": "Mahito Yokota"}
+{"track_id": "991", "skip_count": "23", "skip_date": "2019-10-18T11:59:24Z", "name": "Hisstocrat", "artist": "Mahito Yokota, Toru Minegishi, Yasuaki Iwata, and Koji Kondo"}
+{"track_id": "1243", "skip_count": "16", "skip_date": "2019-10-18T11:58:56Z", "name": "Freezeezy Peak", "artist": "Grant Kirkhope"}
+{"track_id": "2231", "skip_count": "6", "skip_date": "2019-10-18T11:59:28Z", "name": "White Palace", "artist": "Christopher Larkin"}
+{"track_id": "2827", "skip_count": "10", "skip_date": "2019-10-18T11:59:19Z", "name": "Pursuing My True Self", "artist": "Shoji Meguro, Atsushi Kitajoh, Ryuta Kozuka"}
+{"track_id": "4647", "skip_count": "5", "skip_date": "2019-10-18T11:58:59Z", "name": "On The Run", "artist": "Pink Floyd"}
+{"track_id": "5927", "play_count": "30", "play_date_utc": "2019-10-18T11:58:48Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "4291", "skip_count": "12", "skip_date": "2019-10-18T12:25:55Z", "name": "Malamente (Cap.1: Augurio)", "artist": "Rosal\u00eda"}
+{"track_id": "4927", "skip_count": "5", "skip_date": "2019-10-18T12:42:36Z", "name": "Rhymin &#38; Stealin", "artist": "Beastie Boys"}
+{"track_id": "5409", "play_count": "10", "play_date_utc": "2019-10-18T12:42:31Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "893", "play_count": "35", "play_date_utc": "2019-10-18T12:46:00Z", "name": "King of Anything", "artist": "Sara Bareilles"}
+{"track_id": "1031", "skip_count": "49", "skip_date": "2019-10-18T12:47:07Z", "name": "Theme A", "artist": "Hirokazu Tanaka"}
+{"track_id": "1081", "play_count": "44", "play_date_utc": "2019-10-18T12:47:03Z", "name": "Stronger Monsters", "artist": "Toby Fox"}
+{"track_id": "2039", "skip_count": "12", "skip_date": "2019-10-18T12:47:12Z", "name": "The Wight to Remain", "artist": "Flexstyle ft. DjjD"}
+{"track_id": "5409", "play_count": "11", "play_date_utc": "2019-10-18T12:50:17Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "3325", "play_count": "30", "play_date_utc": "2019-10-18T12:54:09Z", "name": "I Want You", "artist": "Savage Garden"}
+{"track_id": "1445", "play_count": "30", "play_date_utc": "2019-10-18T12:55:14Z", "name": "Tango of the Troupple King", "artist": "Jake Kaufman"}
+{"track_id": "4051", "play_count": "5", "play_date_utc": "2019-10-18T13:00:20Z", "name": "Make my story", "artist": "Lenny code fiction"}
+{"track_id": "4777", "play_count": "13", "play_date_utc": "2019-10-18T13:03:19Z", "name": "my strange addiction", "artist": "Billie Eilish"}
+{"track_id": "4741", "play_count": "6", "play_date_utc": "2019-10-18T13:09:30Z", "name": "I Want It I Need It (Death Heated)", "artist": "Death Grips"}
+{"track_id": "4647", "skip_count": "6", "skip_date": "2019-10-18T13:10:55Z", "name": "On The Run", "artist": "Pink Floyd"}
+{"track_id": "4381", "skip_count": "13", "skip_date": "2019-10-18T13:11:47Z", "name": "BLACKJACK", "artist": "Amin\u00e9"}
+{"track_id": "5693", "skip_count": "3", "skip_date": "2019-10-18T13:11:51Z", "name": "BUTTERMILK JESUS TYPE BEAT", "artist": "JPEGMAFIA"}
+{"track_id": "5669", "play_count": "2", "play_date_utc": "2019-10-18T13:15:20Z", "name": "Beta Male Strategies", "artist": "JPEGMAFIA"}
+{"track_id": "4131", "play_count": "9", "play_date_utc": "2019-10-18T13:18:30Z", "name": "long long long journey", "artist": "Bill Wurtz"}
+{"track_id": "3941", "play_count": "7", "play_date_utc": "2019-10-18T13:24:28Z", "name": "Bohemian Rhapsody", "artist": "Queen"}
+{"track_id": "3167", "play_count": "12", "play_date_utc": "2019-10-18T13:27:25Z", "name": "Descent", "artist": "Mudeth"}
+{"track_id": "3693", "play_count": "24", "play_date_utc": "2019-10-18T13:31:42Z", "name": "You Should Be Dancing", "artist": "Bee Gees"}
+{"track_id": "1337", "play_count": "18", "play_date_utc": "2019-10-18T13:34:49Z", "name": "It Ends 2: End Harder", "artist": "Danny Baranowsky"}
+{"track_id": "4255", "play_count": "13", "play_date_utc": "2019-10-18T13:44:38Z", "name": "The Man of Metropolis Steals Our Hearts", "artist": "Sufjan Stevens"}
+{"track_id": "5211", "play_count": "3", "play_date_utc": "2019-10-18T13:47:31Z", "name": "Don't Talk (Put Your Head on My Shoulder)", "artist": "The Beach Boys"}
+{"track_id": "4977", "play_count": "5", "play_date_utc": "2019-10-18T13:50:40Z", "name": "Whammy", "artist": "Death Grips"}
+{"track_id": "1817", "play_count": "93", "play_date_utc": "2019-10-18T13:57:18Z", "name": "Reroll My Run", "artist": "Northernlion"}
+{"track_id": "5075", "play_count": "3", "play_date_utc": "2019-10-18T14:02:20Z", "name": "This Is The Day", "artist": "The The"}
+{"track_id": "4509", "play_count": "15", "play_date_utc": "2019-10-18T14:05:00Z", "name": "Double Helix", "artist": "Death Grips"}
+{"track_id": "2021", "skip_count": "5", "skip_date": "2019-10-18T14:16:14Z", "name": "Disco Descent", "artist": "DDRKirby(ISQ)"}
+{"track_id": "3439", "skip_count": "4", "skip_date": "2019-10-18T14:16:24Z", "name": "Working In The Rain", "artist": "Vince de Vera and Jason Garner"}
+{"track_id": "5409", "play_count": "12", "play_date_utc": "2019-10-18T14:16:11Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5409", "play_count": "13", "play_date_utc": "2019-10-18T14:19:29Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5927", "play_count": "31", "play_date_utc": "2019-10-18T14:22:10Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "1695", "skip_count": "10", "skip_date": "2019-10-18T14:35:01Z", "name": "Rigor Mormist", "artist": "Laura Shigihara"}
+{"track_id": "5955", "play_count": "2", "play_date_utc": "2019-10-18T14:34:57Z", "name": "Blood of the Fang", "artist": "clipping."}
+{"track_id": "5409", "play_count": "14", "play_date_utc": "2019-10-18T14:38:07Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5927", "play_count": "32", "play_date_utc": "2019-10-18T14:41:17Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "2083", "skip_count": "16", "skip_date": "2019-10-18T14:44:27Z", "name": "Electrofiend", "artist": "Ben Lam"}
+{"track_id": "2101", "play_count": "31", "play_date_utc": "2019-10-18T14:44:18Z", "name": "Black Horse and The Cherry Tree", "artist": "KT Tunstall"}
+{"track_id": "3667", "skip_count": "4", "skip_date": "2019-10-18T14:44:32Z", "name": "Tides", "artist": "HOME"}
+{"track_id": "5409", "play_count": "15", "play_date_utc": "2019-10-18T15:12:29Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5409", "play_count": "16", "play_date_utc": "2019-10-18T15:51:41Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "4185", "skip_count": "7", "skip_date": "2019-10-18T15:59:09Z", "name": "Exiles", "artist": "King Crimson"}
+{"track_id": "5669", "play_count": "3", "play_date_utc": "2019-10-18T16:02:27Z", "name": "Beta Male Strategies", "artist": "JPEGMAFIA"}
+{"track_id": "5481", "play_count": "2", "play_date_utc": "2019-10-18T16:06:49Z", "name": "Halftime", "artist": "Nas"}
+{"track_id": "3831", "skip_count": "4", "skip_date": "2019-10-18T16:09:58Z", "name": "Battle! (Cheren/Bianca)", "artist": "Junichi Masuda &#38; Go Ichinose"}
+{"track_id": "5409", "play_count": "17", "play_date_utc": "2019-10-18T16:09:54Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5955", "play_count": "3", "play_date_utc": "2019-10-18T16:14:58Z", "name": "Blood of the Fang", "artist": "clipping."}
+{"track_id": "3507", "skip_count": "2", "skip_date": "2019-10-18T16:19:07Z", "name": "Wish You Were Here", "artist": "James Roach and Toby Fox"}
+{"track_id": "5409", "play_count": "18", "play_date_utc": "2019-10-18T16:19:02Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5699", "play_count": "4", "play_date_utc": "2019-10-18T20:56:48Z", "name": "Juicy", "artist": "Doja Cat"}
+{"track_id": "5699", "skip_count": "1", "skip_date": "2019-10-19T06:15:01Z", "name": "Juicy", "artist": "Doja Cat"}
+{"track_id": "5409", "play_count": "19", "play_date_utc": "2019-10-19T06:18:06Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5927", "play_count": "33", "play_date_utc": "2019-10-19T06:20:47Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5341", "play_count": "6", "play_date_utc": "2019-10-19T07:43:28Z", "name": "stupid horse", "artist": "100 gecs"}
+{"track_id": "5969", "skip_count": "2", "skip_date": "2019-10-19T08:02:59Z", "name": "hand crushed by a mallet", "artist": "100 gecs"}
+{"track_id": "5411", "play_count": "20", "play_date_utc": "2019-10-19T08:07:45Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5411", "play_count": "21", "play_date_utc": "2019-10-19T10:08:52Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5395", "play_count": "3", "play_date_utc": "2019-10-19T10:13:19Z", "name": "Juice", "artist": "Chance the Rapper"}
+{"track_id": "4825", "skip_count": "4", "skip_date": "2019-10-19T12:13:36Z", "name": "Wu-Tang Clan Ain't Nuthing ta Fuck Wit", "artist": "Wu-Tang Clan"}
+{"track_id": "5525", "play_count": "7", "play_date_utc": "2019-10-19T16:02:20Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "5525", "play_count": "8", "play_date_utc": "2019-10-19T16:04:49Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "5525", "play_count": "9", "play_date_utc": "2019-10-19T17:36:59Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "5525", "play_count": "10", "play_date_utc": "2019-10-19T17:39:45Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "5525", "play_count": "11", "play_date_utc": "2019-10-19T19:01:43Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "5525", "play_count": "12", "play_date_utc": "2019-10-19T19:19:18Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "4565", "skip_count": "4", "skip_date": "2019-10-19T21:27:54Z", "name": "Slipstream", "artist": "Jethro Tull"}
+{"track_id": "5633", "skip_count": "4", "skip_date": "2019-10-19T21:27:19Z", "name": "Altered Beast III", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "2743", "skip_count": "7", "skip_date": "2019-10-19T21:32:56Z", "name": "Mario Galaxy [Medley]", "artist": "FamilyJules"}
+{"track_id": "3231", "skip_count": "7", "skip_date": "2019-10-19T21:33:05Z", "name": "Crystal Kingdom (Part Three)", "artist": "Griffin McElroy"}
+{"track_id": "5113", "skip_count": "2", "skip_date": "2019-10-19T21:32:34Z", "name": "Sneaky Driver", "artist": "Bill Kiley"}
+{"track_id": "5531", "skip_count": "3", "skip_date": "2019-10-20T06:16:27Z", "name": "After Hours", "artist": "A Tribe Called Quest"}
+{"track_id": "5531", "skip_count": "4", "skip_date": "2019-10-20T06:16:41Z", "name": "After Hours", "artist": "A Tribe Called Quest"}
+{"track_id": "27806", "play_count": "2", "play_date_utc": "2019-10-20T06:28:53Z", "name": "Black Triangle", "artist": "Richard Dawson"}
+{"track_id": "4435", "skip_count": "16", "skip_date": "2019-10-20T06:29:31Z", "name": "Goodie Bag", "artist": "Still Woozy"}
+{"track_id": "5525", "play_count": "13", "play_date_utc": "2019-10-20T06:31:39Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "4325", "skip_count": "7", "skip_date": "2019-10-20T06:46:30Z", "name": "Fred Astaire", "artist": "Jukebox the Ghost"}
+{"track_id": "4907", "skip_count": "5", "skip_date": "2019-10-20T06:46:37Z", "name": "Butter", "artist": "A Tribe Called Quest"}
+{"track_id": "5593", "skip_count": "2", "skip_date": "2019-10-20T06:46:25Z", "name": "Floor 4-2 Groove is in the Blood-Pumping Organ of an Animate Being", "artist": "Craig Barnes"}
+{"track_id": "4197", "skip_count": "9", "skip_date": "2019-10-20T07:21:03Z", "name": "Dance Of Ranyart / Olias (To Build The Moorglade)", "artist": "Jon Anderson"}
+{"track_id": "5525", "play_count": "14", "play_date_utc": "2019-10-20T08:23:36Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "2901", "skip_count": "9", "skip_date": "2019-10-20T09:21:19Z", "name": "The Herald", "artist": "Darren Korb"}
+{"track_id": "5525", "play_count": "15", "play_date_utc": "2019-10-20T13:41:59Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "5411", "play_count": "22", "play_date_utc": "2019-10-20T13:45:26Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5691", "play_count": "5", "play_date_utc": "2019-10-20T14:07:51Z", "name": "Post Verified Lifestyle", "artist": "JPEGMAFIA"}
+{"track_id": "5663", "skip_count": "2", "skip_date": "2019-10-20T14:13:01Z", "name": "Jesus Forgive Me, I Am A Thot", "artist": "JPEGMAFIA"}
+{"track_id": "5665", "skip_count": "2", "skip_date": "2019-10-20T14:12:58Z", "name": "All My Heroes Are Cornballs", "artist": "JPEGMAFIA"}
+{"track_id": "5665", "skip_count": "3", "skip_date": "2019-10-20T14:50:19Z", "name": "All My Heroes Are Cornballs", "artist": "JPEGMAFIA"}
+{"track_id": "5681", "play_count": "2", "play_date_utc": "2019-10-20T14:51:55Z", "name": "BBW", "artist": "JPEGMAFIA"}
+{"track_id": "5673", "play_count": "2", "play_date_utc": "2019-10-20T14:53:19Z", "name": "JPEGMAFIA TYPE BEAT", "artist": "JPEGMAFIA"}
+{"track_id": "6063", "play_count": "3", "play_date_utc": "2019-10-20T16:53:03Z", "name": "Black Triangle", "artist": "Richard Dawson"}
+{"track_id": "1805", "play_count": "14", "play_date_utc": "2019-10-20T17:25:48Z", "name": "Serious", "artist": "Shogo Sakai"}
+{"track_id": "1707", "play_count": "17", "play_date_utc": "2019-10-20T17:27:31Z", "name": "Brainiac Maniac", "artist": "Laura Shigihara"}
+{"track_id": "3825", "skip_count": "3", "skip_date": "2019-10-21T06:24:41Z", "name": "Titanic Monarch Zone Act 2 - Steel Cortex", "artist": "Tee Lopes"}
+{"track_id": "5535", "play_count": "16", "play_date_utc": "2019-10-21T06:24:37Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "5371", "play_count": "3", "play_date_utc": "2019-10-21T06:29:30Z", "name": "Wesley's Theory", "artist": "Kendrick Lamar ft. George Clinton &#38; Thundercat"}
+{"track_id": "6085", "skip_count": "2", "skip_date": "2019-10-21T07:00:49Z", "name": "Civil Servant", "artist": "Richard Dawson"}
+{"track_id": "5535", "play_count": "17", "play_date_utc": "2019-10-21T07:47:16Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "2113", "skip_count": "12", "skip_date": "2019-10-18T02:24:11Z", "name": "Heavenly Day", "artist": "Patty Griffin"}
+{"track_id": "4055", "skip_count": "5", "skip_date": "2019-10-17T10:56:16Z", "name": "outside", "artist": "Bill Wurtz"}
+{"track_id": "4237", "skip_count": "7", "skip_date": "2019-10-18T02:30:22Z", "name": "The Lamb Lies Down On Broadway", "artist": "Genesis"}
+{"track_id": "4309", "play_count": "9", "play_date_utc": "2019-10-14T02:24:27Z", "name": "tip toes", "artist": "half\u2022alive"}
+{"track_id": "4351", "play_count": "10", "play_date_utc": "2019-10-17T10:45:50Z", "name": "Knots", "artist": "Gentle Giant"}
+{"track_id": "4393", "skip_count": "10", "skip_date": "2019-10-17T10:40:11Z", "name": "Spice Girl", "artist": "Amin\u00e9"}
+{"track_id": "4509", "play_count": "19", "play_date_utc": "2019-10-14T02:21:12Z", "name": "Bitch Please", "artist": "Death Grips"}
+{"track_id": "4513", "play_count": "49", "play_date_utc": "2019-10-18T02:29:41Z", "name": "The Fever (Aye Aye)", "artist": "Death Grips"}
+{"track_id": "4517", "skip_count": "9", "skip_date": "2019-10-17T10:39:02Z", "name": "Blackjack", "artist": "Death Grips"}
+{"track_id": "4569", "skip_count": "5", "skip_date": "2019-10-18T02:24:43Z", "name": "Mother Goose", "artist": "Jethro Tull"}
+{"track_id": "4631", "skip_count": "4", "skip_date": "2019-10-18T02:26:34Z", "name": "John Wayne Gacy, Jr.", "artist": "Sufjan Stevens"}
+{"track_id": "4651", "skip_count": "6", "skip_date": "2019-10-17T10:40:24Z", "name": "Wasted Time (Reprise)", "artist": "The Eagles"}
+{"track_id": "4685", "play_count": "48", "play_date_utc": "2019-10-17T10:50:13Z", "name": "Once in a Lifetime", "artist": "Talking Heads"}
+{"track_id": "4751", "play_count": "6", "play_date_utc": "2019-10-17T10:55:50Z", "name": "Culture Shock", "artist": "Death Grips"}
+{"track_id": "4761", "skip_count": "4", "skip_date": "2019-10-18T02:30:32Z", "name": "Definitely You", "artist": "Feed Me Jack"}
+{"track_id": "4881", "skip_count": "9", "skip_date": "2019-10-18T02:25:56Z", "name": "Lost In The World", "artist": "Kanye West"}
+{"track_id": "4919", "skip_count": "6", "skip_date": "2019-10-20T06:46:37Z", "name": "Butter", "artist": "A Tribe Called Quest"}
+{"track_id": "5087", "skip_count": "9", "skip_date": "2019-10-18T02:26:16Z", "name": "Ikoyi Mentality Versus Mushin Mentality", "artist": "Fela Kuti"}
+{"track_id": "5117", "skip_count": "6", "skip_date": "2019-10-17T10:56:33Z", "name": "Wouldn't It Be Nice", "artist": "The Beach Boys"}
+{"track_id": "5205", "play_count": "11", "play_date_utc": "2019-10-18T02:42:57Z", "name": "Black Spasmodic", "artist": "A Tribe Called Quest"}
+{"track_id": "5291", "play_count": "6", "play_date_utc": "2019-10-18T02:46:26Z", "name": "Linda's In Custody", "artist": "Death Grips"}
+{"track_id": "5353", "skip_count": "3", "skip_date": "2019-10-16T04:25:04Z", "name": "stupid horse", "artist": "100 gecs"}
+{"track_id": "5397", "skip_count": "2", "skip_date": "2019-10-17T10:39:45Z", "name": "The Blacker the Berry", "artist": "Kendrick Lamar"}
+{"track_id": "5423", "play_count": "25", "play_date_utc": "2019-10-20T13:45:26Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5571", "play_count": "13", "play_date_utc": "2019-10-18T02:35:14Z", "name": "MARS FOR THE RICH", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5637", "play_count": "13", "play_date_utc": "2019-10-17T02:31:37Z", "name": "Norman fucking Rockwell", "artist": "Lana Del Rey"}
+{"track_id": "5715", "play_count": "17", "play_date_utc": "2019-10-16T04:35:15Z", "name": "Babushka Boi", "artist": "A$AP Rocky"}
+{"track_id": "5911", "play_count": "20", "play_date_utc": "2019-10-18T09:43:26Z", "name": "TrusT", "artist": "half\u2022alive"}
+{"track_id": "5941", "play_count": "44", "play_date_utc": "2019-10-19T09:43:55Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "5969", "play_count": "8", "play_date_utc": "2019-10-18T16:14:58Z", "name": "Blood of the Fang", "artist": "clipping."}
+{"track_id": "5977", "play_count": "5", "play_date_utc": "2019-10-16T04:24:57Z", "name": "ringtone", "artist": "100 gecs"}
+{"track_id": "5995", "play_count": "11", "play_date_utc": "2019-10-17T10:35:58Z", "name": "Best Friend", "artist": "Rex Orange County"}
+{"track_id": "6029", "play_count": "3", "play_date_utc": "2019-10-14T06:18:37Z", "name": "On Sight", "artist": "Kanye West"}
+{"track_id": "5537", "play_count": "18", "play_date_utc": "2019-10-21T14:40:08Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "5013", "skip_count": "7", "skip_date": "2019-10-21T14:40:55Z", "name": "Plastic Boogie", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5423", "play_count": "26", "play_date_utc": "2019-10-21T14:44:09Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "1271", "skip_count": "24", "skip_date": "2019-10-21T14:44:25Z", "name": "It Ends", "artist": "Danny Baranowsky"}
+{"track_id": "5501", "skip_count": "2", "skip_date": "2019-10-21T14:44:29Z", "name": "One Time 4 Your Mind", "artist": "Nas"}
+{"track_id": "5537", "play_count": "19", "play_date_utc": "2019-10-21T16:54:43Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "3103", "play_count": "7", "play_date_utc": "2019-10-22T02:25:44Z", "name": "Fugue #7777", "artist": "Yuu Miyake, Asuka Sakai, Akitaka Tohyama, Hideki Tobeta, Yoshihito Yano, Yuri Misumi"}
+{"track_id": "5537", "play_count": "20", "play_date_utc": "2019-10-22T02:47:02Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "5239", "skip_count": "7", "skip_date": "2019-10-22T02:47:19Z", "name": "I Just Wasn't Made for These Times", "artist": "The Beach Boys"}
+{"track_id": "5423", "play_count": "27", "play_date_utc": "2019-10-22T02:50:31Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "4511", "skip_count": "6", "skip_date": "2019-10-22T08:05:00Z", "name": "The Fever (Aye Aye)", "artist": "Death Grips"}
+{"track_id": "4703", "skip_count": "4", "skip_date": "2019-10-22T08:10:13Z", "name": "Dance Yrself Clean", "artist": "LCD Soundsystem"}
+{"track_id": "4717", "skip_count": "3", "skip_date": "2019-10-22T09:18:11Z", "name": "Bubbles Buried In This Jungle", "artist": "Death Grips"}
+{"track_id": "5423", "play_count": "28", "play_date_utc": "2019-10-22T09:21:16Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "4149", "play_count": "20", "play_date_utc": "2019-10-22T09:22:32Z", "name": "Rude Buster", "artist": "Toby Fox"}
+{"track_id": "4159", "play_count": "11", "play_date_utc": "2019-10-22T09:23:50Z", "name": "Checker Dance", "artist": "Toby Fox"}
+{"track_id": "5423", "play_count": "29", "play_date_utc": "2019-10-22T09:27:33Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5423", "play_count": "30", "play_date_utc": "2019-10-22T09:30:47Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "4633", "skip_count": "8", "skip_date": "2019-10-22T11:34:59Z", "name": "Decatur, Or, Round Of Applause For Your Stepmother!", "artist": "Sufjan Stevens"}
+{"track_id": "5407", "skip_count": "2", "skip_date": "2019-10-22T13:02:22Z", "name": "Juice", "artist": "Chance the Rapper"}
+{"track_id": "3397", "skip_count": "2", "skip_date": "2019-10-22T13:10:24Z", "name": "Pause", "artist": "Landon Podbielski"}
+{"track_id": "6069", "play_count": "4", "play_date_utc": "2019-10-22T13:10:22Z", "name": "Black Triangle", "artist": "Richard Dawson"}
+{"track_id": "3981", "play_count": "43", "play_date_utc": "2019-10-22T13:12:57Z", "name": "Mr. Sandman", "artist": "The Chordettes"}
+{"track_id": "5995", "play_count": "12", "play_date_utc": "2019-10-22T13:17:19Z", "name": "Best Friend", "artist": "Rex Orange County"}
+{"track_id": "5423", "play_count": "31", "play_date_utc": "2019-10-22T13:20:24Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "4821", "play_count": "21", "play_date_utc": "2019-10-22T13:25:45Z", "name": "Boredom", "artist": "Tyler, The Creator"}
+{"track_id": "4821", "skip_count": "3", "skip_date": "2019-10-22T15:17:01Z", "name": "Boredom", "artist": "Tyler, The Creator"}
+{"track_id": "6069", "play_count": "5", "play_date_utc": "2019-10-22T15:25:01Z", "name": "Black Triangle", "artist": "Richard Dawson"}
+{"track_id": "4103", "play_count": "43", "play_date_utc": "2019-10-22T15:28:00Z", "name": "Sick Beat", "artist": "Kero Kero Bonito"}
+{"track_id": "1029", "play_count": "44", "play_date_utc": "2019-10-22T15:30:10Z", "name": "Elevatorstuck", "artist": "Joren \"Tensei\" de Bruin"}
+{"track_id": "4805", "play_count": "8", "play_date_utc": "2019-10-22T15:33:09Z", "name": "Black Quarterback", "artist": "Death Grips"}
+{"track_id": "2109", "play_count": "21", "play_date_utc": "2019-10-22T15:38:32Z", "name": "Catch Me If You Can", "artist": "Ben Lam"}
+{"track_id": "899", "skip_count": "35", "skip_date": "2019-10-22T15:58:11Z", "name": "Hello Seattle", "artist": "Owl City"}
+{"track_id": "5407", "play_count": "4", "play_date_utc": "2019-10-22T16:01:46Z", "name": "Juice", "artist": "Chance the Rapper"}
+{"track_id": "4927", "play_count": "15", "play_date_utc": "2019-10-22T16:08:23Z", "name": "The Infamous Date Rape", "artist": "A Tribe Called Quest"}
+{"track_id": "2297", "play_count": "9", "play_date_utc": "2019-10-22T16:11:29Z", "name": "Gumos Hideout", "artist": "Gareth Coker"}
+{"track_id": "983", "play_count": "45", "play_date_utc": "2019-10-22T16:13:12Z", "name": "Title Theme", "artist": "Ry\u014d Nagamatsu"}
+{"track_id": "5223", "play_count": "18", "play_date_utc": "2019-10-22T16:15:39Z", "name": "That's Not Me", "artist": "The Beach Boys"}
+{"track_id": "967", "play_count": "33", "play_date_utc": "2019-10-22T16:19:42Z", "name": "Staff Roll", "artist": "Mahito Yokota"}
+{"track_id": "955", "play_count": "37", "play_date_utc": "2019-10-22T16:21:34Z", "name": "Toy Time Galaxy", "artist": "Mahito Yokota"}
+{"track_id": "3181", "play_count": "13", "play_date_utc": "2019-10-22T16:24:31Z", "name": "Descent", "artist": "Mudeth"}
+{"track_id": "2457", "play_count": "25", "play_date_utc": "2019-10-22T16:26:57Z", "name": "Shop Radio 3", "artist": "Eirik Suhrke"}
+{"track_id": "3839", "play_count": "4", "play_date_utc": "2019-10-22T16:26:02Z", "name": "Driftveil City", "artist": "Go Ichinose"}
+{"track_id": "4897", "play_count": "4", "play_date_utc": "2019-10-22T16:33:04Z", "name": "Wu-Tang: 7th Chamber", "artist": "Wu-Tang Clan"}
+{"track_id": "1127", "skip_count": "19", "skip_date": "2019-10-22T16:39:53Z", "name": "Battle Against a True Hero", "artist": "Toby Fox"}
+{"track_id": "1831", "play_count": "94", "play_date_utc": "2019-10-22T16:39:42Z", "name": "Reroll My Run", "artist": "Northernlion"}
+{"track_id": "5211", "play_count": "50", "play_date_utc": "2019-10-22T16:44:35Z", "name": "Movin Backwards", "artist": "A Tribe Called Quest"}
+{"track_id": "5333", "play_count": "3", "play_date_utc": "2019-10-22T16:46:53Z", "name": "Blackbird", "artist": "The Beatles"}
+{"track_id": "4223", "play_count": "7", "play_date_utc": "2019-10-22T16:50:21Z", "name": "Lucy In The Sky With Diamonds", "artist": "The Beatles"}
+{"track_id": "5943", "skip_count": "3", "skip_date": "2019-10-22T16:50:26Z", "name": "You", "artist": "Q-Tip"}
+{"track_id": "4939", "play_count": "33", "play_date_utc": "2019-10-22T16:54:37Z", "name": "Scenario", "artist": "A Tribe Called Quest"}
+{"track_id": "4987", "play_count": "2", "play_date_utc": "2019-10-22T16:58:24Z", "name": "Lil Boy", "artist": "Death Grips"}
+{"track_id": "3727", "play_count": "47", "play_date_utc": "2019-10-22T17:08:06Z", "name": "Yours is No Disgrace", "artist": "Yes"}
+{"track_id": "4837", "play_count": "21", "play_date_utc": "2019-10-22T17:11:42Z", "name": "Wu-Tang Clan Ain't Nuthing ta Fuck Wit", "artist": "Wu-Tang Clan"}
+{"track_id": "3691", "skip_count": "33", "skip_date": "2019-10-22T17:11:57Z", "name": "South Side of the Sky", "artist": "Yes"}
+{"track_id": "5263", "play_count": "7", "play_date_utc": "2019-10-22T17:14:57Z", "name": "PUPPET", "artist": "Tyler, The Creator"}
+{"track_id": "5195", "play_count": "9", "play_date_utc": "2019-10-22T17:18:31Z", "name": "Dis Generation", "artist": "A Tribe Called Quest"}
+{"track_id": "4813", "play_count": "15", "play_date_utc": "2019-10-22T17:21:31Z", "name": "See You Again", "artist": "Tyler, The Creator"}
+{"track_id": "5417", "play_count": "3", "play_date_utc": "2019-10-22T17:25:02Z", "name": "Chain Smoker", "artist": "Chance the Rapper"}
+{"track_id": "4295", "play_count": "11", "play_date_utc": "2019-10-22T17:28:29Z", "name": "Make Believe", "artist": "Kero Kero Bonito"}
+{"track_id": "899", "play_count": "37", "play_date_utc": "2019-10-22T17:31:27Z", "name": "Hello Seattle", "artist": "Owl City"}
+{"track_id": "2113", "skip_count": "13", "skip_date": "2019-10-23T12:08:19Z", "name": "Heavenly Day", "artist": "Patty Griffin"}
+{"track_id": "4723", "skip_count": "7", "skip_date": "2019-10-23T12:08:13Z", "name": "Bb Poison", "artist": "Death Grips"}
+{"track_id": "5423", "play_count": "32", "play_date_utc": "2019-10-23T12:14:32Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "4195", "skip_count": "4", "skip_date": "2019-10-23T12:19:27Z", "name": "Lark's Tongues In Aspic I", "artist": "King Crimson"}
+{"track_id": "4757", "skip_count": "9", "skip_date": "2019-10-23T12:19:38Z", "name": "Lava", "artist": "Still Woozy"}
+{"track_id": "4921", "skip_count": "7", "skip_date": "2019-10-23T12:19:20Z", "name": "Verses From The Abstract", "artist": "A Tribe Called Quest"}
+{"track_id": "5041", "skip_count": "3", "skip_date": "2019-10-23T12:19:02Z", "name": "Intro", "artist": "clipping."}
+{"track_id": "5169", "skip_count": "3", "skip_date": "2019-10-23T12:19:14Z", "name": "God Lives Through", "artist": "A Tribe Called Quest"}
+{"track_id": "5475", "skip_count": "2", "skip_date": "2019-10-23T12:18:51Z", "name": "Lust", "artist": "Kendrick Lamar"}
+{"track_id": "6091", "play_count": "2", "play_date_utc": "2019-10-23T12:18:44Z", "name": "Oblivion", "artist": "Grimes"}
+{"track_id": "6089", "play_count": "2", "play_date_utc": "2019-10-23T12:21:04Z", "name": "Azucar", "artist": "Earl Sweatshirt"}
+{"track_id": "6091", "play_count": "3", "play_date_utc": "2019-10-23T13:40:24Z", "name": "Oblivion", "artist": "Grimes"}
+{"track_id": "3541", "skip_count": "10", "skip_date": "2019-10-23T14:45:09Z", "name": "Hero A", "artist": "Yuki Hayashi"}
+{"track_id": "6091", "play_count": "4", "play_date_utc": "2019-10-23T14:45:00Z", "name": "Oblivion", "artist": "Grimes"}
+{"track_id": "5423", "play_count": "33", "play_date_utc": "2019-10-23T14:48:15Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "1869", "play_count": "27", "play_date_utc": "2019-10-23T14:51:39Z", "name": "Tropicala", "artist": "Eric Barone"}
+{"track_id": "5423", "play_count": "34", "play_date_utc": "2019-10-23T15:06:46Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "1869", "play_count": "28", "play_date_utc": "2019-10-23T15:10:11Z", "name": "Tropicala", "artist": "Eric Barone"}
+{"track_id": "4073", "play_count": "9", "play_date_utc": "2019-10-23T15:13:10Z", "name": "TEST DRIVE", "artist": "Joji"}
+{"track_id": "5423", "play_count": "35", "play_date_utc": "2019-10-23T15:17:33Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
