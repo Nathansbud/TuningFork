@@ -2152,3 +2152,46 @@
 {"track_id": "1858", "play_count": "39", "play_date_utc": "2019-12-04T11:28:07Z", "name": "Main Theme", "artist": "Gordon McGladdery"}
 {"track_id": "3678", "play_count": "11", "play_date_utc": "2019-12-04T11:32:13Z", "name": "Christmas in L.A.", "artist": "Vulfpeck"}
 {"track_id": "3588", "skip_count": "9", "skip_date": "2019-12-04T12:30:59Z", "name": "Don't Deal With The Devil", "artist": "Kristofer Maddigan"}
+{"track_id": "6293", "play_count": "6", "play_date_utc": "2019-12-04T13:23:41Z", "name": "Truth Hurts", "artist": "Lizzo"}
+{"track_id": "6293", "play_count": "7", "play_date_utc": "2019-12-04T13:38:18Z", "name": "Truth Hurts", "artist": "Lizzo"}
+{"track_id": "4769", "skip_count": "4", "skip_date": "2019-12-04T14:16:02Z", "name": "5D", "artist": "Death Grips"}
+{"track_id": "4865", "play_count": "36", "play_date_utc": "2019-12-04T14:16:00Z", "name": "Livin' In the Sunlight, Lovin' In the Moonlight", "artist": "Tiny Tim"}
+{"track_id": "6293", "play_count": "8", "play_date_utc": "2019-12-04T14:18:56Z", "name": "Truth Hurts", "artist": "Lizzo"}
+{"track_id": "2525", "skip_count": "5", "skip_date": "2019-12-04T14:22:08Z", "name": "Encounter", "artist": "Shoji Meguro"}
+{"track_id": "2669", "skip_count": "6", "skip_date": "2019-12-04T14:22:15Z", "name": "Life Will Change", "artist": "Shoji Meguro"}
+{"track_id": "4769", "skip_count": "5", "skip_date": "2019-12-04T14:21:56Z", "name": "5D", "artist": "Death Grips"}
+{"track_id": "6293", "play_count": "9", "play_date_utc": "2019-12-04T14:21:49Z", "name": "Truth Hurts", "artist": "Lizzo"}
+{"track_id": "3335", "skip_count": "4", "skip_date": "2019-12-04T14:25:24Z", "name": "Something's Wrong", "artist": "Chris Remo"}
+{"track_id": "6155", "play_count": "13", "play_date_utc": "2019-12-04T14:25:19Z", "name": "Dirty Laundry", "artist": "Danny Brown"}
+{"track_id": "6291", "play_count": "7", "play_date_utc": "2019-12-04T16:00:53Z", "name": "Juice", "artist": "Lizzo"}
+{"track_id": "2677", "skip_count": "5", "skip_date": "2019-12-04T16:05:18Z", "name": "A Brief Respite (Camp Theme)", "artist": "Stuart Chatwood"}
+{"track_id": "6111", "play_count": "19", "play_date_utc": "2019-12-04T16:05:04Z", "name": "Oblivion", "artist": "Grimes"}
+{"track_id": "6291", "play_count": "8", "play_date_utc": "2019-12-04T16:08:32Z", "name": "Juice", "artist": "Lizzo"}
+{"track_id": "5069", "play_count": "7", "play_date_utc": "2019-12-04T16:13:00Z", "name": "Body And Blood", "artist": "clipping."}
+{"track_id": "3063", "play_count": "16", "play_date_utc": "2019-12-04T16:16:01Z", "name": "Jungle Overworld", "artist": "Kenji Yamamoto, Minako Hamano, Masaru Tajima, Shinji Ushiroda, and Daisuke Matsuoka"}
+{"track_id": "1737", "play_count": "19", "play_date_utc": "2019-12-04T16:19:05Z", "name": "Graze the Roof", "artist": "Laura Shigihara"}
+{"track_id": "5515", "play_count": "3", "play_date_utc": "2019-12-04T16:24:00Z", "name": "N.Y. State Of Mind", "artist": "Nas"}
+{"track_id": "1471", "skip_count": "19", "skip_date": "2019-12-04T17:38:06Z", "name": "Fungal Funk", "artist": "Jake Kaufman"}
+{"track_id": "6291", "play_count": "9", "play_date_utc": "2019-12-04T17:53:47Z", "name": "Juice", "artist": "Lizzo"}
+{"track_id": "4589", "play_count": "5", "play_date_utc": "2019-12-05T04:50:48Z", "name": "I'm In Your Mind", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "4707", "skip_count": "8", "skip_date": "2019-12-05T04:52:29Z", "name": "Crosseyed and Painless", "artist": "Talking Heads"}
+{"track_id": "6291", "play_count": "10", "play_date_utc": "2019-12-05T04:58:07Z", "name": "Juice", "artist": "Lizzo"}
+{"track_id": "921", "skip_count": "20", "skip_date": "2019-12-05T04:59:16Z", "name": "Little Talks", "artist": "Of Monsters and Men"}
+{"track_id": "5561", "skip_count": "2", "skip_date": "2019-12-05T04:59:20Z", "name": "Tia Tamera", "artist": "Doja Cat ft. Rico Nasty"}
+{"track_id": "6077", "skip_count": "2", "skip_date": "2019-12-05T04:59:11Z", "name": "Club Down", "artist": "clipping. ft. Sarah Bernat"}
+{"track_id": "6291", "play_count": "11", "play_date_utc": "2019-12-05T09:09:07Z", "name": "Juice", "artist": "Lizzo"}
+{"track_id": "5571", "play_count": "3", "play_date_utc": "2019-12-05T09:13:10Z", "name": "Footprints", "artist": "A Tribe Called Quest"}
+{"track_id": "1603", "play_count": "56", "play_date_utc": "2019-12-05T09:17:10Z", "name": "Did You Get My Message?", "artist": "Jason Mraz ft. Rachael Yamagata"}
+{"track_id": "5389", "play_count": "13", "play_date_utc": "2019-12-05T09:21:09Z", "name": "Good Ass Intro", "artist": "Chance the Rapper"}
+{"track_id": "2903", "play_count": "11", "play_date_utc": "2019-12-05T09:23:27Z", "name": "Grand Ceremony", "artist": "Darren Korb"}
+{"track_id": "3569", "play_count": "12", "play_date_utc": "2019-12-05T09:24:54Z", "name": "Akaruku Genki Ni", "artist": "Yuki Hayashi"}
+{"track_id": "4031", "play_count": "5", "play_date_utc": "2019-12-05T09:31:44Z", "name": "Pantagruel's Nativity", "artist": "Gentle Giant"}
+{"track_id": "4197", "skip_count": "5", "skip_date": "2019-12-05T11:24:05Z", "name": "Friendship", "artist": "Toby Fox"}
+{"track_id": "6129", "play_count": "23", "play_date_utc": "2019-12-05T13:41:41Z", "name": "Niggas in Paris", "artist": "Jay-Z &#38; Kanye West"}
+{"track_id": "6155", "play_count": "14", "play_date_utc": "2019-12-05T13:44:45Z", "name": "Dirty Laundry", "artist": "Danny Brown"}
+{"track_id": "6289", "play_count": "9", "play_date_utc": "2019-12-05T02:31:01Z", "name": "Seasons", "artist": "nelward"}
+{"track_id": "6291", "play_count": "17", "play_date_utc": "2019-12-05T14:01:22Z", "name": "Juice", "artist": "Lizzo"}
+{"track_id": "6293", "play_count": "10", "play_date_utc": "2019-12-05T02:33:54Z", "name": "Truth Hurts", "artist": "Lizzo"}
+{"track_id": "6287", "play_count": "5", "play_date_utc": "2019-12-05T14:09:10Z", "name": "God's Plan", "artist": "Drake"}
+{"track_id": "4473", "play_count": "107", "play_date_utc": "2019-12-05T15:07:00Z", "name": "Goodie Bag", "artist": "Still Woozy"}
+{"track_id": "3161", "play_count": "28", "play_date_utc": "2019-12-05T15:10:20Z", "name": "Royals", "artist": "Lorde"}
