@@ -2466,3 +2466,52 @@
 {"track_id": "6347", "play_count": "41", "play_date_utc": "2019-12-20T14:30:27Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
 {"track_id": "1933", "play_count": "20", "play_date_utc": "2019-12-20T14:31:24Z", "name": "Playful", "artist": "Eric Barone"}
 {"track_id": "4799", "skip_count": "5", "skip_date": "2019-12-21T20:34:53Z", "name": "Knight Fork", "artist": "Feed Me Jack"}
+{"track_id": "5579", "play_count": "17", "play_date_utc": "2019-12-24T17:34:19Z", "name": "Tia Tamera", "artist": "Doja Cat ft. Rico Nasty"}
+{"track_id": "6347", "play_count": "42", "play_date_utc": "2019-12-24T18:47:50Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "4329", "play_count": "2", "play_date_utc": "2019-12-24T18:50:18Z", "name": "Restaurant Bar", "artist": "Yugo Kanno"}
+{"track_id": "5463", "play_count": "58", "play_date_utc": "2019-12-24T18:53:23Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
+{"track_id": "5215", "skip_count": "4", "skip_date": "2019-12-24T19:02:40Z", "name": "Electric Relaxation", "artist": "A Tribe Called Quest"}
+{"track_id": "5223", "skip_count": "6", "skip_date": "2019-12-24T19:02:47Z", "name": "The Chase, Part II", "artist": "A Tribe Called Quest"}
+{"track_id": "5587", "skip_count": "5", "skip_date": "2019-12-24T19:02:31Z", "name": "I Left My Wallet In El Segundo", "artist": "A Tribe Called Quest"}
+{"track_id": "5597", "skip_count": "3", "skip_date": "2019-12-24T19:02:36Z", "name": "Rhythm (Devoted to the Art of Moving Butts)", "artist": "A Tribe Called Quest"}
+{"track_id": "5677", "skip_count": "3", "skip_date": "2019-12-24T19:03:59Z", "name": "Norman fucking Rockwell", "artist": "Lana Del Rey"}
+{"track_id": "4973", "skip_count": "8", "skip_date": "2019-12-24T19:04:19Z", "name": "Jazz (We've Got)", "artist": "A Tribe Called Quest"}
+{"track_id": "4965", "play_count": "30", "play_date_utc": "2019-12-24T19:08:38Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "5201", "play_count": "4", "play_date_utc": "2019-12-24T19:13:00Z", "name": "8 Million Stories", "artist": "A Tribe Called Quest"}
+{"track_id": "4485", "play_count": "36", "play_date_utc": "2019-12-25T18:19:33Z", "name": "Vacation", "artist": "Still Woozy"}
+{"track_id": "5449", "play_count": "8", "play_date_utc": "2019-12-26T17:45:55Z", "name": "Cocoa Butter Kisses", "artist": "Chance the Rapper"}
+{"track_id": "3773", "skip_count": "23", "skip_date": "2019-12-27T11:06:07Z", "name": "Perpetual Change", "artist": "Yes"}
+{"track_id": "5245", "skip_count": "7", "skip_date": "2019-12-27T11:06:16Z", "name": "Enough!!", "artist": "A Tribe Called Quest"}
+{"track_id": "5255", "play_count": "56", "play_date_utc": "2019-12-27T11:10:58Z", "name": "Movin Backwards", "artist": "A Tribe Called Quest"}
+{"track_id": "4965", "play_count": "12", "play_date_utc": "2019-12-27T11:14:57Z", "name": "Verses From The Abstract", "artist": "A Tribe Called Quest"}
+{"track_id": "5231", "play_count": "17", "play_date_utc": "2019-12-27T11:20:37Z", "name": "The Space Program", "artist": "A Tribe Called Quest"}
+{"track_id": "5245", "play_count": "23", "play_date_utc": "2019-12-27T11:23:58Z", "name": "Enough!!", "artist": "A Tribe Called Quest"}
+{"track_id": "5593", "play_count": "8", "play_date_utc": "2019-12-27T11:27:46Z", "name": "Pubic Enemy", "artist": "A Tribe Called Quest"}
+{"track_id": "5597", "play_count": "11", "play_date_utc": "2019-12-27T11:31:59Z", "name": "Can I Kick It?", "artist": "A Tribe Called Quest"}
+{"track_id": "4632", "skip_count": "7", "skip_date": "2019-12-28T07:33:43Z", "name": "Hot Water", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5978", "skip_count": "3", "skip_date": "2019-12-28T07:33:38Z", "name": "Won't Trade", "artist": "Q-Tip"}
+{"track_id": "6341", "play_count": "44", "play_date_utc": "2020-01-03T15:54:10Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "45", "play_date_utc": "2020-01-03T15:57:41Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "46", "play_date_utc": "2020-01-03T16:01:12Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "47", "play_date_utc": "2020-01-03T16:04:42Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "48", "play_date_utc": "2020-01-03T16:08:13Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "49", "play_date_utc": "2020-01-03T16:11:44Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "50", "play_date_utc": "2020-01-03T16:15:15Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "51", "play_date_utc": "2020-01-03T16:18:46Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "52", "play_date_utc": "2020-01-03T16:22:17Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "53", "play_date_utc": "2020-01-03T16:25:48Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "54", "play_date_utc": "2020-01-03T16:29:19Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "55", "play_date_utc": "2020-01-03T16:32:50Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "56", "play_date_utc": "2020-01-03T16:36:20Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6341", "play_count": "57", "play_date_utc": "2020-01-03T16:39:51Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "5595", "play_count": "26", "play_date_utc": "2020-01-03T16:47:27Z", "name": "Youthful Expression", "artist": "A Tribe Called Quest"}
+{"track_id": "5595", "play_count": "27", "play_date_utc": "2020-01-03T16:53:45Z", "name": "Youthful Expression", "artist": "A Tribe Called Quest"}
+{"track_id": "5595", "play_count": "28", "play_date_utc": "2020-01-03T16:58:40Z", "name": "Youthful Expression", "artist": "A Tribe Called Quest"}
+{"track_id": "5595", "play_count": "29", "play_date_utc": "2020-01-03T17:03:35Z", "name": "Youthful Expression", "artist": "A Tribe Called Quest"}
+{"track_id": "5595", "play_count": "30", "play_date_utc": "2020-01-03T17:08:29Z", "name": "Youthful Expression", "artist": "A Tribe Called Quest"}
+{"track_id": "5595", "play_count": "31", "play_date_utc": "2020-01-03T17:13:24Z", "name": "Youthful Expression", "artist": "A Tribe Called Quest"}
+{"track_id": "5595", "play_count": "32", "play_date_utc": "2020-01-03T17:18:19Z", "name": "Youthful Expression", "artist": "A Tribe Called Quest"}
+{"track_id": "6131", "play_count": "5", "play_date_utc": "2020-01-05T12:34:33Z", "name": "Lalala", "artist": "Y2K &#38; bbno$"}
+{"track_id": "6131", "play_count": "6", "play_date_utc": "2020-01-05T12:37:13Z", "name": "Lalala", "artist": "Y2K &#38; bbno$"}
+{"track_id": "6345", "play_count": "58", "play_date_utc": "2020-01-06T08:37:58Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
+{"track_id": "6345", "play_count": "59", "play_date_utc": "2020-01-06T10:01:32Z", "name": "Mr. Clean", "artist": "Yung Gravy"}
