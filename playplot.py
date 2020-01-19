@@ -33,3 +33,29 @@ def plot_track(name, artist):
 plot_track("Flamingo", "Kero Kero Bonito")
 plot_track("Mr. Clean", "Yung Gravy")
 plot_track("What?", "A Tribe Called Quest")
+
+
+def plot_tracks(*name_artist_pair):
+    fig, ax = plt.subplots()
+    plt.title("Song Comparisons")
+    plt.xticks(rotation=45)
+    plt.xlabel("Time")
+    plots = []
+    colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+
+    
+    for idx, pair in enumerate(name_artist_pair):
+        tracks = track_events(pair[0], pair[1])
+        dates_play = [std(d['play_date_utc']) for d in tracks if "play_count" in d]
+        dates_skip = [std(d['skip_date']) for d in tracks if "skip_count" in d]
+        plots.append(ax.plot_date(dates_skip, ["Skip"]*len(dates_skip), color=colors[idx]))
+        plots.append(ax.plot_date(dates_play, [f"Play"]*len(dates_play), color=colors[idx]))
+
+    ax.set_xlim(right=datetime.today())
+    plt.legend((p[0] for p in plots[::2]), (f"{n[0]} by {n[1]}" for n in name_artist_pair))
+    plt.gcf().autofmt_xdate()
+    plt.show()
+
+
+plot_tracks(("Cooks", "Still Woozy"), ("What?", "A Tribe Called Quest"), ("Flamingo", "Kero Kero Bonito"), ("Yonkers", "Tyler, the Creator"))
+
