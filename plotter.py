@@ -1,52 +1,62 @@
-from parser import parse_itunes_xml, get_vocal_tracks, get_action_items
+import json
+import os
 import matplotlib.pyplot as plt
-import datetime
-import numpy as np
-import math
+from datetime import datetime, date
+from pandas.plotting import register_matplotlib_converters
 
-plt.style.use("seaborn")
+register_matplotlib_converters()
+with open(os.path.join(os.path.dirname(__file__), "data", "log.txt"), "r") as lf: lines = [json.loads(l) for l in lf.readlines()]
+lines.sort(key=lambda l: l['skip_date'] if 'skip_date' in l else l['play_date_utc'])
 
-def artist_plot():
-    art = parse_itunes_xml("Artist")
-    artists = {}
-    for val in art:
-        if val["Artist"] in artists:
-            artists[val["Artist"]] += 1
-        else:
-            artists[val["Artist"]] = 1
+def std(date_string): return datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%SZ")
+def track_events(name, artist): return [e for e in lines if e['name'] == name and e['artist'] == artist]
+def plot_track(name, artist):
+    tracks = track_events(name, artist)
 
-    sorted_artists = sorted(artists.items(), key=lambda v: int(v[1]), reverse=True)
-    print(sorted_artists)
+    dates_play = [std(d['play_date_utc']) for d in tracks if "play_count" in d]
+    dates_skip = [std(d['skip_date']) for d in tracks if "skip_count" in d]
 
+    fig, ax = plt.subplots()
 
-def play_plot():
-    arr = parse_itunes_xml("Play Count")
-    l = [int(x["Play Count"]) for x in arr]
+    plt.title(f"{name} by {artist}")
+    plt.xticks(rotation=45)
+    plt.xlabel("Time")
 
-    print(l)
+    ax.plot_date(dates_skip, ["Skip"]*len(dates_skip), color='b')
+    ax.plot_date(dates_play, ["Play"]*len(dates_play), color='r')
 
-    val_list = []
-    freq_list = []
+    ax.set_xlim([dates_play[0] if dates_play[0] < dates_skip[0] else dates_skip[0], datetime.today()])
 
-    count = 1
-
-    for val in range(1, len(l)):
-        if l[val] != l[val - 1] or val == len(l) - 1:
-            print(str(l[val - 1]) + ": " + str(count))
-            val_list.append(l[val - 1])
-            freq_list.append(count)
-            count = 1
-        else:
-            count+=1
-
-    plt.scatter(val_list, freq_list)
+    plt.gcf().autofmt_xdate()
     plt.show()
 
-def plot_actions():
-    played, skipped = get_action_items()
-    played.sort(key=lambda x: datetime.datetime.strptime(x['play_date_utc'], "%Y-%m-%dT%H:%M:%SZ").timestamp() + 19800)
-    skipped.sort(key=lambda x: datetime.datetime.strptime(x['skip_date'], "%Y-%m-%dT%H:%M:%SZ").timestamp() + 19800)
+def plot_tracks(*name_artist_pair):
+    name_artist_pair = name_artist_pair[::-1]
+    fig, ax = plt.subplots()
+    plt.title("Song Comparisons")
+    plt.xticks(rotation=45)
+    plt.xlabel("Time")
+    plots = []
+    colors = ['red', 'orange', '#FADA5e', 'green', 'blue', 'indigo', 'violet'][::-1]
 
-if __name__ == "__main__":
-    plot_actions()
-    pass
+    for idx, pair in enumerate(name_artist_pair):
+        tracks = track_events(pair[0], pair[1])
+        plays = [std(d['play_date_utc']) for d in tracks if "play_count" in d]
+        plots.append(ax.plot_date(plays, [pair[0]]*len(plays), color=colors[idx]))
+
+    ax.set_xlim(right=datetime.today())
+    plt.gcf().autofmt_xdate()
+    plt.show()
+    fig.savefig(os.path.join(os.path.dirname(__file__), "graphs", "song_comparisons.png"))
+
+
+plot_tracks(
+    ("Cooks", "Still Woozy"),
+    ("What?", "A Tribe Called Quest"),
+    ("Mr. Clean", "Yung Gravy"),
+    ("Favorite Song", "Chance the Rapper ft. Childish Gambino"),
+    ("Won't Trade", "Q-Tip"),
+    ("Truth Hurts", "Lizzo"),
+    ("Knight Fork", "Feed Me Jack")
+)
+

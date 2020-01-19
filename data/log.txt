@@ -2870,3 +2870,4 @@
 {"track_id": "5096", "skip_count": "5", "skip_date": "2020-01-19T07:56:27Z", "name": "Work Work", "artist": "clipping. ft. Cocc Pistol Cree"}
 {"track_id": "4360", "play_count": "11", "play_date_utc": "2020-01-19T08:00:09Z", "name": "tip toes", "artist": "half\u2022alive"}
 {"track_id": "30257", "play_count": "2", "play_date_utc": "2020-01-19T16:15:47Z", "name": "1985", "artist": "Bowling for Soup"}
+{"track_id": "5481", "play_count": "59", "play_date_utc": "2020-01-19T18:51:14Z", "name": "Favorite Song", "artist": "Chance the Rapper ft. Childish Gambino"}
