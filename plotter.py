@@ -1,7 +1,10 @@
 import json
 import os
 import matplotlib.pyplot as plt
+import matplotlib.projections.polar
+
 from datetime import datetime, date
+import numpy as np
 from pandas.plotting import register_matplotlib_converters
 
 with open(os.path.join(os.path.dirname(__file__), "data", "log.txt"), "r") as lf: lines = [json.loads(l) for l in lf.readlines()]
@@ -51,7 +54,7 @@ def play_plot(*name_artist_pair):
     plt.show()
     fig.savefig(os.path.join(plot_folder, "song_comparisons.png"))
 
-def time_plot():
+def time_plot(chart_type='b'):
     hours = {i:0 for i in range(0, 24)}
     for t in [std(d['play_date_utc']) for d in lines if "play_count" in d]:
         #offset UTC+5:30 (since i'm typically in mumbai)
@@ -60,17 +63,28 @@ def time_plot():
 
     #blue color gradient, #00n0n0, n from 0 to C then down to 1 (behavior of -|x-12|+12)
     colors = [f"#00{hex(-abs(i-12)+12)[-1]}0{hex(-abs(i - 12)+12)[-1]}0" for i in range(24)]
-    fig, ax = plt.subplots()
-    plt.bar(hours.keys(), hours.values(), color=colors)
-    plt.xticks(list(hours.keys()))
-    ax.set_xlim([-1, 24])
-    plt.xlabel("Hours (Military)")
-    plt.ylabel("Plays")
-    plt.title("Plays Per Hour")
-    plt.show()
-    fig.savefig(os.path.join(plot_folder, "play_times.png"))
-
-
+    if chart_type == 'b': #bar
+        fig, ax = plt.subplots()
+        plt.bar(hours.keys(), hours.values(), color=colors)
+        plt.xticks(list(hours.keys()))
+        ax.set_xlim([-1, 24])
+        plt.xlabel("Hours (Military)")
+        plt.ylabel("Plays")
+        plt.title("Plays Per Hour")
+        plt.show()
+        fig.savefig(os.path.join(plot_folder, "play_times_bar.png"))
+    else:
+        plt.title("Plays Per Hour")
+        fig = plt.figure()
+        theta = np.linspace(0.0, 2 * np.pi, 24, endpoint=False)
+        width = (2 * np.pi) / 24
+        ax = plt.subplot(111, polar=True)
+        bars = plt.bar(theta, hours.values(), width=width)
+        for i, bar in enumerate(bars):
+            bar.set_facecolor(colors[i])
+        ax.set_theta_zero_location('N', offset=10)
+        plt.show()
+        fig.savefig(os.path.join(plot_folder, "play_times_circle.png"))
 
 play_plot(
     ("Cooks", "Still Woozy"),
