@@ -1,7 +1,8 @@
 # TuningFork
 
-A collection of projects related to music files: lyric scraping, iTunes parsing/logging, Twitter lyric bots, and more! Everything is for personal use so a tad rough around the edges (and everywhere else):
+A collection of projects related to music files: lyric scraping, iTunes parsing, play logging, tag modification, Twitter lyric bots, and more! Everything is for personal use, so a tad rough around the edges (and everywhere else, to be honest):
 
+- Cleanser: CLI tool to remove unwanted ID3 tags from MP3 files
 - Parser: Script to run through iTunes Library.xml file to load in song data, or query iTunes Library via Swift executable
 - Plotter: Fun scripts to plot Logger data via matplotlib
 - Scraper: Lyric scraper from Genius to update lyric tag of all songs specified as having scrapable vocals (Vocal in comments)

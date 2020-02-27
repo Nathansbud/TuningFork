@@ -110,8 +110,6 @@ with open(os.path.dirname(__file__) + os.sep + "data" + os.sep + "log.txt", 'a+'
     for line in change_set:
         lf.write(json.dumps(line) + "\n")
 
-shutil.copyfile(music_dir + main_name, music_dir + temp_name)
-shutil.copyfile(music_dir + temp_name, music_dir + old_name)
-
 if __name__ == '__main__':
-    pass
+    shutil.copyfile(music_dir + main_name, music_dir + temp_name)
+    shutil.copyfile(music_dir + temp_name, music_dir + old_name)

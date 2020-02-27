@@ -86,16 +86,15 @@ def time_plot(chart_type='b'):
         plt.show()
         fig.savefig(os.path.join(plot_folder, "play_times_circle.png"))
 
-play_plot(
-    ("Cooks", "Still Woozy"),
-    ("What?", "A Tribe Called Quest"),
-    ("Mr. Clean", "Yung Gravy"),
-    ("Favorite Song", "Chance the Rapper ft. Childish Gambino"),
-    ("Won't Trade", "Q-Tip"),
-    ("Truth Hurts", "Lizzo"),
-    ("Knight Fork", "Feed Me Jack")
-)
+if __name__ == "__main__":
+    play_plot(
+        ("Cooks", "Still Woozy"),
+        ("What?", "A Tribe Called Quest"),
+        ("Mr. Clean", "Yung Gravy"),
+        ("Favorite Song", "Chance the Rapper ft. Childish Gambino"),
+        ("Won't Trade", "Q-Tip"),
+        ("Truth Hurts", "Lizzo"),
+        ("Knight Fork", "Feed Me Jack")
+    ) #graph all of the songs in my iTunes
 
-time_plot()
-
-
+    time_plot()
