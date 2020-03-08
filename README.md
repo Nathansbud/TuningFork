@@ -5,6 +5,7 @@ A collection of projects related to music files: lyric scraping, iTunes parsing,
 - Cleanser: CLI tool to remove unwanted ID3 tags from MP3 files
 - Parser: Script to run through iTunes Library.xml file to load in song data, or query iTunes Library via Swift executable
 - Plotter: Fun scripts to plot Logger data via matplotlib
+- Profane: CLI tool to check if track lyrics contain profanity and build profanity-free playlist
 - Scraper: Lyric scraper from Genius to update lyric tag of all songs specified as having scrapable vocals (Vocal in comments)
 - Lyrical: Lyric grabber from random/specified songs
 	- LyricBot: Script used to post random lyrics to Twitter for various artist bots, using Genius/Google Doc/Sheets as source

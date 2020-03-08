@@ -6,13 +6,15 @@ from sys import argv
 from scraper import get_lyrics, get_lyrics_from_url
 import os
 import re
+from subprocess import Popen, PIPE
+import json
 
 profanity = ["asshol", "penis", "vagina", "bitch", "shit", "fuck", "cunt", "nigga", "nigger", "faggot", "crap", "pussy", "dick", "queer","retard", "slut", "midget", "whore"]
-sensitive = ["hell"] #super scunthorpe-prone
+sensitive = ["hell"]
 boundaried = ["asses", "ass"]
 
-#does not at ALL handle scunthorping
-def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=False):
+#limited scunthorpe checking
+def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=False, prints=True):
     if file:
         if file.endswith(".mp3"):
             track = ID3(file)
@@ -21,17 +23,17 @@ def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=Fal
             if "TIT2" in track.keys(): title = str(track["TIT2"])
         elif file.endswith("m4a"):
             track = MP4(file)
-            if "\xa9lyr" in track: lyrics = track["\xa9lyr"]
-            if "\xa9ART" in track: artist = track["\xa9ART"]
-            if "\xa9nam" in track: title = track["\xa9nam"]
+            if "\xa9lyr" in track: lyrics = track["\xa9lyr"][0]
+            if "\xa9ART" in track: artist = track["\xa9ART"][0]
+            if "\xa9nam" in track: title = track["\xa9nam"][0]
         else:
             return False
-        print(f"Checking {title.title()} by {artist.title() if artist else 'Unknown Artist'} for profanity...")
+        if prints: print(f"Checking {title.title()} by {artist.title() if artist else 'Unknown Artist'} for profanity...")
     elif url:
-        print(f"Checking URL {url} for profanity...")
+        if prints: print(f"Checking URL {url} for profanity...")
         lyrics = get_lyrics_from_url(url)
     elif artist and title:
-        print(f"Checking {title.title()} by {artist.title()} for profanity...")
+        if prints: print(f"Checking {title.title()} by {artist.title()} for profanity...")
         lyrics = get_lyrics(artist, title)
     if lyrics:
         if strict:
@@ -41,15 +43,52 @@ def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=Fal
             for w in profanity:
                 if w in lyrics: return True
         for w in boundaried:
-            if re.match(f"\\b{w}\\b", lyrics): return True
+            if re.search(f"\\b{w}\\b", lyrics): return True
     return False
+
+def call_applescript(script):
+    p = Popen(['osascript'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+    stdout, stderr = p.communicate(script)
+    return {"output": stdout, "error": stderr,"code": p.returncode}
+
+def playlist_builder():
+    make_playlist = """
+    tell application "iTunes"
+        if user playlist "Good Clean Family Fun" exists then
+            delete tracks of user playlist "Good Clean Family Fun"
+        else
+            make new user playlist with properties {name:"Good Clean Family Fun", shuffle:true}
+        end if
+    end tell
+    """
+    call_applescript(make_playlist)
+    get_tracks = """
+    tell application "iTunes"
+        set vocalPaths to (get location of (every track in library playlist 1 whose (comment is "Vocal")))
+        repeat with i from 1 to (count vocalPaths)
+            set item i of vocalPaths to (POSIX path of item i of vocalPaths)
+        end repeat
+        set vocalPOSIX to vocalPaths
+    end tell
+    """
+    tracks = [f"/{s.lstrip('/')}".strip() for s in call_applescript(get_tracks)['output'].split(", /") if not check_lyrics(file=f"/{s.lstrip('/')}".strip(), prints=False)]
+
+    # just abysmal but can't figure out how to embed a list in AppleScript call
+    for t in tracks:
+        call_applescript(f"""
+        tell application "iTunes" 
+            add POSIX file "{t}" as alias to user playlist "Good Clean Family Fun"
+        end tell
+        """)
 
 if __name__ == "__main__":
     arg_set = {
         "strict":False,
     }
-    if len(argv) == 2 and argv[1].lower() in ['-h', '-help']:
-        print("HELP MESSAGE")
+    if len(argv) == 1:
+        playlist_builder()
+    elif len(argv) == 2 and argv[1].lower() in ['-h', '-help']:
+        print("Help Message; not-built yet")
     else:
         for a in argv[1:]:
             arg = a.lower()
