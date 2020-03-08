@@ -5,18 +5,20 @@ from mutagen.mp4 import MP4
 from sys import argv
 from scraper import get_lyrics, get_lyrics_from_url
 import os
+import re
 
-profanity = ["ass", "bitch", "shit", "fuck", "cunt", "nigga", "nigger", "faggot", "crap", "pussy", "dick", "queer","retard", "slut", "midget", "whore"]
-sensitive = ["hell"]
+profanity = ["asshol", "penis", "vagina", "bitch", "shit", "fuck", "cunt", "nigga", "nigger", "faggot", "crap", "pussy", "dick", "queer","retard", "slut", "midget", "whore"]
+sensitive = ["hell"] #super scunthorpe-prone
+boundaried = ["asses", "ass"]
 
 #does not at ALL handle scunthorping
 def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=False):
     if file:
         if file.endswith(".mp3"):
             track = ID3(file)
-            if "USLT::eng" in track.keys(): lyrics = track["USLT::eng"]
-            if "TPE1" in track.keys(): artist = track["TPE1"]
-            if "TIT2" in track.keys(): title = track["TIT2"]
+            if "USLT::eng" in track.keys(): lyrics = str(track["USLT::eng"])
+            if "TPE1" in track.keys(): artist = str(track["TPE1"])
+            if "TIT2" in track.keys(): title = str(track["TIT2"])
         elif file.endswith("m4a"):
             track = MP4(file)
             if "\xa9lyr" in track: lyrics = track["\xa9lyr"]
@@ -31,18 +33,16 @@ def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=Fal
     elif artist and title:
         print(f"Checking {title.title()} by {artist.title()} for profanity...")
         lyrics = get_lyrics(artist, title)
-
     if lyrics:
-        lyrics = str(lyrics.lower())
         if strict:
             for w in profanity + sensitive:
                 if w in lyrics: return True
         else:
             for w in profanity:
                 if w in lyrics: return True
-    else:
-        return False
-
+        for w in boundaried:
+            if re.match(f"\\b{w}\\b", lyrics): return True
+    return False
 
 if __name__ == "__main__":
     arg_set = {
