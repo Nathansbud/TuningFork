@@ -69,10 +69,7 @@ def get_lyrics_from_url(url):
         lyrics = lyrics[2:len(lyrics)-2] #Delete trailing and leading newlines
         return lyrics
     except TypeError:
-        print("Song add failed! Genius link was " + url)
-    except MutagenError:
-        print("Song add failed! Genius link was " + url)
-
+        print(f"Get lyrics failed on URL '{url}'")
 
 def write_lyrics(artist, name, file, rewrite=False):
     song = name
