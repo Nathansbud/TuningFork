@@ -14,7 +14,7 @@ sensitive = ["hell"]
 boundaried = ["asses", "ass"]
 
 #limited scunthorpe checking
-def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=False, prints=True):
+def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=False, prints=True, alt_url=None):
     if file:
         if file.endswith(".mp3"):
             track = ID3(file)
@@ -32,6 +32,12 @@ def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=Fal
     elif url:
         if prints: print(f"Checking URL {url} for profanity...")
         lyrics = get_lyrics_from_url(url)
+        if not lyrics and alt_url:
+            if prints: print(f"Checking alternate URL {alt_url} for profanity...")
+            lyrics = get_lyrics_from_url(alt_url)
+            if not lyrics and prints:
+                print(f"No valid Genius URL found for track!")
+                return True #Return true on error; would rather false positive than false negative
     elif artist and title:
         if prints: print(f"Checking {title.title()} by {artist.title()} for profanity...")
         lyrics = get_lyrics(artist, title)

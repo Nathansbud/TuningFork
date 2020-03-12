@@ -1,5 +1,4 @@
 #!/usr/local/opt/python/bin/python3.7
-
 from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
@@ -44,21 +43,18 @@ def has_lyrics(file):
 
 def genius_clean(field):
     #unidecode turns • into *...annoying.
-    field = unidecode.unidecode(field.split( " ft. ")[0].split( " feat. ")[0].split(" featuring. ")[0].replace("&", "and").replace("•", "")) #split off featuring, replace & with and
+    field = unidecode.unidecode(field.split( " ft. ")[0].split( " feat. ")[0].split(" featuring. ")[0].split("  feat. ")[0].split(" (with ")[0].replace("&", "and").replace("•", "")) #split off featuring, replace & with and
     field = re.sub("(?<=\s)[^a-zA-Z0-9](?=\s)", "-", field) #replace space-surrounded punctuation with hyphen
     field = re.sub("(?<=[a-zA-Z0-9])[^a-zA-Z0-9'.](?=[a-zA-Z0-9])", "-", field).replace(" - ", "-").replace(" ", "-") #replace mid-string punctuation; i.e. "P!nk"
     return re.sub("[^a-zA-Z0-9\-]", "", field).lower()
 
-def get_lyrics(artist, name):
+def make_genius_url(artist, name):
     artist = genius_clean(artist).capitalize()
-    name = genius_clean(name)
+    name = genius_clean(name).rstrip("-")
+    return "https://genius.com/" + artist + "-" + name + "-lyrics"
 
-    if len(name) > 0:
-        if name[-1] == "-":
-            name = name[:-1] #not sure if necessary, to make sure it doesn't end in hyphens...should be done a tad bit more elegantly
-
-    lyrics_url = "https://genius.com/" + artist + "-" +  name + "-lyrics"
-    return get_lyrics_from_url(lyrics_url)
+def get_lyrics(artist, name):
+    return get_lyrics_from_url(make_genius_url(artist, name))
 
 def get_lyrics_from_url(url):
     try:
@@ -70,6 +66,7 @@ def get_lyrics_from_url(url):
         return lyrics
     except TypeError:
         print(f"Get lyrics failed on URL '{url}'")
+        return False
 
 def write_lyrics(artist, name, file, rewrite=False):
     song = name
