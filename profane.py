@@ -78,14 +78,17 @@ def playlist_builder():
     end tell
     """
     tracks = [f"/{s.lstrip('/')}".strip() for s in call_applescript(get_tracks)['output'].split(", /") if not check_lyrics(file=f"/{s.lstrip('/')}".strip(), prints=False)]
-
-    # just abysmal but can't figure out how to embed a list in AppleScript call
-    for t in tracks:
-        call_applescript(f"""
-        tell application "iTunes" 
-            add POSIX file "{t}" as alias to user playlist "Good Clean Family Fun"
-        end tell
-        """)
+    lstr = '{'
+    for t in tracks: lstr += '"' + t + '",'
+    lstr = lstr.rstrip(",")+"}"
+    call_applescript(f"""
+    tell application "iTunes" 
+        set thePaths to {lstr}
+        repeat with i from 1 to count of thePaths
+            add POSIX file (item i of thePaths) as alias to user playlist "Good Clean Family Fun"
+        end repeat
+    end tell
+    """)
 
 if __name__ == "__main__":
     arg_set = {
