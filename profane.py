@@ -6,10 +6,11 @@ from sys import argv
 from scraper import get_lyrics, get_lyrics_from_url
 import os
 import re
-from subprocess import Popen, PIPE
+from utilities import call_applescript, get_vocal_paths
 import json
 
-profanity = ["asshol", "penis", "vagina", "bitch", "shit", "fuck", "cunt", "nigga", "nigger", "faggot", "crap", "pussy", "dick", "queer","retard", "slut", "midget", "whore"]
+
+profanity = ["asshol", "penis", "vagina", "bitch", "shit", "fuck", "cunt", "cock", "nigga", "nigger", "faggot", "crap", "pussy", "dick", "queer","retard", "slut", "midget", "whore"]
 sensitive = ["hell"]
 boundaried = ["asses", "ass"]
 
@@ -52,11 +53,6 @@ def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=Fal
             if re.search(f"\\b{w}\\b", lyrics): return True
     return False
 
-def call_applescript(script):
-    p = Popen(['osascript'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
-    stdout, stderr = p.communicate(script)
-    return {"output": stdout, "error": stderr,"code": p.returncode}
-
 def playlist_builder():
     make_playlist = """
     tell application "iTunes"
@@ -68,16 +64,7 @@ def playlist_builder():
     end tell
     """
     call_applescript(make_playlist)
-    get_tracks = """
-    tell application "iTunes"
-        set vocalPaths to (get location of (every track in library playlist 1 whose (comment is "Vocal")))
-        repeat with i from 1 to (count vocalPaths)
-            set item i of vocalPaths to (POSIX path of item i of vocalPaths)
-        end repeat
-        set vocalPOSIX to vocalPaths
-    end tell
-    """
-    tracks = [f"/{s.lstrip('/')}".strip() for s in call_applescript(get_tracks)['output'].split(", /") if not check_lyrics(file=f"/{s.lstrip('/')}".strip(), prints=False)]
+    tracks = [f"/{s.lstrip('/')}".strip() for s in get_vocal_paths() if not check_lyrics(file=f"/{s.lstrip('/')}".strip(), prints=False)]
     lstr = '{'
     for t in tracks: lstr += '"' + t + '",'
     lstr = lstr.rstrip(",")+"}"
