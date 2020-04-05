@@ -1,14 +1,24 @@
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
+import spotipy.util
 import os
 import json
 from scraper import genius_clean, get_lyrics, make_genius_url
 from profane import check_lyrics
+from parser import get_vocal_tracks
 
 with open(os.path.join(os.path.dirname(__file__), "credentials", "spotify.json")) as jf: creds = json.load(jf)
 os.environ["SPOTIPY_CLIENT_ID"] = creds["client_id"]
 os.environ["SPOTIPY_CLIENT_SECRET"] = creds["client_secret"]
-sp = Spotify(client_credentials_manager=SpotifyClientCredentials())
+os.environ["SPOTIPY_REDIRECT_URI"] = creds['redirect_uri']
+
+scope = 'playlist-modify-public playlist-read-private user-library-read'
+token = spotipy.util.prompt_for_user_token("4id0nxmlnzc8gccxn58u44tke",
+                                           client_id=creds['client_id'],
+                                           client_secret=creds['client_secret'],
+                                           redirect_uri=creds['redirect_uri'],
+                                           scope=scope)
+sp = Spotify(auth=token, client_credentials_manager=)
 
 def get_playlist(pid):
     playlist_tracks = sp.playlist(pid)['tracks']['items']
@@ -53,5 +63,16 @@ def get_clean_tracks(pid):
     return clean_tracks
 
 
+def create_playlist_from_itunes():
+    track_list = set()
+    for track in get_vocal_tracks()[:10]:
+        try:
+            track_list.add(sp.search(q=f"track:{track['Name']} artist:{genius_clean(track['Artist'])}")['tracks']['items'][0]['uri'])
+        except:
+            print(f"Couldn't find {track['Name']} by {track['Artist']}")
+    sp.user_playlist_add_tracks(user="4id0nxmlnzc8gccxn58u44tke", playlist_id="0ngrknAD6SoMh1EpKIzgqD", tracks=track_list)
 
-get_clean_tracks("0nlqooedIJm8hyuhwa2X0M")
+if __name__ == "__main__":
+    create_playlist_from_itunes()
+    pass
+
