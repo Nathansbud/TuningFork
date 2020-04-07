@@ -13,12 +13,13 @@ os.environ["SPOTIPY_CLIENT_SECRET"] = creds["client_secret"]
 os.environ["SPOTIPY_REDIRECT_URI"] = creds['redirect_uri']
 
 scope = 'playlist-modify-public playlist-read-private user-library-read'
+
 token = spotipy.util.prompt_for_user_token("4id0nxmlnzc8gccxn58u44tke",
                                            client_id=creds['client_id'],
                                            client_secret=creds['client_secret'],
                                            redirect_uri=creds['redirect_uri'],
                                            scope=scope)
-sp = Spotify(auth=token, client_credentials_manager=)
+sp = Spotify(auth=token, client_credentials_manager=SpotifyClientCredentials())
 
 def get_playlist(pid):
     playlist_tracks = sp.playlist(pid)['tracks']['items']
