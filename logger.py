@@ -1,5 +1,4 @@
 #!/usr/local/bin/python3.7
-
 import difflib
 import shutil
 import os
