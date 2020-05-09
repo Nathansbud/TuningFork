@@ -43,10 +43,10 @@ def has_lyrics(file):
 
 def genius_clean(field):
     #unidecode turns • into *...annoying.
-    field = unidecode.unidecode(field.split( " ft. ")[0].split( " feat. ")[0].split(" featuring. ")[0].split("  feat. ")[0].split(" (with ")[0].replace("&", "and").replace("•", "")) #split off featuring, replace & with and
-    field = re.sub("(?<=\s)[^a-zA-Z0-9](?=\s)", "-", field) #replace space-surrounded punctuation with hyphen
-    field = re.sub("(?<=[a-zA-Z0-9])[^a-zA-Z0-9'.](?=[a-zA-Z0-9])", "-", field).replace(" - ", "-").replace(" ", "-") #replace mid-string punctuation; i.e. "P!nk"
-    return re.sub("[^a-zA-Z0-9\-]", "", field).lower()
+    field = unidecode.unidecode(field.lower().split( " ft. ")[0].split( " feat. ")[0].split(" featuring. ")[0].split("  feat. ")[0].split(" (with ")[0].replace("&", "and").replace("•", "").replace("æ", "").replace("œ", "")) #split off featuring, replace & with and
+    field = re.sub("(?<=\s)[^a-z0-9](?=\s)", "-", field) #replace space-surrounded punctuation with hyphen
+    field = re.sub("(?<=[a-z0-9])[^a-z0-9'.](?=[a-z0-9])", "-", field).replace(" - ", "-").replace(" ", "-") #replace mid-string punctuation; i.e. "P!nk"
+    return re.sub("[^a-z0-9\-]", "", field)
 
 def make_genius_url(artist, name):
     artist = genius_clean(artist).capitalize()
