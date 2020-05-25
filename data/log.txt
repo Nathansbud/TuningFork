@@ -5456,3 +5456,286 @@
 {"track_id": "4792", "play_count": "25", "play_date_utc": "2020-05-09T08:57:01Z", "name": "The Great Curve", "artist": "Talking Heads"}
 {"track_id": "4168", "play_count": "13", "play_date_utc": "2020-05-09T08:59:12Z", "name": "and the day goes on", "artist": "Bill Wurtz"}
 {"track_id": "5610", "skip_count": "4", "skip_date": "2020-05-09T08:59:14Z", "name": "Represent", "artist": "Nas"}
+{"track_id": "5624", "play_count": "26", "play_date_utc": "2020-05-09T09:02:30Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "1102", "play_count": "71", "play_date_utc": "2020-05-09T09:05:19Z", "name": "Onett's Theme", "artist": "Keiichi Suzuki"}
+{"track_id": "1168", "skip_count": "49", "skip_date": "2020-05-09T09:05:24Z", "name": "Unite Synchronization", "artist": "Malcolm Brown"}
+{"track_id": "2624", "play_count": "17", "play_date_utc": "2020-05-09T09:06:20Z", "name": "Collapse of Lust", "artist": "Shoji Meguro"}
+{"track_id": "3400", "play_count": "12", "play_date_utc": "2020-05-09T09:07:26Z", "name": "Cottonwood Hike", "artist": "Chris Remo"}
+{"track_id": "1864", "play_count": "22", "play_date_utc": "2020-05-09T09:08:47Z", "name": "Dangerous Guys", "artist": "Shogo Sakai"}
+{"track_id": "2502", "play_count": "10", "play_date_utc": "2020-05-09T09:09:49Z", "name": "Underwater", "artist": "Koji Kondo"}
+{"track_id": "5758", "play_count": "20", "play_date_utc": "2020-05-09T09:12:30Z", "name": "Jesus Forgive Me, I Am A Thot", "artist": "JPEGMAFIA"}
+{"track_id": "5512", "skip_count": "4", "skip_date": "2020-05-09T21:25:50Z", "name": "Cocoa Butter Kisses", "artist": "Chance the Rapper"}
+{"track_id": "6868", "play_count": "13", "play_date_utc": "2020-05-09T21:29:55Z", "name": "Two Trucks", "artist": "Lemon Demon"}
+{"track_id": "2142", "skip_count": "8", "skip_date": "2020-05-09T21:30:07Z", "name": "Voltzwaltz", "artist": "Danny Baranowsky"}
+{"track_id": "2878", "play_count": "20", "play_date_utc": "2020-05-09T21:34:20Z", "name": "Title Screen (Gnossiene No. 1)", "artist": "Ridiculon"}
+{"track_id": "3046", "play_count": "29", "play_date_utc": "2020-05-09T21:37:01Z", "name": "City Chicks", "artist": "Patric Catani"}
+{"track_id": "2716", "play_count": "20", "play_date_utc": "2020-05-09T21:40:15Z", "name": "The Spine", "artist": "Darren Korb"}
+{"track_id": "3434", "skip_count": "7", "skip_date": "2020-05-09T21:43:47Z", "name": "Imminence", "artist": "Yugo Kanno"}
+{"track_id": "4424", "play_count": "3", "play_date_utc": "2020-05-09T21:43:42Z", "name": "Drunk", "artist": "sungazer"}
+{"track_id": "6338", "play_count": "27", "play_date_utc": "2020-05-09T21:47:20Z", "name": "Juice", "artist": "Lizzo"}
+{"track_id": "1162", "play_count": "36", "play_date_utc": "2020-05-09T21:49:39Z", "name": "Conkdor Canyon", "artist": "Mahito Yokota, Toru Minegishi, Yasuaki Iwata, and Koji Kondo"}
+{"track_id": "6052", "skip_count": "4", "skip_date": "2020-05-09T21:49:43Z", "name": "Wet Hands", "artist": "C418"}
+{"track_id": "1756", "play_count": "14", "play_date_utc": "2020-05-09T21:52:16Z", "name": "Beacon", "artist": "Richard Vreeland"}
+{"track_id": "4164", "play_count": "9", "play_date_utc": "2020-05-09T21:56:34Z", "name": "outside", "artist": "Bill Wurtz"}
+{"track_id": "4184", "play_count": "3", "play_date_utc": "2020-05-09T22:01:46Z", "name": "Productions Theme", "artist": "Holder"}
+{"track_id": "5484", "play_count": "3", "play_date_utc": "2020-05-09T22:05:41Z", "name": "King Kunta", "artist": "Kendrick Lamar"}
+{"track_id": "5624", "play_count": "27", "play_date_utc": "2020-05-09T22:08:52Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "2892", "skip_count": "5", "skip_date": "2020-05-09T22:12:12Z", "name": "The Tower (Requiem)", "artist": "Ridiculon"}
+{"track_id": "5624", "play_count": "28", "play_date_utc": "2020-05-09T22:12:09Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "5624", "play_count": "29", "play_date_utc": "2020-05-09T22:15:23Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "5624", "play_count": "30", "play_date_utc": "2020-05-09T22:18:43Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "5624", "play_count": "31", "play_date_utc": "2020-05-09T22:21:54Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "5624", "play_count": "32", "play_date_utc": "2020-05-09T22:25:06Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "5624", "play_count": "33", "play_date_utc": "2020-05-09T22:28:17Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "5624", "play_count": "34", "play_date_utc": "2020-05-09T22:31:28Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "5624", "play_count": "35", "play_date_utc": "2020-05-09T22:34:40Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "5624", "play_count": "36", "play_date_utc": "2020-05-09T22:37:51Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "5624", "play_count": "37", "play_date_utc": "2020-05-09T22:41:02Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "5624", "play_count": "38", "play_date_utc": "2020-05-09T22:44:14Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "6844", "play_count": "18", "play_date_utc": "2020-05-12T06:34:57Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "4342", "play_count": "12", "play_date_utc": "2020-05-12T06:37:37Z", "name": "Yellow Submarine", "artist": "The Beatles"}
+{"track_id": "6436", "skip_count": "5", "skip_date": "2020-05-13T03:35:04Z", "name": "Circles", "artist": "Mac Miller"}
+{"track_id": "6524", "skip_count": "2", "skip_date": "2020-05-13T03:35:15Z", "name": "Probably Up", "artist": "Lawrence"}
+{"track_id": "6844", "play_count": "19", "play_date_utc": "2020-05-13T03:39:25Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "4572", "play_count": "18", "play_date_utc": "2020-05-13T03:44:47Z", "name": "Robot Stop", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5144", "skip_count": "3", "skip_date": "2020-05-13T03:44:57Z", "name": "I've Been Waitin' for Tomorrow (All of My Life)", "artist": "The The"}
+{"track_id": "5380", "skip_count": "2", "skip_date": "2020-05-13T03:45:03Z", "name": "The Powers That B", "artist": "Death Grips"}
+{"track_id": "6606", "skip_count": "7", "skip_date": "2020-05-13T03:44:53Z", "name": "Buttered Up", "artist": "Yung Gravy"}
+{"track_id": "4586", "skip_count": "7", "skip_date": "2020-05-13T03:45:23Z", "name": "Road Train", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5206", "skip_count": "7", "skip_date": "2020-05-13T03:45:43Z", "name": "Perfect", "artist": "The The"}
+{"track_id": "4242", "skip_count": "7", "skip_date": "2020-05-13T03:47:52Z", "name": "Birdhouse in Your Soul", "artist": "They Might Be Giants"}
+{"track_id": "4756", "skip_count": "7", "skip_date": "2020-05-13T03:51:22Z", "name": "Wasted Time", "artist": "The Eagles"}
+{"track_id": "5372", "play_count": "5", "play_date_utc": "2020-05-13T03:51:18Z", "name": "WHAT'S GOOD", "artist": "Tyler, the Creator"}
+{"track_id": "5312", "play_count": "15", "play_date_utc": "2020-05-13T03:54:30Z", "name": "Black Spasmodic", "artist": "A Tribe Called Quest"}
+{"track_id": "4418", "play_count": "29", "play_date_utc": "2020-05-13T04:05:57Z", "name": "My Song", "artist": "GFOTY"}
+{"track_id": "6446", "skip_count": "3", "skip_date": "2020-05-13T04:06:32Z", "name": "Everybody", "artist": "Mac Miller"}
+{"track_id": "32879", "play_count": "2", "play_date_utc": "2020-05-15T21:40:24Z", "name": "I Zimbra", "artist": "Talking Heads"}
+{"track_id": "6845", "play_count": "20", "play_date_utc": "2020-05-15T21:48:52Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "6857", "play_count": "3", "play_date_utc": "2020-05-15T21:51:41Z", "name": "Promisicuity", "artist": "Feed Me Jack"}
+{"track_id": "6847", "skip_count": "2", "skip_date": "2020-05-15T21:53:39Z", "name": "Until Then", "artist": "Feed Me Jack"}
+{"track_id": "6857", "play_count": "4", "play_date_utc": "2020-05-15T21:57:14Z", "name": "Promisicuity", "artist": "Feed Me Jack"}
+{"track_id": "6857", "skip_count": "1", "skip_date": "2020-05-15T21:57:26Z", "name": "Promisicuity", "artist": "Feed Me Jack"}
+{"track_id": "2383", "play_count": "10", "play_date_utc": "2020-05-18T20:57:42Z", "name": "La Danse Macabre", "artist": "Jake Kaufman"}
+{"track_id": "2289", "skip_count": "7", "skip_date": "2020-05-18T21:07:08Z", "name": "Guzma's Theme", "artist": "Minako Adichi"}
+{"track_id": "4223", "play_count": "69", "play_date_utc": "2020-05-18T21:10:33Z", "name": "Something For Your M.I.N.D.", "artist": "Superorganism"}
+{"track_id": "3259", "play_count": "167", "play_date_utc": "2020-05-18T21:19:39Z", "name": "Roundabout", "artist": "Yes"}
+{"track_id": "6443", "play_count": "9", "play_date_utc": "2020-05-18T21:25:21Z", "name": "Good News", "artist": "Mac Miller"}
+{"track_id": "5687", "play_count": "2", "play_date_utc": "2020-05-18T21:28:33Z", "name": "PERIHELION", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "4533", "skip_count": "5", "skip_date": "2020-05-18T21:31:25Z", "name": "Locomotive Breath", "artist": "Jethro Tull"}
+{"track_id": "4629", "skip_count": "9", "skip_date": "2020-05-18T21:31:21Z", "name": "I've Seen Footage", "artist": "Death Grips"}
+{"track_id": "5447", "play_count": "9", "play_date_utc": "2020-05-18T21:31:17Z", "name": "getting better", "artist": "nelward"}
+{"track_id": "4721", "play_count": "3", "play_date_utc": "2020-05-18T21:34:17Z", "name": "Pop In My Step", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "6187", "play_count": "4", "play_date_utc": "2020-05-18T21:36:15Z", "name": "Visiting Statue", "artist": "Grimes"}
+{"track_id": "5193", "play_count": "14", "play_date_utc": "2020-05-18T21:53:41Z", "name": "Why Black Man Dey Suffer", "artist": "Fela Kuti"}
+{"track_id": "4379", "play_count": "4", "play_date_utc": "2020-05-18T21:59:05Z", "name": "Jacksonville", "artist": "Sufjan Stevens"}
+{"track_id": "4481", "skip_count": "4", "skip_date": "2020-05-18T21:59:43Z", "name": "Mister Class and Quality", "artist": "Gentle Giant"}
+{"track_id": "4219", "play_count": "21", "play_date_utc": "2020-05-18T22:03:07Z", "name": "It\u2019s All Good", "artist": "Superorganism"}
+{"track_id": "5623", "play_count": "39", "play_date_utc": "2020-05-18T22:06:18Z", "name": "101 FM", "artist": "Little Simz"}
+{"track_id": "6521", "play_count": "47", "play_date_utc": "2020-05-18T22:08:56Z", "name": "Welcome to Chilis", "artist": "Yung Gravy &#38; bbno$"}
+{"track_id": "2575", "skip_count": "14", "skip_date": "2020-05-18T22:12:10Z", "name": "Hot 'n Cold", "artist": "Katy Perry"}
+{"track_id": "6533", "play_count": "4", "play_date_utc": "2020-05-18T22:16:08Z", "name": "Whoever You Are", "artist": "Lawrence"}
+{"track_id": "6845", "play_count": "21", "play_date_utc": "2020-05-18T22:20:39Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "32879", "play_count": "3", "play_date_utc": "2020-05-18T22:23:45Z", "name": "I Zimbra", "artist": "Talking Heads"}
+{"track_id": "6005", "skip_count": "4", "skip_date": "2020-05-18T22:25:15Z", "name": "Shaka", "artist": "Q-Tip"}
+{"track_id": "6347", "skip_count": "2", "skip_date": "2020-05-18T22:25:01Z", "name": "Like a Girl", "artist": "Lizzo"}
+{"track_id": "3855", "play_count": "29", "play_date_utc": "2020-05-18T22:28:33Z", "name": "Toxic", "artist": "Britney Spears"}
+{"track_id": "6421", "play_count": "2", "play_date_utc": "2020-05-18T22:32:27Z", "name": "Boy Problems", "artist": "Carly Rae Jepsen"}
+{"track_id": "3831", "play_count": "27", "play_date_utc": "2020-05-18T22:36:31Z", "name": "Civil War", "artist": "BaerTaffy ft. AlyseChantel"}
+{"track_id": "6226", "play_count": "12", "play_date_utc": "2020-05-19T02:22:35Z", "name": "Run the Jewels", "artist": "Run the Jewels"}
+{"track_id": "3244", "play_count": "32", "play_date_utc": "2020-05-19T02:26:16Z", "name": "Down Under", "artist": "Men at Work"}
+{"track_id": "4462", "skip_count": "14", "skip_date": "2020-05-19T02:30:35Z", "name": "Dog's Life", "artist": "Gentle Giant"}
+{"track_id": "1852", "play_count": "14", "play_date_utc": "2020-05-19T02:32:02Z", "name": "Welcome!", "artist": "Shogo Sakai"}
+{"track_id": "6706", "skip_count": "2", "skip_date": "2020-05-19T02:39:42Z", "name": "BIRDZ", "artist": "Denzel Curry ft. Rick Ross"}
+{"track_id": "6708", "skip_count": "4", "skip_date": "2020-05-19T02:49:21Z", "name": "AUTOMATIC", "artist": "Denzel Curry ft. Tay Keith"}
+{"track_id": "5438", "skip_count": "3", "skip_date": "2020-05-19T03:08:42Z", "name": "Blackbird", "artist": "The Beatles"}
+{"track_id": "5270", "skip_count": "8", "skip_date": "2020-05-19T03:54:50Z", "name": "Sucka Nigga", "artist": "A Tribe Called Quest"}
+{"track_id": "6844", "play_count": "22", "play_date_utc": "2020-05-19T03:54:41Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "6826", "play_count": "4", "play_date_utc": "2020-05-19T03:58:39Z", "name": "Rack of His", "artist": "Fiona Apple"}
+{"track_id": "6834", "play_count": "9", "play_date_utc": "2020-05-19T04:01:23Z", "name": "For Her", "artist": "Fiona Apple"}
+{"track_id": "6826", "skip_count": "2", "skip_date": "2020-05-19T04:01:53Z", "name": "Rack of His", "artist": "Fiona Apple"}
+{"track_id": "6834", "play_count": "10", "play_date_utc": "2020-05-19T04:04:37Z", "name": "For Her", "artist": "Fiona Apple"}
+{"track_id": "2950", "play_count": "17", "play_date_utc": "2020-05-19T04:06:24Z", "name": "Map", "artist": "Josh Mancell"}
+{"track_id": "6844", "play_count": "23", "play_date_utc": "2020-05-19T05:45:04Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "4094", "play_count": "10", "play_date_utc": "2020-05-19T05:48:50Z", "name": "Bonfire", "artist": "Childish Gambino"}
+{"track_id": "5552", "play_count": "5", "play_date_utc": "2020-05-19T05:50:48Z", "name": "Water Fall (Interluuube)", "artist": "Anderson .Paak"}
+{"track_id": "5312", "play_count": "16", "play_date_utc": "2020-05-19T05:53:52Z", "name": "Black Spasmodic", "artist": "A Tribe Called Quest"}
+{"track_id": "3806", "play_count": "14", "play_date_utc": "2020-05-19T05:56:33Z", "name": "Signed, Sealed, Delivered I'm Yours", "artist": "Stevie Wonder"}
+{"track_id": "3632", "play_count": "10", "play_date_utc": "2020-05-19T05:59:33Z", "name": "Heroes", "artist": "Brian the Sun"}
+{"track_id": "5254", "play_count": "6", "play_date_utc": "2020-05-19T06:06:02Z", "name": "Diamonds On The Soles Of Her Shoes", "artist": "Paul Simon"}
+{"track_id": "6842", "play_count": "11", "play_date_utc": "2020-05-19T06:08:21Z", "name": "Window", "artist": "Still Woozy"}
+{"track_id": "4556", "play_count": "89", "play_date_utc": "2020-05-19T06:11:15Z", "name": "Cooks", "artist": "Still Woozy"}
+{"track_id": "2226", "play_count": "25", "play_date_utc": "2020-05-19T06:15:21Z", "name": "The Rockafeller Skank", "artist": "Fatboy Slim"}
+{"track_id": "2084", "play_count": "13", "play_date_utc": "2020-05-19T06:17:06Z", "name": "Toad House", "artist": "Shiho Fujii, Ryo Nagamatsu, Kenta Nagata"}
+{"track_id": "1740", "play_count": "33", "play_date_utc": "2020-05-19T06:19:24Z", "name": "Summer Love", "artist": "Widdly 2 Diddly"}
+{"track_id": "4656", "play_count": "7", "play_date_utc": "2020-05-19T06:23:20Z", "name": "Inner Cell", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "6130", "play_count": "2", "play_date_utc": "2020-05-19T06:27:50Z", "name": "All in Your Head", "artist": "clipping. ft. Counterfeit Madison &#38; Robyn Hood"}
+{"track_id": "2082", "play_count": "19", "play_date_utc": "2020-05-19T06:29:41Z", "name": "Tower Theme", "artist": "Shiho Fujii, Ryo Nagamatsu, Kenta Nagata"}
+{"track_id": "5430", "play_count": "10", "play_date_utc": "2020-05-19T22:34:46Z", "name": "Fat Bottomed Girls", "artist": "Queen"}
+{"track_id": "6844", "play_count": "24", "play_date_utc": "2020-05-20T04:36:45Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "5360", "play_count": "4", "play_date_utc": "2020-05-20T04:39:55Z", "name": "EARFQUAKE", "artist": "Tyler, the Creator"}
+{"track_id": "6880", "play_count": "4", "play_date_utc": "2020-05-20T20:31:57Z", "name": "I Zimbra", "artist": "Talking Heads"}
+{"track_id": "4610", "play_count": "20", "play_date_utc": "2020-05-20T22:58:07Z", "name": "Nuclear Fusion", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "6256", "play_count": "4", "play_date_utc": "2020-05-20T23:21:48Z", "name": "Early", "artist": "Run the Jewels ft. BOOTS"}
+{"track_id": "4962", "play_count": "3", "play_date_utc": "2020-05-20T23:26:43Z", "name": "Walk It Down", "artist": "Talking Heads"}
+{"track_id": "6596", "skip_count": "3", "skip_date": "2020-05-20T23:21:58Z", "name": "iunno", "artist": "Yung Gravy &#38; bbno$"}
+{"track_id": "3238", "play_count": "21", "play_date_utc": "2020-05-20T23:29:59Z", "name": "Getting Ready", "artist": "Patty Griffin"}
+{"track_id": "5178", "play_count": "4", "play_date_utc": "2020-05-20T23:43:29Z", "name": "Guiding Light", "artist": "Television"}
+{"track_id": "6386", "play_count": "10", "play_date_utc": "2020-05-20T23:47:40Z", "name": "Run Away with Me", "artist": "Carly Rae Jepsen"}
+{"track_id": "6526", "play_count": "3", "play_date_utc": "2020-05-20T23:51:51Z", "name": "The Heartburn Song", "artist": "Lawrence"}
+{"track_id": "4368", "play_count": "36", "play_date_utc": "2020-05-21T00:02:09Z", "name": "Come On! Feel The Illinoise! (Part I: The World's Columbian Exposition \u2013 Part II: Carl Sandburg Visits Me in a Dream)", "artist": "Sufjan Stevens"}
+{"track_id": "5766", "play_count": "3", "play_date_utc": "2020-05-21T00:03:04Z", "name": "JPEGMAFIA TYPE BEAT", "artist": "JPEGMAFIA"}
+{"track_id": "5224", "play_count": "9", "play_date_utc": "2020-05-21T06:43:37Z", "name": "Wouldn't It Be Nice", "artist": "The Beach Boys"}
+{"track_id": "3806", "skip_count": "17", "skip_date": "2020-05-21T06:43:57Z", "name": "Signed, Sealed, Delivered I'm Yours", "artist": "Stevie Wonder"}
+{"track_id": "5248", "skip_count": "5", "skip_date": "2020-05-21T06:44:13Z", "name": "Graceland", "artist": "Paul Simon"}
+{"track_id": "5616", "skip_count": "5", "skip_date": "2020-05-21T06:44:00Z", "name": "Selfish", "artist": "Little Simz ft. Cleo Sol"}
+{"track_id": "4552", "play_count": "40", "play_date_utc": "2020-05-21T06:48:10Z", "name": "Vacation", "artist": "Still Woozy"}
+{"track_id": "5032", "play_count": "36", "play_date_utc": "2020-05-21T06:52:29Z", "name": "Vibes and Stuff", "artist": "A Tribe Called Quest"}
+{"track_id": "4216", "play_count": "43", "play_date_utc": "2020-05-21T06:55:34Z", "name": "Everybody Wants To Be Famous", "artist": "Superorganism"}
+{"track_id": "4070", "play_count": "19", "play_date_utc": "2020-05-21T07:02:38Z", "name": "Looking for Someone", "artist": "Genesis"}
+{"track_id": "5598", "skip_count": "3", "skip_date": "2020-05-21T07:03:11Z", "name": "The World Is Yours", "artist": "Nas"}
+{"track_id": "6844", "play_count": "25", "play_date_utc": "2020-05-21T20:37:05Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "4874", "play_count": "8", "play_date_utc": "2020-05-21T20:41:33Z", "name": "Berring Stone", "artist": "Feed Me Jack"}
+{"track_id": "6844", "play_count": "26", "play_date_utc": "2020-05-21T20:46:14Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "6844", "play_count": "27", "play_date_utc": "2020-05-21T20:50:24Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "6844", "play_count": "28", "play_date_utc": "2020-05-21T20:54:34Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "6844", "play_count": "29", "play_date_utc": "2020-05-21T20:58:44Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "6844", "play_count": "30", "play_date_utc": "2020-05-21T21:04:18Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "4820", "skip_count": "8", "skip_date": "2020-05-21T22:39:37Z", "name": "Warping", "artist": "Death Grips"}
+{"track_id": "5468", "play_count": "16", "play_date_utc": "2020-05-21T22:39:30Z", "name": "Good Ass Intro", "artist": "Chance the Rapper"}
+{"track_id": "5322", "play_count": "27", "play_date_utc": "2020-05-21T22:42:54Z", "name": "Ego", "artist": "A Tribe Called Quest"}
+{"track_id": "5332", "play_count": "7", "play_date_utc": "2020-05-21T22:46:29Z", "name": "Don't Talk (Put Your Head on My Shoulder)", "artist": "The Beach Boys"}
+{"track_id": "4924", "play_count": "11", "play_date_utc": "2020-05-21T22:50:26Z", "name": "Pothole", "artist": "Tyler, the Creator"}
+{"track_id": "4220", "play_count": "18", "play_date_utc": "2020-05-21T22:53:46Z", "name": "SPRORGNSM", "artist": "Superorganism"}
+{"track_id": "5204", "play_count": "8", "play_date_utc": "2020-05-21T23:03:23Z", "name": "Giant", "artist": "The The"}
+{"track_id": "4214", "play_count": "37", "play_date_utc": "2020-05-21T23:06:09Z", "name": "Park Song", "artist": "Kero Kero Bonito"}
+{"track_id": "1018", "play_count": "45", "play_date_utc": "2020-05-21T23:09:52Z", "name": "Higher Ground", "artist": "Stevie Wonder"}
+{"track_id": "1608", "play_count": "41", "play_date_utc": "2020-05-21T23:13:18Z", "name": "Guillotine", "artist": "Jon Bellion ft. Travis Mendes"}
+{"track_id": "6814", "play_count": "5", "play_date_utc": "2020-05-21T23:16:12Z", "name": "BALD!", "artist": "JPEGMAFIA"}
+{"track_id": "5450", "play_count": "27", "play_date_utc": "2020-05-21T23:19:05Z", "name": "Foolsong", "artist": "Still Woozy"}
+{"track_id": "5736", "play_count": "3", "play_date_utc": "2020-05-21T23:22:12Z", "name": "You might think he loves you for your money but I know what he really loves you for it's your brand new leopard skin pillbox hat", "artist": "Death Grips"}
+{"track_id": "6780", "skip_count": "2", "skip_date": "2020-05-22T04:40:47Z", "name": "P FKN R", "artist": "Bad Bunny, Kendo Kaponi &#38; Arc\u00e1ngel"}
+{"track_id": "2384", "play_count": "45", "play_date_utc": "2020-05-22T04:44:15Z", "name": "Short Skirt/Long Jacket", "artist": "CAKE"}
+{"track_id": "2734", "skip_count": "6", "skip_date": "2020-05-22T04:46:11Z", "name": "Fury of the Crypt", "artist": "FamilyJules"}
+{"track_id": "6842", "play_count": "12", "play_date_utc": "2020-05-22T04:48:59Z", "name": "Window", "artist": "Still Woozy"}
+{"track_id": "6844", "skip_count": "4", "skip_date": "2020-05-22T04:46:39Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "5730", "play_count": "2", "play_date_utc": "2020-05-22T04:51:24Z", "name": "HUH. Get Funky. In the Streets of Rogue. Yeah. Jam On. (Credits)", "artist": "Craig Barnes"}
+{"track_id": "2930", "play_count": "8", "play_date_utc": "2020-05-22T06:45:58Z", "name": "Arctic Floes (Down)", "artist": "Eirik Suhrke"}
+{"track_id": "1982", "play_count": "13", "play_date_utc": "2020-05-22T06:47:24Z", "name": "The Stardrop Saloon", "artist": "Eric Barone"}
+{"track_id": "4596", "play_count": "18", "play_date_utc": "2020-05-22T06:52:52Z", "name": "Melting", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "5550", "play_count": "3", "play_date_utc": "2020-05-22T06:57:22Z", "name": "Room in Here", "artist": "Anderson .Paak ft. The Game"}
+{"track_id": "6066", "skip_count": "2", "skip_date": "2020-05-22T06:57:29Z", "name": "Nikes", "artist": "Frank Ocean"}
+{"track_id": "2960", "play_count": "33", "play_date_utc": "2020-05-22T07:00:06Z", "name": "The Hand", "artist": "Yugo Kanno"}
+{"track_id": "3418", "skip_count": "5", "skip_date": "2020-05-22T07:05:21Z", "name": "Stay in Your Tower and Watch", "artist": "Chris Remo"}
+{"track_id": "4476", "play_count": "7", "play_date_utc": "2020-05-22T07:05:18Z", "name": "Working All Day", "artist": "Gentle Giant"}
+{"track_id": "2766", "skip_count": "5", "skip_date": "2020-05-22T07:08:08Z", "name": "Wasteland", "artist": "BASHI BOIZU"}
+{"track_id": "4278", "play_count": "3", "play_date_utc": "2020-05-22T07:08:01Z", "name": "Friendship", "artist": "Toby Fox"}
+{"track_id": "1082", "play_count": "44", "play_date_utc": "2020-05-22T07:11:21Z", "name": "Bowser's Galaxy Generator", "artist": "Mahito Yokota"}
+{"track_id": "1310", "play_count": "24", "play_date_utc": "2020-05-22T07:14:31Z", "name": "Temple Theme", "artist": "Akito Nakatsuka"}
+{"track_id": "6522", "play_count": "27", "play_date_utc": "2020-05-22T07:18:47Z", "name": "Time Alone With You", "artist": "Jacob Collier ft. Daniel Caesar"}
+{"track_id": "5238", "play_count": "3", "play_date_utc": "2020-05-22T07:22:02Z", "name": "All Around The World or The Myth Of Fingerprints", "artist": "Paul Simon"}
+{"track_id": "6900", "play_count": "2", "play_date_utc": "2020-05-22T07:27:12Z", "name": "Drugs", "artist": "Talking Heads"}
+{"track_id": "1996", "play_count": "16", "play_date_utc": "2020-05-22T07:28:18Z", "name": "Country Shop", "artist": "Eric Barone"}
+{"track_id": "3756", "play_count": "15", "play_date_utc": "2020-05-22T07:33:23Z", "name": "A Walk to Remember", "artist": "Vulfpeck"}
+{"track_id": "2222", "play_count": "33", "play_date_utc": "2020-05-22T07:36:24Z", "name": "Black Horse and The Cherry Tree", "artist": "KT Tunstall"}
+{"track_id": "2680", "play_count": "7", "play_date_utc": "2020-05-22T07:37:47Z", "name": "United We Stand", "artist": "David Housden"}
+{"track_id": "3238", "skip_count": "9", "skip_date": "2020-05-22T22:32:07Z", "name": "Getting Ready", "artist": "Patty Griffin"}
+{"track_id": "3240", "play_count": "22", "play_date_utc": "2020-05-22T22:32:03Z", "name": "No Bad News", "artist": "Patty Griffin"}
+{"track_id": "6844", "play_count": "31", "play_date_utc": "2020-05-22T22:39:18Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "5532", "play_count": "28", "play_date_utc": "2020-05-22T22:42:56Z", "name": "The Bird", "artist": "Anderson .Paak"}
+{"track_id": "6716", "play_count": "4", "play_date_utc": "2020-05-22T22:45:40Z", "name": "CAROLMART", "artist": "Denzel Curry ft. Ice Billion Berg"}
+{"track_id": "5676", "play_count": "16", "play_date_utc": "2020-05-22T22:49:52Z", "name": "MARS FOR THE RICH", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "4446", "skip_count": "6", "skip_date": "2020-05-22T22:53:02Z", "name": "Curbside Prophet", "artist": "Jason Mraz"}
+{"track_id": "6472", "play_count": "4", "play_date_utc": "2020-05-22T22:52:59Z", "name": "From The Ground", "artist": "Danny Brown"}
+{"track_id": "4068", "play_count": "10", "play_date_utc": "2020-05-22T22:58:29Z", "name": "Redbone", "artist": "Childish Gambino"}
+{"track_id": "6622", "play_count": "2", "play_date_utc": "2020-05-22T23:04:25Z", "name": "Knockout", "artist": "Yung Gravy"}
+{"track_id": "6856", "skip_count": "2", "skip_date": "2020-05-22T23:04:33Z", "name": "Promisicuity", "artist": "Feed Me Jack"}
+{"track_id": "5254", "play_count": "7", "play_date_utc": "2020-05-22T23:10:21Z", "name": "Diamonds On The Soles Of Her Shoes", "artist": "Paul Simon"}
+{"track_id": "5426", "play_count": "3", "play_date_utc": "2020-05-22T23:15:28Z", "name": "Mr. Blue Sky", "artist": "Electric Light Orchestra"}
+{"track_id": "5518", "play_count": "3", "play_date_utc": "2020-05-22T23:21:52Z", "name": "Smoke Again", "artist": "Chance the Rapper"}
+{"track_id": "5666", "play_count": "14", "play_date_utc": "2020-05-22T23:42:50Z", "name": "Ham 'n' Eggs", "artist": "A Tribe Called Quest"}
+{"track_id": "5770", "skip_count": "2", "skip_date": "2020-05-22T23:42:59Z", "name": "PTSD", "artist": "JPEGMAFIA"}
+{"track_id": "4030", "play_count": "16", "play_date_utc": "2020-05-23T20:35:08Z", "name": "Rasputin", "artist": "Boney M."}
+{"track_id": "6490", "play_count": "23", "play_date_utc": "2020-05-23T20:37:56Z", "name": "Tamale", "artist": "Tyler, the Creator"}
+{"track_id": "4560", "play_count": "22", "play_date_utc": "2020-05-23T20:42:25Z", "name": "Hello, Anxiety", "artist": "Phum Viphurit"}
+{"track_id": "6566", "play_count": "6", "play_date_utc": "2020-05-23T20:44:10Z", "name": "Lay_Up.m4a", "artist": "Denzel Curry &#38; Kenny Beats"}
+{"track_id": "6158", "skip_count": "3", "skip_date": "2020-05-23T20:47:42Z", "name": "Shattered Dreams", "artist": "Earl Sweatshirt"}
+{"track_id": "5238", "play_count": "4", "play_date_utc": "2020-05-23T20:50:57Z", "name": "All Around The World or The Myth Of Fingerprints", "artist": "Paul Simon"}
+{"track_id": "4554", "play_count": "119", "play_date_utc": "2020-05-23T20:53:25Z", "name": "Goodie Bag", "artist": "Still Woozy"}
+{"track_id": "5280", "play_count": "11", "play_date_utc": "2020-05-23T20:57:49Z", "name": "Midnight", "artist": "A Tribe Called Quest"}
+{"track_id": "6556", "play_count": "5", "play_date_utc": "2020-05-23T21:00:36Z", "name": "\ua78cCosmic\ua78c.m4a", "artist": "Denzel Curry &#38; Kenny Beats"}
+{"track_id": "5334", "play_count": "6", "play_date_utc": "2020-05-23T21:03:41Z", "name": "I'm Waiting for the Day", "artist": "The Beach Boys"}
+{"track_id": "6606", "play_count": "7", "play_date_utc": "2020-05-23T21:07:06Z", "name": "Buttered Up", "artist": "Yung Gravy"}
+{"track_id": "4252", "play_count": "10", "play_date_utc": "2020-05-23T21:10:16Z", "name": "long long long journey", "artist": "Bill Wurtz"}
+{"track_id": "4382", "play_count": "12", "play_date_utc": "2020-05-23T21:14:35Z", "name": "still feel.", "artist": "half\u2022alive"}
+{"track_id": "6478", "play_count": "3", "play_date_utc": "2020-05-23T21:16:59Z", "name": "White Lines", "artist": "Danny Brown"}
+{"track_id": "4744", "play_count": "4", "play_date_utc": "2020-05-23T21:19:10Z", "name": "Prairie Fire That Wanders About", "artist": "Sufjan Stevens"}
+{"track_id": "6850", "play_count": "2", "play_date_utc": "2020-05-23T21:21:43Z", "name": "No One Does It Like You (Department Of Eagles)", "artist": "Feed Me Jack"}
+{"track_id": "3228", "play_count": "31", "play_date_utc": "2020-05-23T21:25:06Z", "name": "Annoyed Grunt", "artist": "Neil Cicierega"}
+{"track_id": "6512", "play_count": "19", "play_date_utc": "2020-05-23T21:27:17Z", "name": "1 Thot 2 Thot Red Thot Blue Thot", "artist": "Yung Gravy"}
+{"track_id": "4440", "play_count": "7", "play_date_utc": "2020-05-23T21:31:46Z", "name": "Funny Ways", "artist": "Gentle Giant"}
+{"track_id": "4248", "play_count": "13", "play_date_utc": "2020-05-23T21:34:08Z", "name": "Someone Keeps Moving My Chair", "artist": "They Might Be Giants"}
+{"track_id": "5312", "play_count": "17", "play_date_utc": "2020-05-23T21:38:42Z", "name": "Black Spasmodic", "artist": "A Tribe Called Quest"}
+{"track_id": "4662", "play_count": "6", "play_date_utc": "2020-05-23T21:44:54Z", "name": "The Fourth Colour", "artist": "King Gizzard &#38; The Lizard Wizard"}
+{"track_id": "4528", "play_count": "18", "play_date_utc": "2020-05-23T21:51:32Z", "name": "Aqualung", "artist": "Jethro Tull"}
+{"track_id": "6324", "play_count": "5", "play_date_utc": "2020-05-23T21:54:50Z", "name": "California", "artist": "Grimes"}
+{"track_id": "6324", "play_count": "6", "play_date_utc": "2020-05-23T21:58:13Z", "name": "California", "artist": "Grimes"}
+{"track_id": "6636", "play_count": "2", "play_date_utc": "2020-05-23T22:02:11Z", "name": "Delete Forever", "artist": "Grimes"}
+{"track_id": "5630", "play_count": "4", "play_date_utc": "2020-05-23T22:05:56Z", "name": "Flowers", "artist": "Little Simz ft. Michael Kiwanuka"}
+{"track_id": "5402", "skip_count": "4", "skip_date": "2020-05-23T22:06:11Z", "name": "Shitshow", "artist": "Death Grips"}
+{"track_id": "6326", "play_count": "3", "play_date_utc": "2020-05-23T22:08:00Z", "name": "laughing and not being normal", "artist": "Grimes"}
+{"track_id": "6324", "play_count": "7", "play_date_utc": "2020-05-23T22:11:19Z", "name": "California", "artist": "Grimes"}
+{"track_id": "6322", "play_count": "5", "play_date_utc": "2020-05-23T22:13:39Z", "name": "SCREAM", "artist": "Grimes ft. Aristophanes \u8c8d\u8c93"}
+{"track_id": "6320", "play_count": "3", "play_date_utc": "2020-05-23T22:18:03Z", "name": "Flesh without Blood", "artist": "Grimes"}
+{"track_id": "6316", "play_count": "8", "play_date_utc": "2020-05-23T22:25:35Z", "name": "Kill V. Maim", "artist": "Grimes"}
+{"track_id": "6314", "play_count": "3", "play_date_utc": "2020-05-23T22:29:42Z", "name": "Artangels", "artist": "Grimes"}
+{"track_id": "6310", "play_count": "3", "play_date_utc": "2020-05-23T22:36:17Z", "name": "Pin", "artist": "Grimes"}
+{"track_id": "6308", "play_count": "3", "play_date_utc": "2020-05-23T22:41:24Z", "name": "REALiTi", "artist": "Grimes"}
+{"track_id": "6306", "play_count": "4", "play_date_utc": "2020-05-23T22:46:30Z", "name": "World Princess, Pt. II", "artist": "Grimes"}
+{"track_id": "6308", "play_count": "4", "play_date_utc": "2020-05-23T22:50:22Z", "name": "Venus Fly", "artist": "Grimes ft. Janelle Mon\u00e1e"}
+{"track_id": "6306", "play_count": "4", "play_date_utc": "2020-05-23T22:51:49Z", "name": "Life in the Vivid Dream", "artist": "Grimes"}
+{"track_id": "6304", "skip_count": "2", "skip_date": "2020-05-23T23:04:33Z", "name": "Butterfly", "artist": "Grimes"}
+{"track_id": "6744", "play_count": "29", "play_date_utc": "2020-05-23T23:07:21Z", "name": "Stone Cold", "artist": "Deb Never ft. Kenny Beats"}
+{"track_id": "4858", "skip_count": "3", "skip_date": "2020-05-23T23:08:10Z", "name": "Known for It", "artist": "Death Grips"}
+{"track_id": "6560", "skip_count": "6", "skip_date": "2020-05-23T23:08:01Z", "name": "\ua78cCosmic\ua78c.m4a", "artist": "Denzel Curry &#38; Kenny Beats"}
+{"track_id": "6874", "play_count": "5", "play_date_utc": "2020-05-23T23:11:17Z", "name": "I Zimbra", "artist": "Talking Heads"}
+{"track_id": "6892", "skip_count": "2", "skip_date": "2020-05-23T23:11:20Z", "name": "Electric Guitar", "artist": "Talking Heads"}
+{"track_id": "6344", "play_count": "6", "play_date_utc": "2020-05-24T23:16:45Z", "name": "Come and Get Your Love", "artist": "Redbone"}
+{"track_id": "6344", "skip_count": "3", "skip_date": "2020-05-24T23:17:21Z", "name": "Come and Get Your Love", "artist": "Redbone"}
+{"track_id": "6328", "play_count": "8", "play_date_utc": "2020-05-24T23:20:57Z", "name": "California", "artist": "Grimes"}
+{"track_id": "6330", "skip_count": "2", "skip_date": "2020-05-24T23:21:05Z", "name": "laughing and not being normal", "artist": "Grimes"}
+{"track_id": "6744", "play_count": "30", "play_date_utc": "2020-05-24T23:23:53Z", "name": "Stone Cold", "artist": "Deb Never ft. Kenny Beats"}
+{"track_id": "6732", "play_count": "2", "play_date_utc": "2020-05-24T23:28:24Z", "name": "Losing You", "artist": "Boy Pablo"}
+{"track_id": "6848", "play_count": "32", "play_date_utc": "2020-05-24T23:32:34Z", "name": "Rosies", "artist": "Feed Me Jack"}
+{"track_id": "1008", "play_count": "88", "play_date_utc": "2020-05-24T23:40:17Z", "name": "Fireflies", "artist": "Owl City"}
+{"track_id": "4236", "play_count": "5", "play_date_utc": "2020-05-24T23:48:59Z", "name": "Give Up The Funk (Tear The Roof Off The Sucker)", "artist": "Parliament"}
+{"track_id": "3244", "play_count": "23", "play_date_utc": "2020-05-24T23:53:06Z", "name": "No Bad News", "artist": "Patty Griffin"}
+{"track_id": "5624", "play_count": "2", "play_date_utc": "2020-05-24T23:55:41Z", "name": "Venom", "artist": "Little Simz"}
+{"track_id": "2848", "skip_count": "13", "skip_date": "2020-05-25T00:00:29Z", "name": "It's My Life What Ever I Wanna Do", "artist": "Vennu Mallesh"}
+{"track_id": "5426", "skip_count": "9", "skip_date": "2020-05-25T00:01:06Z", "name": "Crank That (Soulja Boy)", "artist": "Soulja Boy Tell Em'"}
+{"track_id": "6002", "skip_count": "4", "skip_date": "2020-05-25T00:00:23Z", "name": "ManWomanBoogie", "artist": "Q-Tip"}
+{"track_id": "2182", "play_count": "28", "play_date_utc": "2020-05-25T00:05:08Z", "name": "Best Day of My Life", "artist": "American Authors"}
+{"track_id": "4574", "play_count": "58", "play_date_utc": "2020-05-25T00:16:55Z", "name": "Habit", "artist": "Still Woozy"}
+{"track_id": "1654", "skip_count": "31", "skip_date": "2020-05-25T00:19:48Z", "name": "iRobot", "artist": "Jon Bellion"}
+{"track_id": "6572", "play_count": "5", "play_date_utc": "2020-05-25T00:19:44Z", "name": "Take_it_Back_v2", "artist": "Denzel Curry &#38; Kenny Beats"}
+{"track_id": "4572", "play_count": "43", "play_date_utc": "2020-05-25T00:22:11Z", "name": "Lucy", "artist": "Still Woozy ft. ODIE"}
+{"track_id": "4948", "skip_count": "7", "skip_date": "2020-05-25T00:22:21Z", "name": "Wu-Tang Clan Ain't Nuthing ta Fuck Wit", "artist": "Wu-Tang Clan"}
+{"track_id": "5038", "skip_count": "10", "skip_date": "2020-05-25T00:28:49Z", "name": "The Infamous Date Rape", "artist": "A Tribe Called Quest"}
+{"track_id": "6570", "play_count": "7", "play_date_utc": "2020-05-25T00:30:39Z", "name": "Lay_Up.m4a", "artist": "Denzel Curry &#38; Kenny Beats"}
+{"track_id": "6066", "play_count": "21", "play_date_utc": "2020-05-25T00:37:10Z", "name": "Best Friend", "artist": "Rex Orange County"}
+{"track_id": "4760", "play_count": "2", "play_date_utc": "2020-05-25T00:42:06Z", "name": "Wasted Time", "artist": "The Eagles"}
+{"track_id": "4116", "skip_count": "9", "skip_date": "2020-05-25T00:47:20Z", "name": "Pantagruel's Nativity", "artist": "Gentle Giant"}
+{"track_id": "4212", "play_count": "46", "play_date_utc": "2020-05-25T00:47:15Z", "name": "Intro Bonito", "artist": "Kero Kero Bonito"}
+{"track_id": "6838", "play_count": "11", "play_date_utc": "2020-05-25T00:51:59Z", "name": "For Her", "artist": "Fiona Apple"}
+{"track_id": "5286", "skip_count": "5", "skip_date": "2020-05-25T01:00:54Z", "name": "Electric Relaxation", "artist": "A Tribe Called Quest"}
+{"track_id": "6320", "skip_count": "3", "skip_date": "2020-05-25T01:05:04Z", "name": "Kill V. Maim", "artist": "Grimes"}
+{"track_id": "6328", "play_count": "9", "play_date_utc": "2020-05-25T01:04:58Z", "name": "California", "artist": "Grimes"}
+{"track_id": "6624", "skip_count": "5", "skip_date": "2020-05-25T01:05:24Z", "name": "Richard Simmons", "artist": "Yung Gravy"}
+{"track_id": "5646", "play_count": "51", "play_date_utc": "2020-05-25T01:07:32Z", "name": "Puff Daddy", "artist": "JPEGMAFIA &#38; Kenny Beats"}
+{"track_id": "6616", "play_count": "51", "play_date_utc": "2020-05-25T01:10:29Z", "name": "Magic", "artist": "Yung Gravy"}
+{"track_id": "4574", "skip_count": "10", "skip_date": "2020-05-25T08:51:50Z", "name": "Habit", "artist": "Still Woozy"}
+{"track_id": "6154", "skip_count": "2", "skip_date": "2020-05-25T09:03:25Z", "name": "Dead Dog in an Alleyway", "artist": "Richard Dawson"}
+{"track_id": "6742", "play_count": "4", "play_date_utc": "2020-05-25T09:06:59Z", "name": "Pang", "artist": "Caroline Polachek"}
+{"track_id": "6552", "play_count": "39", "play_date_utc": "2020-05-25T09:11:04Z", "name": "Tokyo Drifting", "artist": "Glass Animals ft. Denzel Curry"}
+{"track_id": "4906", "skip_count": "4", "skip_date": "2020-05-25T09:16:08Z", "name": "listen before i go", "artist": "Billie Eilish"}
+{"track_id": "6824", "play_count": "3", "play_date_utc": "2020-05-25T09:16:03Z", "name": "Fetch the Bolt Cutters", "artist": "Fiona Apple"}
+{"track_id": "6838", "play_count": "12", "play_date_utc": "2020-05-25T09:18:52Z", "name": "For Her", "artist": "Fiona Apple"}
