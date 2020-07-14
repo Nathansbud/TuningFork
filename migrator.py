@@ -16,13 +16,17 @@ import re
 from requests_oauthlib import OAuth2, OAuth2Session
 from oauthlib.oauth2 import TokenExpiredError
 
-from parser import get_vocal_tracks
+from parser import get_tracks
 from unidecode import unidecode
 
 
 feat_split = [" ft\. ", " feat\. ", " featuring\. ", " \(with "]
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
-playlist_id = "0ngrknAD6SoMh1EpKIzgqD"
+
+playlists = {
+    "all":"0ngrknAD6SoMh1EpKIzgqD",
+    "Vibe Check":"0zAJEFD35ZCKKmRv0MCL0M"
+}
 
 with open(os.path.join(cred_path, "spotify.json")) as jf: creds = json.load(jf)
 
@@ -53,7 +57,7 @@ def spotify_login(browser):
         print("Already logged in; continuing")
 
 def manual_populate_playlist(browser, start_point=None, playlist_name=""):
-    tracks = get_vocal_tracks()
+    tracks = get_tracks()
     sp = 0
     if start_point and len(start_point) == 2:
         for i, t in enumerate(tracks):
@@ -126,7 +130,7 @@ def authorize_spotify():
 def save_token(token):
     with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
 
-def migrate_library(clear=False):
+def migrate_library(pid=playlists['all'], from_playlist=None, clear=False):
     if not os.path.isfile(os.path.join(cred_path, "spotify_token.json")):
         spotify = authorize_spotify()
     else:
@@ -137,7 +141,7 @@ def migrate_library(clear=False):
                                 token_updater=save_token)
 
     if clear:
-        spotify.put(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",
+        spotify.put(f"https://api.spotify.com/v1/playlists/{pid}/tracks",
                     data=json.dumps({'uris':[]}),
                     headers={"Content-Type": "application/json"})
 
@@ -147,7 +151,7 @@ def migrate_library(clear=False):
     has_updated = False
     i = 0
     while i < ceil(total_items / 100):
-        playlist = spotify.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks/?fields=total,items(track(uri))&offset={100*i}").json()
+        playlist = spotify.get(f"https://api.spotify.com/v1/playlists/{pid}/tracks/?fields=total,items(track(uri))&offset={100*i}").json()
         if not has_updated:
             total_items = playlist['total']
             has_updated = True
@@ -156,11 +160,10 @@ def migrate_library(clear=False):
             playlist_uris.add(it)
 
         i += 1
-
     track_uris = set()
     failed = set()
-    add_tracks = lambda ts: spotify.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", data=json.dumps({"uris":list(ts)}), headers={"Content-Type": "application/json"})
-    for track in get_vocal_tracks()[::-1]: #Reverse to get newest first
+    add_tracks = lambda ts: spotify.post(f"https://api.spotify.com/v1/playlists/{pid}/tracks", data=json.dumps({"uris":list(ts)}), headers={"Content-Type": "application/json"})
+    for track in get_tracks(from_playlist)[::-1]: #Reverse to get newest first
         name = spotify_clean(track['Name'])
         artist = spotify_clean(track['Artist'])
         st = spotify.get(f"https://api.spotify.com/v1/search/?q={name}%20artist:{artist}&type=track&limit=1&offset=0").json()
@@ -181,4 +184,4 @@ def migrate_library(clear=False):
 
 
 if __name__ == '__main__':
-    migrate_library()
+    migrate_library(playlists['Vibe Check'], "Vibe Check", False)

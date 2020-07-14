@@ -27,8 +27,8 @@ def parse_itunes_xml(path="/Users/zackamiton/Music/iTunes/iTunes Library.xml"):
                 arr.append(c)
     return arr
 
-def get_vocal_tracks():
-    tracks, error = subprocess.Popen(os.path.join(os.path.dirname(__file__), "reader", "TuneSwiftly"), shell=True, stdout=subprocess.PIPE).communicate()
+def get_tracks(playlist="Vocal"):
+    tracks, error = subprocess.Popen(os.path.join(os.path.dirname(__file__), "reader", "TuneSwiftly") + (f' "{playlist}"' if playlist else ""), shell=True, stdout=subprocess.PIPE).communicate()
     items = tracks.decode('utf-8').split("\n")
 
     arr = []

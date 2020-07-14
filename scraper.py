@@ -10,7 +10,7 @@ from mutagen import MutagenError
 
 from urllib import parse
 
-from parser import parse_itunes_xml, get_vocal_tracks
+from parser import parse_itunes_xml, get_tracks
 import unidecode
 import re
 
@@ -141,7 +141,7 @@ def add_all_lyrics(rewrite=False, use_xml=False):
                 if "Vocal" in s["Comments"] and s["Location"].endswith(".mp3") and "Imbecile" not in s["Comments"]:
                     add_lyrics(s, rewrite)
     else:
-        for s in get_vocal_tracks():
+        for s in get_tracks():
             add_lyrics(s, rewrite)
     print("Done!")
 

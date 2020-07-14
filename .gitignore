@@ -6,3 +6,4 @@ credentials/*
 logs/*
 venv/
 certificates/
+data/failed.txt
