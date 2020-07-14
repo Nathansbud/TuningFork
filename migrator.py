@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 import json
 import time
+from math import ceil
 
 import re
 
@@ -125,7 +126,7 @@ def authorize_spotify():
 def save_token(token):
     with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
 
-def migrate_library():
+def migrate_library(clear=False):
     if not os.path.isfile(os.path.join(cred_path, "spotify_token.json")):
         spotify = authorize_spotify()
     else:
@@ -135,23 +136,38 @@ def migrate_library():
                                 auto_refresh_kwargs={'client_id':creds['client_id'], 'client_secret':creds['client_secret']},
                                 token_updater=save_token)
 
-    #clear to start
-    spotify.put(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",
-                data=json.dumps({'uris':[]}),
-                headers={"Content-Type": "application/json"})
+    if clear:
+        spotify.put(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",
+                    data=json.dumps({'uris':[]}),
+                    headers={"Content-Type": "application/json"})
 
+
+    playlist_uris = set()
+    total_items = 100 #minimum tracks returned is 100
+    has_updated = False
+    i = 0
+    while i < ceil(total_items / 100):
+        playlist = spotify.get(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks/?fields=total,items(track(uri))&offset={100*i}").json()
+        if not has_updated:
+            total_items = playlist['total']
+            has_updated = True
+
+        for it in [item['track']['uri'] for item in playlist['items']]:
+            playlist_uris.add(it)
+
+        i += 1
 
     track_uris = set()
     failed = set()
-
     add_tracks = lambda ts: spotify.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", data=json.dumps({"uris":list(ts)}), headers={"Content-Type": "application/json"})
-    for track in get_vocal_tracks():
+    for track in get_vocal_tracks()[::-1]: #Reverse to get newest first
         name = spotify_clean(track['Name'])
         artist = spotify_clean(track['Artist'])
         st = spotify.get(f"https://api.spotify.com/v1/search/?q={name}%20artist:{artist}&type=track&limit=1&offset=0").json()
         track_uri = st['tracks']['items'][0]['uri'] if st['tracks']['items'] else ""
-        if track_uri: track_uris.add(track_uri)
-        else:
+        if track_uri and not track_uri in playlist_uris:
+            track_uris.add(track_uri)
+        elif not track_uri:
             print(f"Failed to add {track['Name']} by {track['Artist']}")
             failed.add(f"{track['Name']} by {track['Artist']}")
 
@@ -162,6 +178,7 @@ def migrate_library():
     if len(track_uris) > 0: add_tracks(track_uris)
     with open(os.path.join(os.path.dirname(__file__), "data", "failed.txt"), "w+") as ff:
         ff.writelines(map(lambda l: l+"\n", list(failed)))
+
 
 if __name__ == '__main__':
     migrate_library()
