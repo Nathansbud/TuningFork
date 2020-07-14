@@ -9,7 +9,11 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 import json
 import time
+
 import re
+
+from requests_oauthlib import OAuth2, OAuth2Session
+from oauthlib.oauth2 import TokenExpiredError
 
 from parser import get_vocal_tracks
 from scraper import genius_clean
@@ -17,7 +21,7 @@ from scraper import genius_clean
 """
 Dear Future Me,
 
-You will open this thinking "that is dumb, why did he do that"; it is because Spotify is dumb, and also I am bad at WebDriverWait.
+You will open this thinking "that is dumb, why did he do that"; Spotify is dumb, and also I am bad at WebDriverWait.
 
 Please do not refactor things stupidly because you are stupid. Thanks.
 
@@ -25,6 +29,7 @@ If you DO want to investigate something, look into actually using the Spotify AP
 """
 
 feat_split = [" ft\. ", " feat\. ", " featuring\. ", " \(with "]
+cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 
 def spotify_clean(field):
     clean_features = re.split("|".join(feat_split), field)[0]
@@ -39,7 +44,8 @@ def make_browser(headless=True, implicit_wait=3):
     return browser
 
 def spotify_login(browser):
-    with open(os.path.join(os.path.dirname(__file__), "credentials", "spotify.json")) as jf: creds = json.load(jf)
+    with open(os.path.join(cred_path,"spotify.json")) as jf:
+        creds = json.load(jf)
 
     browser.get("https://open.spotify.com/search")
     buttons = browser.find_elements_by_tag_name("button")
@@ -97,8 +103,48 @@ def manual_populate_playlist(browser, start_point=None, playlist_name=""):
             print("No matches found")
             continue
 
-if __name__ == "__main__":
+def manual_migrate(start_point=None):
     b = make_browser(False)
     spotify_login(b)
-    manual_populate_playlist(b, start_point=("King Crimson", "Easy Money"))
+    manual_populate_playlist(b, start_point=start_point)
 
+def authorize_spotify():
+    with open(os.path.join(cred_path,  "spotify.json")) as jf: creds = json.load(jf)
+
+    scope = []
+    spotify = OAuth2Session(creds['client_id'], scope=None, redirect_uri=creds['redirect_uri'])
+    authorization_url, state = spotify.authorization_url(creds['authorization_url'], access_type="offline")
+    print(f"Authorize at {authorization_url}")
+    redirect_response = input("Paste redirect URL here: ")
+    token = spotify.fetch_token(creds['token_url'], client_secret=creds['client_secret'], code=redirect_response)
+    with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
+
+    return spotify
+
+
+def save_token(token):
+    with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
+
+
+def migrate_library():
+    with open(os.path.join(cred_path,  "spotify.json")) as jf: creds = json.load(jf)
+    if not os.path.isfile(os.path.join(cred_path, "spotify_token.json")):
+        spotify = authorize_spotify()
+    else:
+        """
+        client = OAuth2Session(client_id, token=token, auto_refresh_url=refresh_url,
+        auto_refresh_kwargs = extra, token_updater = token_saver)
+        
+        """
+        with open(os.path.join(cred_path, "spotify_token.json"), 'r+') as t: token = json.load(t)
+        spotify = OAuth2Session(creds['client_id'], token=token)
+        try:
+            spotify.get("https://api.spotify.com/v1/tracks/2TpxZ7JUBn3uw46aR7qd6V")
+        except TokenExpiredError as e:
+            token = spotify.refresh_token(creds['token_url'], **{'client_id':creds['client_id'], 'client_secret':creds['client_secret']})
+            with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
+        spotify = OAuth2Session(creds['client_id'], token=token)
+
+
+if __name__ == '__main__':
+    migrate_library()
