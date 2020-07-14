@@ -16,6 +16,7 @@ from requests_oauthlib import OAuth2, OAuth2Session
 from oauthlib.oauth2 import TokenExpiredError
 
 from parser import get_vocal_tracks
+from unidecode import unidecode
 
 
 feat_split = [" ft\. ", " feat\. ", " featuring\. ", " \(with "]
@@ -24,7 +25,7 @@ playlist_id = "0ngrknAD6SoMh1EpKIzgqD"
 
 with open(os.path.join(cred_path, "spotify.json")) as jf: creds = json.load(jf)
 
-def spotify_clean(field):
+def manual_clean(field):
     clean_features = re.split("|".join(feat_split), field)[0]
     clean_partners = clean_features.replace(" & ", " ")
     return clean_partners
@@ -67,7 +68,7 @@ def manual_populate_playlist(browser, start_point=None, playlist_name=""):
         search_box.send_keys(spotify_clean(track['Artist']) + " " + track['Name'] + "\n")
         """
         #abysmally slow, but ensures the page loads
-        search_query = (spotify_clean(track['Artist']) + ' ' + track['Name']).replace('/', " ").replace("?", "")
+        search_query = (manual_clean(track['Artist']) + ' ' + track['Name']).replace('/', " ").replace("?", "")
 
         browser.get(f"https://open.spotify.com/search/{search_query.replace(' ', '%20')}")
         try:
@@ -98,9 +99,16 @@ def manual_migrate(start_point=None):
     spotify_login(b)
     manual_populate_playlist(b, start_point=start_point)
 
+def spotify_clean(field):
+    unicode_cleaned = unidecode(field)
+    feat_cleaned = re.split("\sfeat\.\s|\sft\.\s|\sfeaturing\s", unicode_cleaned)[0]
+    field_cleaned = re.sub(r"[^a-zA-Z0-9]", " ", feat_cleaned).strip()
+    space_cleaned = re.sub(r"\s+", "+", field_cleaned)
+    return space_cleaned.lower()
+
+
 def authorize_spotify():
     scope = ["playlist-modify-private", "playlist-modify-public"]
-
 
     spotify = OAuth2Session(creds['client_id'], scope=scope, redirect_uri=creds['redirect_uri'])
     authorization_url, state = spotify.authorization_url(creds['authorization_url'], access_type="offline")
@@ -133,12 +141,27 @@ def migrate_library():
                 headers={"Content-Type": "application/json"})
 
 
-    track = spotify.get("https://api.spotify.com/v1/search/?q=paradiso%20artist:konono+n+1&type=track&limit=1&offset=0").json()
-    track_uri = track['tracks']['items'][0]['uri'] if track['tracks']['items'] else ""
-    if track_uri:
-        spotify.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", data=json.dumps({
-            "uris":[track_uri]
-        }), headers={"Content-Type": "application/json"})
+    track_uris = set()
+    failed = set()
+
+    add_tracks = lambda ts: spotify.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", data=json.dumps({"uris":list(ts)}), headers={"Content-Type": "application/json"})
+    for track in get_vocal_tracks():
+        name = spotify_clean(track['Name'])
+        artist = spotify_clean(track['Artist'])
+        st = spotify.get(f"https://api.spotify.com/v1/search/?q={name}%20artist:{artist}&type=track&limit=1&offset=0").json()
+        track_uri = st['tracks']['items'][0]['uri'] if st['tracks']['items'] else ""
+        if track_uri: track_uris.add(track_uri)
+        else:
+            print(f"Failed to add {track['Name']} by {track['Artist']}")
+            failed.add(f"{track['Name']} by {track['Artist']}")
+
+        if len(track_uris) >= 100:
+            add_tracks(track_uris)
+            track_uris = set()
+
+    if len(track_uris) > 0: add_tracks(track_uris)
+    with open(os.path.join(os.path.dirname(__file__), "data", "failed.txt"), "w+") as ff:
+        ff.writelines(map(lambda l: l+"\n", list(failed)))
 
 if __name__ == '__main__':
     migrate_library()
