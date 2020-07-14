@@ -16,20 +16,13 @@ from requests_oauthlib import OAuth2, OAuth2Session
 from oauthlib.oauth2 import TokenExpiredError
 
 from parser import get_vocal_tracks
-from scraper import genius_clean
 
-"""
-Dear Future Me,
-
-You will open this thinking "that is dumb, why did he do that"; Spotify is dumb, and also I am bad at WebDriverWait.
-
-Please do not refactor things stupidly because you are stupid. Thanks.
-
-If you DO want to investigate something, look into actually using the Spotify API ya dingus.
-"""
 
 feat_split = [" ft\. ", " feat\. ", " featuring\. ", " \(with "]
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
+playlist_id = "0ngrknAD6SoMh1EpKIzgqD"
+
+with open(os.path.join(cred_path, "spotify.json")) as jf: creds = json.load(jf)
 
 def spotify_clean(field):
     clean_features = re.split("|".join(feat_split), field)[0]
@@ -44,9 +37,6 @@ def make_browser(headless=True, implicit_wait=3):
     return browser
 
 def spotify_login(browser):
-    with open(os.path.join(cred_path,"spotify.json")) as jf:
-        creds = json.load(jf)
-
     browser.get("https://open.spotify.com/search")
     buttons = browser.find_elements_by_tag_name("button")
 
@@ -109,14 +99,16 @@ def manual_migrate(start_point=None):
     manual_populate_playlist(b, start_point=start_point)
 
 def authorize_spotify():
-    with open(os.path.join(cred_path,  "spotify.json")) as jf: creds = json.load(jf)
+    scope = ["playlist-modify-private", "playlist-modify-public"]
 
-    scope = []
-    spotify = OAuth2Session(creds['client_id'], scope=None, redirect_uri=creds['redirect_uri'])
+
+    spotify = OAuth2Session(creds['client_id'], scope=scope, redirect_uri=creds['redirect_uri'])
     authorization_url, state = spotify.authorization_url(creds['authorization_url'], access_type="offline")
     print(f"Authorize at {authorization_url}")
+
     redirect_response = input("Paste redirect URL here: ")
     token = spotify.fetch_token(creds['token_url'], client_secret=creds['client_secret'], code=redirect_response)
+
     with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
 
     return spotify
@@ -125,26 +117,28 @@ def authorize_spotify():
 def save_token(token):
     with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
 
-
 def migrate_library():
-    with open(os.path.join(cred_path,  "spotify.json")) as jf: creds = json.load(jf)
     if not os.path.isfile(os.path.join(cred_path, "spotify_token.json")):
         spotify = authorize_spotify()
     else:
-        """
-        client = OAuth2Session(client_id, token=token, auto_refresh_url=refresh_url,
-        auto_refresh_kwargs = extra, token_updater = token_saver)
-        
-        """
         with open(os.path.join(cred_path, "spotify_token.json"), 'r+') as t: token = json.load(t)
-        spotify = OAuth2Session(creds['client_id'], token=token)
-        try:
-            spotify.get("https://api.spotify.com/v1/tracks/2TpxZ7JUBn3uw46aR7qd6V")
-        except TokenExpiredError as e:
-            token = spotify.refresh_token(creds['token_url'], **{'client_id':creds['client_id'], 'client_secret':creds['client_secret']})
-            with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
-        spotify = OAuth2Session(creds['client_id'], token=token)
+        spotify = OAuth2Session(creds['client_id'], token=token,
+                                auto_refresh_url=creds['token_url'],
+                                auto_refresh_kwargs={'client_id':creds['client_id'], 'client_secret':creds['client_secret']},
+                                token_updater=save_token)
 
+    #clear to start
+    spotify.put(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",
+                data=json.dumps({'uris':[]}),
+                headers={"Content-Type": "application/json"})
+
+
+    track = spotify.get("https://api.spotify.com/v1/search/?q=paradiso%20artist:konono+n+1&type=track&limit=1&offset=0").json()
+    track_uri = track['tracks']['items'][0]['uri'] if track['tracks']['items'] else ""
+    if track_uri:
+        spotify.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", data=json.dumps({
+            "uris":[track_uri]
+        }), headers={"Content-Type": "application/json"})
 
 if __name__ == '__main__':
     migrate_library()
