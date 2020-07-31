@@ -24,8 +24,11 @@ feat_split = [" ft\. ", " feat\. ", " featuring\. ", " \(with "]
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 
 playlists = {
-    "all":"0ngrknAD6SoMh1EpKIzgqD",
-    "Vibe Check":"0zAJEFD35ZCKKmRv0MCL0M"
+    "all":"2bQJC2lUa4pXkAt2qQejlx",
+    "Vibe Check":"7vCyHDvq0dBwbfsyZMwUIn",
+    "Feel the Wooz":"3O2xBhsDTbYDCvrU4YAUcM",
+    "Jackin' It":"3O2xBhsDTbYDCvrU4YAUcM",
+    "New Directions":"392ZrJDVDuiCIaDQYNBqVw"
 }
 
 with open(os.path.join(cred_path, "spotify.json")) as jf: creds = json.load(jf)
@@ -56,54 +59,6 @@ def spotify_login(browser):
     else:
         print("Already logged in; continuing")
 
-def manual_populate_playlist(browser, start_point=None, playlist_name=""):
-    tracks = get_tracks()
-    sp = 0
-    if start_point and len(start_point) == 2:
-        for i, t in enumerate(tracks):
-            if t['Artist'] == start_point[0] and t['Name'] == start_point[1]:
-                sp = i
-                break
-
-    for track in tracks[sp:]:
-        action = ActionChains(browser)
-        """
-        search_box = browser.find_element_by_xpath("//input[@data-testid='search-input']")
-        search_box.clear()
-        search_box.send_keys(spotify_clean(track['Artist']) + " " + track['Name'] + "\n")
-        """
-        #abysmally slow, but ensures the page loads
-        search_query = (manual_clean(track['Artist']) + ' ' + track['Name']).replace('/', " ").replace("?", "")
-
-        browser.get(f"https://open.spotify.com/search/{search_query.replace(' ', '%20')}")
-        try:
-            no_match = browser.find_element_by_xpath("//h1[starts-with(text(), 'No results found for')]")
-        except NoSuchElementException:
-            WebDriverWait(browser, 20).until(EC.text_to_be_present_in_element_value((By.XPATH, "//input[@data-testid='search-input']"),search_query))
-            try:
-                song_menu = browser.find_element_by_xpath("//section[@aria-label='Songs']")
-                song_item = WebDriverWait(song_menu, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "react-contextmenu-wrapper")))
-                action.context_click(song_item).perform()
-                WebDriverWait(browser, 10).until(
-                    EC.visibility_of_element_located((By.XPATH, "//div[text()='Add to Playlist']"))).click()
-                WebDriverWait(browser, 10).until(
-                    EC.presence_of_element_located((By.CLASS_NAME, "cover-art--with-auto-height"))).click()
-                WebDriverWait(browser, 10).until(
-                    EC.presence_of_element_located((By.XPATH, "//div[@aria-live='polite']")))
-            except StaleElementReferenceException:
-                print(f"somefin failed on {track['Name']}")
-                pass
-            except TimeoutException:
-                print(f"somefin failed with timout stuff on {track['Name']}")
-        else:
-            print("No matches found")
-            continue
-
-def manual_migrate(start_point=None):
-    b = make_browser(False)
-    spotify_login(b)
-    manual_populate_playlist(b, start_point=start_point)
-
 def spotify_clean(field):
     unicode_cleaned = unidecode(field)
     feat_cleaned = re.split("\sfeat\.\s|\sft\.\s|\sfeaturing\s", unicode_cleaned)[0]
@@ -130,7 +85,7 @@ def authorize_spotify():
 def save_token(token):
     with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
 
-def migrate_library(pid=playlists['all'], from_playlist=None, clear=False):
+def migrate_library(pid=playlists['all'], from_playlist=None, clear=False, tracks=[]):
     if not os.path.isfile(os.path.join(cred_path, "spotify_token.json")):
         spotify = authorize_spotify()
     else:
@@ -163,16 +118,19 @@ def migrate_library(pid=playlists['all'], from_playlist=None, clear=False):
     track_uris = set()
     failed = set()
     add_tracks = lambda ts: spotify.post(f"https://api.spotify.com/v1/playlists/{pid}/tracks", data=json.dumps({"uris":list(ts)}), headers={"Content-Type": "application/json"})
-    for track in get_tracks(from_playlist)[::-1]: #Reverse to get newest first
-        name = spotify_clean(track['Name'])
-        artist = spotify_clean(track['Artist'])
+    for track in (get_tracks(from_playlist)[::-1] if from_playlist else tracks): #Reverse to get newest first
+        oname = track['Name'] if not tracks else track[0]
+        oartist = track['Artist'] if not tracks else track[1]
+
+        name = spotify_clean(oname)
+        artist = spotify_clean(oartist)
         st = spotify.get(f"https://api.spotify.com/v1/search/?q={name}%20artist:{artist}&type=track&limit=1&offset=0").json()
         track_uri = st['tracks']['items'][0]['uri'] if st['tracks']['items'] else ""
         if track_uri and not track_uri in playlist_uris:
             track_uris.add(track_uri)
         elif not track_uri:
-            print(f"Failed to add {track['Name']} by {track['Artist']}")
-            failed.add(f"{track['Name']} by {track['Artist']}")
+            print(f"Failed to add {oname} by {oartist}")
+            failed.add(f"{oname} by {oartist}")
 
         if len(track_uris) >= 100:
             add_tracks(track_uris)
@@ -182,6 +140,10 @@ def migrate_library(pid=playlists['all'], from_playlist=None, clear=False):
     with open(os.path.join(os.path.dirname(__file__), "data", "failed.txt"), "w+") as ff:
         ff.writelines(map(lambda l: l+"\n", list(failed)))
 
-
 if __name__ == '__main__':
-    migrate_library(playlists['Vibe Check'], "Vibe Check", False)
+    pass
+    # migrate_library(playlists['all'], "Vocal", False)
+    # migrate_library(playlists['Vibe Check'], "Vibe Check", False)
+    # with open(os.path.join(os.path.dirname(__file__), "data", "glee.json")) as gf:
+    #     glee_tracks = json.load(gf)
+    #     migrate_library(playlists['New Directions'], tracks=glee_tracks, clear=False)
