@@ -2,7 +2,6 @@ from subprocess import Popen, PIPE
 
 import os
 from http.server import HTTPServer, SimpleHTTPRequestHandler
-from threading import Thread
 import ssl
 
 def start_server(port):

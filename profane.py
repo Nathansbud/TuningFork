@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/Users/zackamiton/Code/TuningFork/venv/bin/python
 
 from mutagen.id3 import ID3
 from mutagen.mp4 import MP4

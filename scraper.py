@@ -1,4 +1,5 @@
-#!/usr/local/opt/python/bin/python3.7
+#!/Users/zackamiton/Code/TuningFork/venv/bin/python
+
 from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing

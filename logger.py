@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.7
+#!/Users/zackamiton/Code/TuningFork/venv/bin/python
 import difflib
 import shutil
 import os
