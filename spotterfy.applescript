@@ -16,9 +16,15 @@ end OutputTrack
 
 
 on TrackData(theTrack)
-	tell application "Spotify"
-		return {theId:id of theTrack as text, theName:name of theTrack as text, theArtist:(artist of theTrack) as text, theAlbum:album of theTrack as text, theDuration:(duration of theTrack as number) / 1000}
-	end tell
+	try
+		if application "Spotify" is running then
+			tell application "Spotify"
+				return {theId:id of theTrack as text, theName:name of theTrack as text, theArtist:(artist of theTrack) as text, theAlbum:album of theTrack as text, theDuration:(duration of theTrack as number) / 1000}
+			end tell
+		end if
+	on error
+		return {}
+	end try
 end TrackData
 
 -- God bless Obj-C users; modified from https://stackoverflow.com/questions/18062494/how-to-enumerate-the-keys-and-values-of-a-record-in-applescript
@@ -37,20 +43,28 @@ on ReplaceNewlines(str)
 end ReplaceNewlines
 
 use framework "Foundation"
-repeat until application "Spotify" is not running
-	tell application "Spotify"
-		set currentTrack to my TrackData(current track)
-		set priorPosition to 0
-		set hasLogged to false
-		
-		if player state is playing then
-			repeat until currentTrack is not my TrackData(current track) or (player position as real) < priorPosition
-				if not hasLogged and (((player position as real) > 30) or ((player position as real) > (theDuration of currentTrack) / 2)) then
-					my OutputTrack(currentTrack & {theDate:my GetDatetime()}, "/Users/zackamiton/Code/TuningFork/data/spotify_log.txt")
-					set hasLogged to true
-				end if
-				delay 10
-			end repeat
-		end if
-	end tell
+set shouldClear to true
+repeat while true
+	if application "Spotify" is running then
+		tell application "Spotify"
+			set currentTrack to my TrackData(current track)
+			set priorPosition to 0
+			set hasLogged to not shouldClear
+			
+			if player state is playing then
+				repeat until currentTrack is not my TrackData(current track) or (player position as real) < priorPosition
+					set priorPosition to (player position as real)
+					if not hasLogged and (((player position as real) > 30) or ((player position as real) > (theDuration of currentTrack) / 2)) then
+						my OutputTrack(currentTrack & {theDate:my GetDatetime()}, "/Users/zackamiton/Code/TuningFork/data/spotify_log.txt")
+						set hasLogged to true
+					end if
+					delay 10
+				end repeat
+			else
+				delay 15
+			end if
+		end tell
+	else
+		delay 15
+	end if
 end repeat
