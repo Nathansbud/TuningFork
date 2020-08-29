@@ -1,0 +1,2 @@
+{   "theAlbum" : "I'm Allergic To Dogs!",   "theArtist" : "Remi Wolf",   "theDate" : "2020-8-29 4:04:45 AM",   "theId" : "spotify:track:77cXkMD9vGqm4hEDM06RZu",   "theDuration" : 265.26299999999998,   "theName" : "Photo ID" }
+{   "theAlbum" : "Art Angels",   "theArtist" : "Grimes",   "theDate" : "2020-8-29 4:05:45 AM",   "theId" : "spotify:track:2xMBf5lFjQvrkWL2toULNg",   "theDuration" : 247.36799999999999,   "theName" : "Artangels" }
