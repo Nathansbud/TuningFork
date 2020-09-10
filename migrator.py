@@ -68,7 +68,7 @@ def spotify_clean(field):
 
 
 def authorize_spotify():
-    scope = ["playlist-modify-private", "playlist-modify-public"]
+    scope = ["playlist-modify-private", "playlist-modify-public", "user-modify-playback-state"]
 
     spotify = OAuth2Session(creds['client_id'], scope=scope, redirect_uri=creds['redirect_uri'])
     authorization_url, state = spotify.authorization_url(creds['authorization_url'], access_type="offline")
@@ -85,15 +85,19 @@ def authorize_spotify():
 def save_token(token):
     with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
 
-def migrate_library(pid=playlists['all'], from_playlist=None, clear=False, tracks=[]):
+def get_token():
     if not os.path.isfile(os.path.join(cred_path, "spotify_token.json")):
-        spotify = authorize_spotify()
+        return authorize_spotify()
     else:
-        with open(os.path.join(cred_path, "spotify_token.json"), 'r+') as t: token = json.load(t)
-        spotify = OAuth2Session(creds['client_id'], token=token,
+        with open(os.path.join(cred_path, "spotify_token.json"), 'r+') as t:
+            token = json.load(t)
+        return OAuth2Session(creds['client_id'], token=token,
                                 auto_refresh_url=creds['token_url'],
-                                auto_refresh_kwargs={'client_id':creds['client_id'], 'client_secret':creds['client_secret']},
+                                auto_refresh_kwargs={'client_id': creds['client_id'], 'client_secret': creds['client_secret']},
                                 token_updater=save_token)
+
+def migrate_library(pid=playlists['all'], from_playlist=None, clear=False, tracks=[]):
+    spotify = get_token()
 
     if clear:
         spotify.put(f"https://api.spotify.com/v1/playlists/{pid}/tracks",
