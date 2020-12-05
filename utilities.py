@@ -3,6 +3,7 @@ from subprocess import Popen, PIPE
 import os
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import ssl
+import json
 
 def start_server(port):
     httpd = HTTPServer(("localhost", port), SimpleHTTPRequestHandler)
@@ -29,6 +30,20 @@ def get_vocal_paths():
     end tell
     """
     return [f"/{s.lstrip('/')}".strip() for s in call_applescript(get_tracks)['output'].split(", /")]
+
+def get_current_track():
+    split_on =  "--------"
+    get_current = f"""
+		if application "Spotify" is running then
+			tell application "Spotify"
+                set theTrack to current track
+                copy (name of theTrack as text) & "{split_on}" & (artist of theTrack as text) to stdout
+			end tell            
+		end if
+    """    
+    
+    current_track = call_applescript(get_current).get('output').strip().split(split_on)
+    return {"title": current_track[0], "artist": current_track[1]} if len(current_track) == 2 else None
 
 if __name__ == '__main__':
     start_server(6813)
