@@ -1,5 +1,3 @@
-#!/Users/zackamiton/Code/TuningFork/venv/bin/python
-
 from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
@@ -14,6 +12,7 @@ from urllib import parse
 from parser import parse_itunes_xml, get_tracks
 import unidecode
 import re
+import argparse
 
 from tkinter.filedialog import askopenfilename, Tk, askopenfilenames
 
@@ -57,7 +56,7 @@ def make_genius_url(artist, name):
 def get_lyrics(artist, name):
     return get_lyrics_from_url(make_genius_url(artist, name))
 
-def get_lyrics_from_url(url):
+def get_lyrics_from_url(url, surpress=True):
     try:
         raw_html = simple_get(url)
 
@@ -66,7 +65,7 @@ def get_lyrics_from_url(url):
         if len(lyrics) > 2: lyrics = lyrics[2:len(lyrics)-2] #Delete trailing and leading newlines
         return lyrics
     except TypeError:
-        print(f"Get lyrics failed on URL '{url}'")
+        if not surpress: print(f"Get lyrics failed on URL '{url}'")
         return False
 
 def write_lyrics(artist, name, file, rewrite=False):
@@ -156,5 +155,8 @@ def write_tracklist():
     print("Done!")
 
 if __name__ == "__main__":
-    add_all_lyrics()
     pass
+    
+    
+
+

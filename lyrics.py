@@ -17,7 +17,6 @@ if __name__ == "__main__":
         else:
             artist, title = curr.get('artist'), curr.get('title')
     
-    lyrics = get_lyrics(artist, title)
+    lyrics = get_lyrics(artist, title) or get_lyrics(title, artist) #fallback on flipping in case I forget they order they should go in (lul)
     if lyrics:
         print(f"[{artist} - {title}]", lyrics.strip(), sep='\n')
-
