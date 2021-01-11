@@ -1,12 +1,15 @@
 import argparse
+import webbrowser
 
-from scraper import get_lyrics
+from scraper import get_lyrics, make_genius_url
 from utilities import get_current_track
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("title", nargs="?", default=None)
     parser.add_argument("artist", nargs="?", default=None)
+    
+    parser.add_argument('-o', '--open', action='store_true')
 
     args = parser.parse_args()
     artist, title = args.artist, args.title
@@ -17,6 +20,13 @@ if __name__ == "__main__":
         else:
             artist, title = curr.get('artist'), curr.get('title')
     
-    lyrics = get_lyrics(artist, title) or get_lyrics(title, artist) #fallback on flipping in case I forget they order they should go in (lul)
+    fellback = False
+    lyrics = get_lyrics(artist, title) 
+    if not lyrics:
+        lyrics, fellback = get_lyrics(title, artist), True   #fallback on flipping in case I forget they order they should go in (lul)
+
     if lyrics:
-        print(f"[{artist} - {title}]", lyrics.strip(), sep='\n')
+        if not args.open: print(f"[{artist} - {title}]", lyrics.strip(), sep='\n')
+        else:
+            if not fellback: webbrowser.open(make_genius_url(artist, title))
+            else: webbrowser.open(make_genius_url(title, artist))    
