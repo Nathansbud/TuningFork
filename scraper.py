@@ -1,4 +1,4 @@
-from requests import get
+import requests
 from requests.exceptions import RequestException
 from contextlib import closing
 from bs4 import BeautifulSoup
@@ -19,7 +19,7 @@ from tkinter.filedialog import askopenfilename, Tk, askopenfilenames
 ###CODE THAT IS NOT MINE STARTS HERE:
 def simple_get(url):
     try:
-        with closing(get(url, stream=True)) as resp:
+        with closing(requests.get(url, stream=True)) as resp:
             if is_good_response(resp):
                 return resp.content
             else:
@@ -48,13 +48,31 @@ def genius_clean(field):
     field = re.sub("(?<=[a-z0-9])[^a-z0-9'.](?=[a-z0-9])", "-", field).replace(" - ", "-").replace(" ", "-") #replace mid-string punctuation; i.e. "P!nk"
     return re.sub("[^a-z0-9\-]", "", field)
 
-def make_genius_url(artist, name):
+def get_song_url(artist, name):
     artist = genius_clean(artist).capitalize()
     name = genius_clean(name).rstrip("-")
     return "https://genius.com/" + artist + "-" + name + "-lyrics"
 
+def get_album_url(artist, name):
+    artist = genius_clean(artist).capitalize().rstrip('-')
+    album = genius_clean(name).capitalize().rstrip('-')
+
+    return f"https://genius.com/albums/{artist}/{album}"
+
+def get_album_tracks(artist, name):
+    url = get_album_url(artist, name)
+    resp = requests.get(url)
+
+    if resp.status_code == 404: return []
+    else: 
+        try:
+            page = BeautifulSoup(resp.text, 'html.parser')
+            return [track.text.strip()[:-1*len('Lyrics')].strip() for track in page.findAll('h3', {'class': 'chart_row-content-title'})]
+        except Exception as e:
+            print(e)
+  
 def get_lyrics(artist, name):
-    return get_lyrics_from_url(make_genius_url(artist, name))
+    return get_lyrics_from_url(get_song_url(artist, name))
 
 def get_lyrics_from_url(url, surpress=True):
     try:

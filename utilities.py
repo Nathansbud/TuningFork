@@ -37,13 +37,13 @@ def get_current_track():
 		if application "Spotify" is running then
 			tell application "Spotify"
                 set theTrack to current track
-                copy (name of theTrack as text) & "{split_on}" & (artist of theTrack as text) to stdout
+                copy (name of theTrack as text) & "{split_on}" & (artist of theTrack as text) & "{split_on}" & (album of theTrack as text) to stdout
 			end tell            
 		end if
     """    
     
     current_track = call_applescript(get_current).get('output').strip().split(split_on)
-    return {"title": current_track[0], "artist": current_track[1]} if len(current_track) == 2 else None
+    return {"title": current_track[0], "artist": current_track[1], "album": current_track[2]} if len(current_track) == 3 else None
 
 if __name__ == '__main__':
     start_server(6813)
