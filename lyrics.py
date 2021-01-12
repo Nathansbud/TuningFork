@@ -8,7 +8,6 @@ from utilities import get_current_track
 def remove_after(inp, endings=None, regex_endings=None):
     if regex_endings:
         for r in regex_endings: 
-            print(inp, r)
             inp = re.split(r, inp)[0]
 
     if endings:
@@ -77,12 +76,17 @@ if __name__ == "__main__":
                 else: webbrowser.open(get_album_url(album, artist))    
 
     else:
-        lyrics = get_lyrics(artist, title) 
+        track = title if args.noremove else remove_after(
+            title, 
+            endings=[' (i. ']
+        )
+        
+        lyrics = get_lyrics(artist, track) 
         if not lyrics:
-            lyrics, fellback = get_lyrics(title, artist), True   #fallback on flipping in case I forget they order they should go in (lul)
+            lyrics, fellback = get_lyrics(track, artist), True   #fallback on flipping in case I forget they order they should go in (lul)
 
         if lyrics:
-            if not args.open: print(f"[{artist if not fellback else title} - {title if not fellback else artist}]", lyrics.strip(), sep='\n')
+            if not args.open: print(f"[{artist if not fellback else track} - {track if not fellback else artist}]", lyrics.strip(), sep='\n')
             else:
-                if not fellback: webbrowser.open(get_song_url(artist, title))
-                else: webbrowser.open(get_song_url(title, artist))
+                if not fellback: webbrowser.open(get_song_url(artist, track))
+                else: webbrowser.open(get_song_url(track, artist))
