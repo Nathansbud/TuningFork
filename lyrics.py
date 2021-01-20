@@ -19,8 +19,8 @@ def remove_after(inp, endings=None, regex_endings=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("title", nargs="?", default=None)
     parser.add_argument("artist", nargs="?", default=None)
+    parser.add_argument("title", nargs="?", default=None)
     
     parser.add_argument('-o', '--open', action='store_true')
     parser.add_argument('-a', '--album', action='store_true')
@@ -78,7 +78,10 @@ if __name__ == "__main__":
     else:
         track = title if args.noremove else remove_after(
             title, 
-            endings=[' (i. ']
+            endings=[' (i. '],
+            regex_endings=[
+                r'\- \d{4} Remaster'
+            ]
         )
         
         lyrics = get_lyrics(artist, track) 
