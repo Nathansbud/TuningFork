@@ -1,4 +1,3 @@
-#!/Users/zackamiton/Code/TuningFork/venv/bin/python
 from mutagen.id3 import ID3
 import os
 from sys import argv

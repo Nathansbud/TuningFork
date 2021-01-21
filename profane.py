@@ -1,5 +1,3 @@
-#!/Users/zackamiton/Code/TuningFork/venv/bin/python
-
 from mutagen.id3 import ID3
 from mutagen.mp4 import MP4
 from sys import argv
@@ -10,9 +8,8 @@ from utilities import call_applescript, get_vocal_paths
 import json
 
 
-profanity = ["asshol", "penis", "vagina", "bitch", "shit", "fuck", "cunt", "cock", "nigga", "nigger", "faggot", "crap", "pussy", "dick", "queer","retard", "slut", "midget", "whore"]
-sensitive = ["hell"]
-boundaried = ["asses", "ass"]
+with open(os.path.join(os.path.dirname(__file__), "data", "profanity.json")) as pf:
+    language.get= json.load(pf)
 
 #limited scunthorpe checking
 def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=False, prints=True, alt_url=None):
@@ -44,12 +41,13 @@ def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=Fal
         lyrics = get_lyrics(artist, title)
     if lyrics:
         if strict:
-            for w in profanity + sensitive:
+            for w in language.get('profane', []) + language.get('sensitive', []):
                 if w in lyrics: return True
         else:
-            for w in profanity:
+            for w in language.get('profane', []):
                 if w in lyrics: return True
-        for w in boundaried:
+        
+        for w in language.get('boundaried', []):
             if re.search(f"\\b{w}\\b", lyrics): return True
     return False
 

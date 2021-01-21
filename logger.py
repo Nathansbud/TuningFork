@@ -1,4 +1,3 @@
-#!/Users/zackamiton/Code/TuningFork/venv/bin/python
 import difflib
 import shutil
 import os
