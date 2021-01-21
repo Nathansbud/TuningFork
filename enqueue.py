@@ -3,9 +3,9 @@ from utilities import call_applescript
 
 import time
 import sys
+import argparse
 
-
-def enqueue(song, artist=None):
+def enqueue(song, artist=None, times=1):
     spotify = get_token()
     if artist:
         st = spotify.get(f"https://api.spotify.com/v1/search/?q={song}%20artist:{artist}&type=track&limit=1&offset=0").json()
@@ -13,10 +13,10 @@ def enqueue(song, artist=None):
         st = spotify.get(f"https://api.spotify.com/v1/search/?q={song}&type=track&limit=1&offset=0").json()
 
     track_uri = st['tracks']['items'][0]['uri'] if st['tracks']['items'] else ""
+    for i in range(times):
+    	spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={track_uri}")
     
-    spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={track_uri}")
-    print("Added track to queue!")
-
+    print(f"Added {'track' if times == 1 else 'tracks'} to queue!")
 
 def queue_track(mode='dialog'):
     if mode == 'dialog':
@@ -34,7 +34,13 @@ def queue_track(mode='dialog'):
             enqueue(song, artist)
     
     elif 'cli':
-        enqueue(*sys.argv[1:])
+    	parser = argparse.ArgumentParser(description="Spotify track queuer")
+    	parser.add_argument('title')
+    	parser.add_argument('artist', nargs='?', default=None)
+    	parser.add_argument('-t', '--times', default=1, type=int)
+
+    	args = parser.parse_args()
+    	enqueue(args.title, args.artist, args.times)
 
 if __name__ == '__main__':
     queue_track('dialog' if not sys.argv[1:] else 'cli')
