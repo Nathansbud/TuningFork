@@ -11,4 +11,5 @@ A collection of projects related to music files: lyric scraping, iTunes parsing,
 - **Plotter**: Fun scripts to plot Logger data via matplotlib
 - **Profane**: CLI tool to check if track lyrics contain profanity and build profanity-free playlist
 - **Scraper**: Lyric scraper from Genius to update lyric tag of all songs specified as having scrapable vocals (Vocal in comments)
-
+- **Turntable**: Custom track start/stop point and auto-queue manager for Spotify
+    - **Jockey**: CLI tool to create Turntable rules (stored in `resources/rules.json`)
