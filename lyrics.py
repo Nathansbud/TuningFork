@@ -59,7 +59,7 @@ if __name__ == "__main__":
                     r'\s\(\d{4} Remaster',
                     r'\(\d+(.*?) Anniversary(.*?)Edition'
                 ]
-            )            
+            )
         
         tracks = get_album_tracks(artist, album) 
         
@@ -80,7 +80,7 @@ if __name__ == "__main__":
             title, 
             endings=[' (i. '],
             regex_endings=[
-                r'\- \d{4} Remaster'
+                r'\-(\s\d{4})? Remaster'
             ]
         )
         

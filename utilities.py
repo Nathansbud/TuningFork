@@ -4,6 +4,23 @@ import os
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import ssl
 import json
+import webbrowser
+import urllib
+from time import sleep 
+
+from requests_oauthlib import OAuth2, OAuth2Session
+from oauthlib.oauth2 import TokenExpiredError
+
+cred_path = os.path.join(os.path.dirname(__file__), "credentials")
+default_spotify_scopes = [
+    "playlist-modify-private", 
+    "playlist-modify-public", 
+    "user-modify-playback-state",
+    "user-read-currently-playing",
+    "user-read-playback-state",
+]
+
+with open(os.path.join(cred_path, "spotify.json")) as jf: spotify_creds = json.load(jf)
 
 def start_server(port):
     httpd = HTTPServer(("localhost", port), SimpleHTTPRequestHandler)
@@ -12,6 +29,37 @@ def start_server(port):
                                    keyfile=os.path.join(os.path.dirname(__file__), "certificates", "nathansbud.key"),
                                    server_side=True)
     httpd.serve_forever()
+
+def authorize_spotify(scope):
+    spotify = OAuth2Session(spotify_creds['client_id'], scope=scope, redirect_uri=spotify_creds['redirect_uri'])
+    authorization_url, state = spotify.authorization_url(spotify_creds['authorization_url'], access_type="offline")
+    print("Opening authorization URL...paste redirect URL: ", end='')
+    sleep(0.5)
+    webbrowser.open_new(authorization_url)
+    
+    redirect_response = input()
+    code = urllib.parse.parse_qs(
+        urllib.parse.urlsplit(redirect_response, scheme='', allow_fragments=True).query
+    ).get('code', [None])[0]
+
+    token = spotify.fetch_token(spotify_creds['token_url'], client_secret=spotify_creds['client_secret'], code=code)
+
+    with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
+    return spotify
+
+def save_token(token):
+    with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
+
+def get_token(scope=default_spotify_scopes):
+    if not os.path.isfile(os.path.join(cred_path, "spotify_token.json")):
+        return authorize_spotify(default_spotify_scopes)
+    else:
+        with open(os.path.join(cred_path, "spotify_token.json"), 'r+') as t:
+            token = json.load(t)
+        return OAuth2Session(spotify_creds['client_id'], token=token,
+                                auto_refresh_url=spotify_creds['token_url'],
+                                auto_refresh_kwargs={'client_id': spotify_creds['client_id'], 'client_secret': spotify_creds['client_secret']},
+                                token_updater=save_token)
 
 
 def call_applescript(script):

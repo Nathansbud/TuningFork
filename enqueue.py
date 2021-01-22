@@ -1,5 +1,4 @@
-from migrator import get_token
-from utilities import call_applescript
+from utilities import call_applescript, get_token
 
 import time
 import sys
