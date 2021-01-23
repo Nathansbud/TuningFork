@@ -92,8 +92,7 @@ if __name__ == '__main__':
     count = 0
     try:
         while True:
-            resp = manager.poll()   
-            print(manager.rules.items().__len__()) 
+            resp = manager.poll()
             time.sleep(1 if not resp else resp)
             count += 1
             if count > 120:
