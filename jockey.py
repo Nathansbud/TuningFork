@@ -1,13 +1,40 @@
 import argparse
 import json
 import os
-
+import sys
+import math 
+from enum import Enum
 from utilities import get_token
 
 rule_file = rule_file = os.path.join(os.path.dirname(__file__), "resources", "turntable.json")
 spotify = get_token()
+class Colors(Enum):
+    DEFAULT = "\033[0m"
+    RED = "\033[31;1m"
+    GREEN = "\033[32;1m"
+    YELLOW = "\33[33;1m"
+    BLUE = '\033[34;1m'
+    MAGENTA = "\033[35;1m"
+    CYAN = "\033[36;1m"
+    WHITE = "\033[37;1m"
 
-def update_rule(uri, rule, user="6rcq1j21davq3yhbk1t0l5xnt"):
+def color(text, color): 
+    return f"{color.value}{text}{Colors.DEFAULT.value}"
+
+def get_rules(user="6rcq1j21davq3yhbk1t0l5xnt"):
+    if os.path.isfile(rule_file):
+        with open(rule_file, 'r+') as rf:
+            try:
+                jd = json.load(rf)
+                
+                tracks = jd.get('tracks', {})
+                rules = jd.get(user, {})
+
+                return rules, tracks
+            except json.JSONDecodeError:
+                return    
+
+def update_rule(uri, rule, track=None, idx=None, user="6rcq1j21davq3yhbk1t0l5xnt"):
     rules = {}
     user_rules = {}
     if os.path.isfile(rule_file):
@@ -15,10 +42,21 @@ def update_rule(uri, rule, user="6rcq1j21davq3yhbk1t0l5xnt"):
             rules = json.load(rf)
 
     rules[user] = rules.get(user, {})
-    if rule:
-        rules[user][uri] = rule
-    else:
-        if uri in rules[user]: del rules[user][uri]
+    rules['tracks'] = rules.get('tracks', {})
+    
+    if rule: rules[user][uri] = rule
+    elif uri:
+        if not rules[user]: exit("No rules found for current user!")
+        elif uri in rules[user]: del rules[user][uri]
+        else:
+            print(f"No rule found for URI {uri}")
+    elif idx:
+        if not rules[user]: exit("No rules found for current user!")
+        elif idx > len(rules[user].items()): exit(f"Removal index must be [1, {len(rules[user].items())}]!")
+        
+        rules[user] = {k:v for i, [k, v] in enumerate(rules[user].items(), start=1) if i != idx}
+    
+    if track and track.get('uri'): rules['tracks'][track.get('uri')] = track
     
     with open(rule_file, 'w+') as wf:
         json.dump(rules, wf)
@@ -51,6 +89,15 @@ def get_track(uri):
             'artist': ", ".join([artist.get('name') for artist in resp.get('artists')])
         }
 
+def ts(ms):
+    if ms is None: return None
+    mins = math.floor(ms / 60000)
+    ms -= mins * 60000
+    secs = round(ms / 1000, 4)
+    dec = secs - math.floor(secs)
+
+    return f"{mins}:{math.floor(secs):0>2}{str(round(dec, 3))[str(round(dec, 3)).rindex('.'):] if dec > 0 else ''}"
+
 def ms(ts, ub=None):
     print(ts)
     process = ts.strip()
@@ -75,7 +122,7 @@ def ms(ts, ub=None):
             
 if __name__ == '__main__':
     parser = argparse.ArgumentParser("Turntable")
-    
+
     parser.add_argument('-s', '--start')
     parser.add_argument('-e', '--end')
     
@@ -85,26 +132,37 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--artist', default=None)
     
     parser.add_argument('-q', '--queue')
-    parser.add_argument('-d', '--delete', '-r', '--remove', action='store_true')
-    
-    args = parser.parse_args()
-    
-    if not any([args.start, args.end, args.queue]) and not args.delete:
-        exit("Must specify a track start (-s), end (-e), queue (-q), or delete (-d)")
-    else:
-        if args.current: track = get_track(current())
-        elif args.title: track = get_track(search(args.title, args.artist))
-        elif args.uri: track = get_track(args.uri)
-        else:
-            exit("One of: uri (-u), title (-t) + artist (-a), or current (-c) must be specified!")
+    parser.add_argument('-d', '--delete', nargs='?', default='UNDEFINED')
 
-        if not track: 
-            exit("No track found!")
+    args = parser.parse_args()
+
+    if sys.argv[1:]:    
+        if not any([args.start, args.end, args.queue]) and args.delete == 'UNDEFINED':
+            exit("Must specify a track start (-s), end (-e), queue (-q), or delete (-d)")
         else:
-            uri = track.get('uri')
-            if args.delete: 
-                update_rule(uri, None)
+            track = None
+            if args.current: track = get_track(current())
+            elif args.title: track = get_track(search(args.title, args.artist))
+            elif args.uri: track = get_track(args.uri)
+        
+        
+            if args.delete != 'UNDEFINED':
+                if args.delete is None:
+                    uri = (track or {}).get('uri')
+                    if not uri: 
+                        exit("One of: uri (-u), title (-t) + artist (-a), or current (-c) must be specified!")
+                    else:
+                        update_rule(uri, None, track=track)
+                else:
+                    try:
+                        idx = int(args.delete)
+                        if idx > 0: update_rule(None, None, idx=idx)
+                    except ValueError:
+                        print("Deletion index must be an integer!")               
             else:
+                if not track.get('uri'): exit("One of: uri (-u), title (-t) + artist (-a), or current (-c) must be specified!")
+                uri = track.get('uri')
+            
                 start = 0
                 end = track.get('duration')
                 
@@ -127,6 +185,24 @@ if __name__ == '__main__':
                 if rule: 
                     rule['active'] = True
                     rule['mode'] = 'default'
-                    update_rule(uri, rule)
+                    update_rule(uri, rule, track=track)
                 else:
                     print("Invalid rule!")
+    else:    
+        rules, tracks = get_rules() or [{}, {}]
+        if rules:
+            for i, [uri, rule] in enumerate(rules.items(), start=1):
+                data = tracks.get(uri, {})
+                q = tracks.get(rule.get('queue')) or {}
+                output = ' '.join([
+                    color(i, Colors.WHITE),
+                    '->',
+                    color(data.get('name', uri), Colors.CYAN),
+                    f"[{color(data.get('artist'), Colors.YELLOW)}] - " if data.get('artist') else ' - ',
+                    color(ts(rule.get('start', 0)), Colors.GREEN),
+                    '<->',
+                    color(ts(rule.get('end') or data.get('duration')) or 'END', Colors.RED),
+                    f"- [Q: {color(q.get('name', rule.get('queue', None)), Colors.MAGENTA)}]"
+                ]).replace('  ', ' ').replace(' ,', ',').strip()
+                print(output)
+            
