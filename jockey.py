@@ -150,20 +150,22 @@ if __name__ == '__main__':
                     if not uri: 
                         exit("One of: uri (-u), title (-t) + artist (-a), or current (-c) must be specified!")
                     else:
-                        print(f"{color('Deleting rule', Colors.RED)} for {color(track.get('name'), Colors.CYAN)} [{color(track.get('artist'), Colors.YELLOW)}]")
+                        print(f"{color('Deleting rule', Colors.RED)} for {color(track.get('name'), Colors.CYAN)} [{color(track.get('artist'), Colors.YELLOW)}]...")
                         update_rule(uri, None, track=track)
                 else:
                     try:
                         r_idxs = []
-                        n_rules = len(get_rules()[0])
+                        rules, tracks = get_rules() or [{}, {}]
+                        n_rules = len(rules)
                         
                         if args.delete[0] == '*' and n_rules > 0:
-                            r_idxs = list(range(1, n_rules))
+                            r_idxs = range(1, n_rules + 1)
+                            print(f"{color('Deleting all rules', Colors.RED)}...")                            
                         elif n_rules == 0: 
                             print("No rules found!")
                         elif args.delete[0] != '*':
                             r_idxs = sorted((int(idx) for idx in args.delete if n_rules >= int(idx) > 0), reverse=True)
-                            print(f"Deleting rule(s) indexed: {', '.join((str(s) for s in r_idxs)).strip()}")
+                            print(f"{color('Deleting rule(s)', Colors.RED)} indexed: {color(', '.join((str(s) for s in r_idxs)).strip(), Colors.WHITE)}...")
 
                         for idx in r_idxs:
                             update_rule(None, None, idx=idx)
@@ -197,7 +199,7 @@ if __name__ == '__main__':
                     rule['active'] = True
                     rule['mode'] = 'default'
 
-                    print(f"{color('Upserting rule', Colors.GREEN)} for {color(track.get('name'), Colors.CYAN)} [{color(track.get('artist'), Colors.YELLOW)}]!")
+                    print(f"{color('Upserting rule', Colors.GREEN)} for {color(track.get('name'), Colors.CYAN)} [{color(track.get('artist'), Colors.YELLOW)}]...")
                     update_rule(uri, rule, track=track)
                 else:
                     print("Invalid rule!")
