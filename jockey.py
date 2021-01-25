@@ -49,7 +49,7 @@ def update_rule(uri, rule, track=None, idx=None, user="6rcq1j21davq3yhbk1t0l5xnt
         if not rules[user]: exit("No rules found for current user!")
         elif uri in rules[user]: del rules[user][uri]
         else:
-            print(f"No rule found for URI {uri}")
+            print(f"No rule found!")
     elif idx:
         if not rules[user]: exit("No rules found for current user!")
         elif idx > len(rules[user].items()): exit(f"Removal index must be [1, {len(rules[user].items())}]!")
@@ -99,7 +99,6 @@ def ts(ms):
     return f"{mins}:{math.floor(secs):0>2}{str(round(dec, 3))[str(round(dec, 3)).rindex('.'):] if dec > 0 else ''}"
 
 def ms(ts, ub=None):
-    print(ts)
     process = ts.strip()
     ms = 0
     m = s = 0
@@ -132,12 +131,11 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--artist', default=None)
     
     parser.add_argument('-q', '--queue')
-    parser.add_argument('-d', '--delete', nargs='?', default='UNDEFINED')
+    parser.add_argument('-d', '--delete', nargs='*', default='UNDEFINED')
 
     args = parser.parse_args()
-
     if sys.argv[1:]:    
-        if not any([args.start, args.end, args.queue]) and args.delete == 'UNDEFINED':
+        if not any([args.start, args.end, args.queue]) and args.delete == "UNDEFINED":
             exit("Must specify a track start (-s), end (-e), queue (-q), or delete (-d)")
         else:
             track = None
@@ -147,18 +145,31 @@ if __name__ == '__main__':
         
         
             if args.delete != 'UNDEFINED':
-                if args.delete is None:
+                if len(args.delete) == 0:
                     uri = (track or {}).get('uri')
                     if not uri: 
                         exit("One of: uri (-u), title (-t) + artist (-a), or current (-c) must be specified!")
                     else:
+                        print(f"{color('Deleting rule', Colors.RED)} for {color(track.get('name'), Colors.CYAN)} [{color(track.get('artist'), Colors.YELLOW)}]")
                         update_rule(uri, None, track=track)
                 else:
                     try:
-                        idx = int(args.delete)
-                        if idx > 0: update_rule(None, None, idx=idx)
+                        r_idxs = []
+                        n_rules = len(get_rules()[0])
+                        
+                        if args.delete[0] == '*' and n_rules > 0:
+                            r_idxs = list(range(1, n_rules))
+                        elif n_rules == 0: 
+                            print("No rules found!")
+                        elif args.delete[0] != '*':
+                            r_idxs = sorted((int(idx) for idx in args.delete if n_rules >= int(idx) > 0), reverse=True)
+                            print(f"Deleting rule(s) indexed: {', '.join((str(s) for s in r_idxs)).strip()}")
+
+                        for idx in r_idxs:
+                            update_rule(None, None, idx=idx)
+                    
                     except ValueError:
-                        print("Deletion index must be an integer!")               
+                        print("Deletion index(es) must be '*' or non-zero integers; if you forgot to quote '*', globbing likely occurred!")               
             else:
                 if not track.get('uri'): exit("One of: uri (-u), title (-t) + artist (-a), or current (-c) must be specified!")
                 uri = track.get('uri')
@@ -185,6 +196,8 @@ if __name__ == '__main__':
                 if rule: 
                     rule['active'] = True
                     rule['mode'] = 'default'
+
+                    print(f"{color('Upserting rule', Colors.GREEN)} for {color(track.get('name'), Colors.CYAN)} [{color(track.get('artist'), Colors.YELLOW)}]!")
                     update_rule(uri, rule, track=track)
                 else:
                     print("Invalid rule!")
