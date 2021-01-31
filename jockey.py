@@ -70,7 +70,7 @@ def search(title, artist=None):
     elif title:
         resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}&type=track&limit=1&offset=0").json()
     
-    return resp.get('tracks', {}).get('items', [{}])[0].get('uri') 
+    return (resp.get('tracks', {}).get('items') or [{}])[0].get('uri')
 
 def current():
     return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {}).get('uri')
