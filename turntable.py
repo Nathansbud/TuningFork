@@ -69,7 +69,7 @@ class RuleManager:
                 return None
     
     def forward(self): self.spotify.post(endpoints.get('skip'))
-    def scrub(self, to): self.spotify.put(endpoints.get('scrub').format(to=to))
+    def scrub(self, to): self.spotify.put(endpoints.get('scrub').format(to=round(to)))
     def queue(self, uri): self.spotify.post(endpoints.get('queue').format(uri=uri))
 
     def apply_rule(self, uri, position):
