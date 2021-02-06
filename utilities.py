@@ -7,9 +7,23 @@ import json
 import webbrowser
 import urllib
 from time import sleep 
+import argparse
+from enum import Enum
 
 from requests_oauthlib import OAuth2, OAuth2Session
 from oauthlib.oauth2 import TokenExpiredError
+
+class Colors(Enum):
+    DEFAULT = "\033[0m"
+    RED = "\033[31;1m"
+    GREEN = "\033[32;1m"
+    YELLOW = "\33[33;1m"
+    BLUE = '\033[34;1m'
+    MAGENTA = "\033[35;1m"
+    CYAN = "\033[36;1m"
+    WHITE = "\033[37;1m"
+
+def color(text, color): return f"{color.value}{text}{Colors.DEFAULT.value}"
 
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 default_spotify_scopes = [
@@ -93,5 +107,25 @@ def get_current_track():
     current_track = call_applescript(get_current).get('output').strip().split(split_on)
     return {"title": current_track[0], "artist": current_track[1], "album": current_track[2]} if len(current_track) == 3 else None
 
+def search(title, artist=None, spotify=None):
+    if not (spotify or title): return
+
+    if title and artist:
+        resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}%20artist:{artist.strip()}&type=track&limit=1&offset=0").json()
+    elif title:
+        resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}&type=track&limit=1&offset=0").json()
+    
+    return (resp.get('tracks', {}).get('items') or [{}])[0].get('uri')
+
+class SongException(Exception): pass
+class SongParser(argparse.ArgumentParser):
+    def error(self, msg):
+        raise SongException("Invalid track specifier!")
+
 if __name__ == '__main__':
-    start_server(6813)
+    # start_server(6813)
+    parser2 = argparse.ArgumentParser('Yort', add_help=False)
+    parser2.add_argument('-s', '--song')
+    parser = argparse.ArgumentParser('Yeet', parents=[parser2])
+    parser.add_argument('yum')
+    print(parser.parse_args())

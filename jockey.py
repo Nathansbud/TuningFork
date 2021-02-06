@@ -4,22 +4,13 @@ import os
 import sys
 import math 
 from enum import Enum
-from utilities import get_token
+from utilities import (
+    search, get_token,
+    color, Colors
+)
 
 rule_file = rule_file = os.path.join(os.path.dirname(__file__), "resources", "turntable.json")
 spotify = get_token()
-class Colors(Enum):
-    DEFAULT = "\033[0m"
-    RED = "\033[31;1m"
-    GREEN = "\033[32;1m"
-    YELLOW = "\33[33;1m"
-    BLUE = '\033[34;1m'
-    MAGENTA = "\033[35;1m"
-    CYAN = "\033[36;1m"
-    WHITE = "\033[37;1m"
-
-def color(text, color): 
-    return f"{color.value}{text}{Colors.DEFAULT.value}"
 
 def get_rules(user="6rcq1j21davq3yhbk1t0l5xnt"):
     if os.path.isfile(rule_file):
@@ -61,21 +52,10 @@ def update_rule(uri, rule, track=None, idx=None, user="6rcq1j21davq3yhbk1t0l5xnt
     with open(rule_file, 'w+') as wf:
         json.dump(rules, wf)
 
-        
-def search(title, artist=None):
-    if not title: return
-
-    if title and artist:
-        resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}%20artist:{artist.strip()}&type=track&limit=1&offset=0").json()
-    elif title:
-        resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}&type=track&limit=1&offset=0").json()
-    
-    return (resp.get('tracks', {}).get('items') or [{}])[0].get('uri')
-
 def current():
     return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {}).get('uri')
 
-def get_track(uri):
+def get_track(uri, spotify=spotify):
     if not uri: return
     uri = uri.strip()
 
@@ -124,12 +104,10 @@ if __name__ == '__main__':
 
     parser.add_argument('-s', '--start')
     parser.add_argument('-e', '--end')
-    
     parser.add_argument('-c', '--current', action='store_true')
-    parser.add_argument('-u', '--uri')
     parser.add_argument('-t', '--title')
     parser.add_argument('-a', '--artist', default=None)
-    
+    parser.add_argument('-u', '--uri')    
     parser.add_argument('-q', '--queue')
     parser.add_argument('-d', '--delete', nargs='*', default='UNDEFINED')
 
@@ -140,9 +118,8 @@ if __name__ == '__main__':
         else:
             track = None
             if args.current: track = get_track(current())
-            elif args.title: track = get_track(search(args.title, args.artist))
+            elif args.title: track = get_track(search(args.title, args.artist, spotify))
             elif args.uri: track = get_track(args.uri)
-        
         
             if args.delete != 'UNDEFINED':
                 if len(args.delete) == 0:
@@ -187,7 +164,7 @@ if __name__ == '__main__':
                     if args.queue.startswith('spotify:'): queue = get_track(args.queue)
                     elif args.queue.strip().lower() == '@c': queue = get_track(current())
                     else:
-                        queue = get_track(search(*(args.queue.lower().split('@by') if '@by' in args.queue.lower() else [args.queue, None])))
+                        queue = get_track(search(*(args.queue.lower().split('@by') if '@by' in args.queue.lower() else [args.queue, None]), spotify))
 
 
                 rule = {}
