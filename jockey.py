@@ -194,6 +194,8 @@ if __name__ == '__main__':
                     color(ts(rule.get('start', 0)), Colors.GREEN),
                     '<->',
                     color(ts(rule.get('end') or data.get('duration')) or 'END', Colors.RED),
+                    '/',
+                    color(ts(data.get('duration')) or 'END', Colors.RED),
                     f"- [Q: {color(q.get('name', rule.get('queue', None)), Colors.MAGENTA)}]"
                 ]).replace('  ', ' ').replace(' ,', ',').strip()
                 print(output)

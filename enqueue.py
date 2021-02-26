@@ -81,7 +81,6 @@ def add_group():
                 if track:
                     confirm = input(f"Found track: {track.get('name')} by {track.get('artist')}. Add to group {name} (y/n)? ").lower().strip()
                     if confirm == 'y': tracks.append(track)
-            
             except SongException as e:
                 print(e)
             
@@ -131,6 +130,8 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None):
         #     print(f"Added currently playing track to queue {times}x!")
         else:
             print(f"Added {title.strip()} to queue {times}x!")
+    else:
+        print("Could not find track(s)!")
 
 def queue_track():
     parser = argparse.ArgumentParser(description="Spotify track queuer")
