@@ -34,19 +34,29 @@ default_spotify_scopes = [
     "user-read-playback-state",
 ]
 
-with open(os.path.join(cred_path, "spotify.json")) as jf: spotify_creds = json.load(jf)
+with open(os.path.join(cred_path, "spotify.json"), "r") as jf: 
+    try:
+        spotify_creds = json.load(jf)
+    except json.JSONDecodeError: 
+        spotify_creds = {}
 
-def start_server(port):
+def start_server(port):    
+    #Certificate files can be generated using: 
+    #openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
+
     httpd = HTTPServer(("localhost", port), SimpleHTTPRequestHandler)
-    httpd.socket = ssl.wrap_socket(httpd.socket,
-                                   certfile=os.path.join(os.path.dirname(__file__), "certificates", "nathansbud.crt"),
-                                   keyfile=os.path.join(os.path.dirname(__file__), "certificates", "nathansbud.key"),
-                                   server_side=True)
+    httpd.socket = ssl.wrap_socket(httpd.socket, 
+        certfile=os.path.join(os.path.dirname(__file__), "certificates", "nathansbud.crt"), 
+        keyfile=os.path.join(os.path.dirname(__file__), "certificates", "nathansbud.key"), server_side=True
+    )
     httpd.serve_forever()
 
 def authorize_spotify(scope):
+    auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"
+
     spotify = OAuth2Session(spotify_creds['client_id'], scope=scope, redirect_uri=spotify_creds['redirect_uri'])
-    authorization_url, state = spotify.authorization_url(spotify_creds['authorization_url'], access_type="offline")
+    authorization_url, state = spotify.authorization_url(auth_url, access_type="offline")
+    
     print("Opening authorization URL...paste redirect URL: ", end='')
     sleep(0.5)
     webbrowser.open_new(authorization_url)
@@ -55,8 +65,7 @@ def authorize_spotify(scope):
     code = urllib.parse.parse_qs(
         urllib.parse.urlsplit(redirect_response, scheme='', allow_fragments=True).query
     ).get('code', [None])[0]
-
-    token = spotify.fetch_token(spotify_creds['token_url'], client_secret=spotify_creds['client_secret'], code=code)
+    token = spotify.fetch_token(token_url, client_secret=spotify_creds['client_secret'], code=code)
 
     with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
     return spotify
@@ -123,9 +132,5 @@ class SongParser(argparse.ArgumentParser):
         raise SongException("Invalid track specifier!")
 
 if __name__ == '__main__':
-    # start_server(6813)
-    parser2 = argparse.ArgumentParser('Yort', add_help=False)
-    parser2.add_argument('-s', '--song')
-    parser = argparse.ArgumentParser('Yeet', parents=[parser2])
-    parser.add_argument('yum')
-    print(parser.parse_args())
+    start_server(6813)
+    pass
