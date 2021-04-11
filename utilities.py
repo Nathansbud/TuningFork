@@ -26,6 +26,7 @@ class Colors(Enum):
 def color(text, color): return f"{color.value}{text}{Colors.DEFAULT.value}"
 
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
+auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"        
 default_spotify_scopes = [
     "playlist-modify-private", 
     "playlist-modify-public", 
@@ -52,8 +53,6 @@ def start_server(port):
     httpd.serve_forever()
 
 def authorize_spotify(scope):
-    auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"
-
     spotify = OAuth2Session(spotify_creds['client_id'], scope=scope, redirect_uri=spotify_creds['redirect_uri'])
     authorization_url, state = spotify.authorization_url(auth_url, access_type="offline")
     
@@ -80,7 +79,7 @@ def get_token(scope=default_spotify_scopes):
         with open(os.path.join(cred_path, "spotify_token.json"), 'r+') as t:
             token = json.load(t)
         return OAuth2Session(spotify_creds['client_id'], token=token,
-                                auto_refresh_url=spotify_creds['token_url'],
+                                auto_refresh_url=token_url,
                                 auto_refresh_kwargs={'client_id': spotify_creds['client_id'], 'client_secret': spotify_creds['client_secret']},
                                 token_updater=save_token)
 
