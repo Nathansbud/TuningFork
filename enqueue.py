@@ -138,6 +138,10 @@ def queue_track():
 
     parser.add_argument('title', nargs='?', default=None)
     parser.add_argument('artist', nargs='?', default=None)
+
+    #This arg achieves nothing, I just want queue and queue -c to do the same thing
+    parser.add_argument('-c', '--current', action="store_true")
+
     parser.add_argument('-t', '--times', default=1, type=int)
     parser.add_argument('-p', '--previous', default=0, type=int)
     
