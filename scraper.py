@@ -78,8 +78,7 @@ def get_lyrics_from_url(url, surpress=True):
     try:
         raw_html = simple_get(url)
         soup = BeautifulSoup(raw_html, 'html.parser')
-        lyrics = (soup.find(class_="lyrics")).text if soup.find(class_="lyrics") else "" #Genius has all lyric data in a div with class lyrics, text gets plaintext
-        return lyrics.strip()
+        return "\n".join([l.get_text(separator='\n') for l in soup.select("div[class^=Lyrics]")]).strip().replace("\n[", "\n\n[").replace("\n,", ",").replace(" \n", " ").replace("\n\n\n", "\n\n")       
     except TypeError:
         if not surpress: print(f"Get lyrics failed on URL '{url}'")
         return False
