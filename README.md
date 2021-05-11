@@ -3,6 +3,7 @@
 A collection of projects related to music files: lyric scraping, iTunes parsing, play logging, tag modification, Twitter lyric bots, and more! Everything is for personal use, so a tad rough around the edges (and everywhere else, to be honest):
 
 - **Cleanser**: CLI tool to remove unwanted ID3 tags from MP3 files
+- **Enqueue**: Add tracks (or groups of tracks) to Spotify queue
 - **Logger**: Script to read differences in iTunes Library.xml, and log change
 - **Lyrical**: Lyric grabber from random/specified songs
 - **LyricBot**: Script used to post random lyrics to Twitter for various artist bots, using Genius/Google Doc/Sheets as source
@@ -13,3 +14,11 @@ A collection of projects related to music files: lyric scraping, iTunes parsing,
 - **Scraper**: Lyric scraper from Genius to update lyric tag of all songs specified as having scrapable vocals (Vocal in comments)
 - **Turntable**: Custom track start/stop point and auto-queue manager for Spotify
     - **Jockey**: CLI tool to create Turntable rules (stored in `resources/rules.json`)
+
+# Setup
+
+## Spotify Scopes
+
+Before using Spotify-dependent tools (e.g. Enqueue, Turntable, Migrator), a token must be generated. Add a `spotify.json` file to `credentials`, and populate with client_id, client_secret, and redirect_uri corresponding with the desired Spotify app.
+
+
