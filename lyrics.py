@@ -3,7 +3,7 @@ import webbrowser
 import re
 
 from scraper import get_lyrics, get_song_url, get_album_tracks, get_album_url
-from utilities import get_current_track
+from enqueue import current_lyrics
 
 def remove_after(inp, endings=None, regex_endings=None):
     if regex_endings:
@@ -30,13 +30,14 @@ if __name__ == "__main__":
     
     album = None
     artist, title, album_flag = args.artist, args.title, args.album
+    existing_lyrics = None
     if not (artist and title):
-        curr = get_current_track()
+        curr = current_lyrics()
         if not curr: 
             print("No song is playing!")
             exit(0)
         else:
-            artist, title, album = curr.get('artist'), curr.get('title'), curr.get('album')
+            artist, title, album, existing_lyrics = curr.get('artist'), curr.get('title'), curr.get('album'), curr.get('lyrics')
     
     fellback = False
     if album_flag:
@@ -84,8 +85,9 @@ if __name__ == "__main__":
             ]
         )
         
-        lyrics = get_lyrics(artist, track) 
-        if not lyrics:
+        
+        lyrics = get_lyrics(artist, track) if not existing_lyrics else existing_lyrics
+        if not (lyrics or existing_lyrics):
             lyrics, fellback = get_lyrics(track, artist), True   #fallback on flipping in case I forget they order they should go in (lul)
 
         if lyrics:

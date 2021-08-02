@@ -10,6 +10,10 @@ import os
 import json
 import argparse
 import shlex
+from itertools import permutations
+
+from scraper import get_lyrics
+
 
 group_file = os.path.join(os.path.dirname(__file__), "resources", "queue.json")
 def load_groups():
@@ -19,7 +23,6 @@ def load_groups():
     with open(group_file, 'r') as gf: 
         return json.load(gf)
 
-# def 
 spotify = get_token()
 groups = load_groups()
 
@@ -36,9 +39,32 @@ def get_track(uri):
             'artist': ", ".join([artist.get('name') for artist in resp.get('artists')])
         }
 
-def current(): 
-    return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {}).get('uri')
-
+def current(): return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {})
+def current_uri(): current().get('uri')
+def current_lyrics():
+    current_track = current()
+    album_artists = [artist.get('name') for artist in current_track.get('album', {}).get('artists', [])]
+    lyrics = get_lyrics(album_artists[0], current_track.get('name'))
+    if lyrics: 
+        return {
+            "artist": album_artists[0],
+            "album": current_track.get("album").get("name"),
+            "title": current_track.get("name"), 
+            "lyrics": lyrics
+        }
+    else:
+        for p in permutations(album_artists):
+            lyrics = get_lyrics(" and ".join(p), current_track.get('name'))
+            if lyrics:
+                return {
+                    "artist": " and ".join(p),
+                    "album": current_track.get("album").get("name"),
+                    "title": current_track.get("name"), 
+                    "lyrics": lyrics
+                }
+        
+        return "No lyrics found!"
+    
 def add_group():
     tracks = []
     name = input("Queue Group Name: ")
@@ -74,7 +100,7 @@ def add_group():
                 args = parser.parse_args(shlex.split(candidate_track))
                 if args.title: track = get_track(search(args.title, args.artist, spotify))
                 elif args.uri: track = get_track(args.uri)
-                elif args.current: track = get_track(current())
+                elif args.current: track = get_track(current_uri())
                 else:
                     raise SongException("Invalid track specifier! Provide artist (and track), else specify current (-c) or uri (-u)!")
 
@@ -188,4 +214,4 @@ def queue_track():
         )
 
 if __name__ == '__main__':
-    queue_track()
+    queue_track()    

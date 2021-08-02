@@ -51,7 +51,7 @@ def genius_clean(field):
 def get_song_url(artist, name):
     artist = genius_clean(artist).capitalize()
     name = genius_clean(name).rstrip("-")
-    return "https://genius.com/" + artist + "-" + name + "-lyrics"
+    return "https://genius.com/" + artist + "-" + name + "-lyrics?react=0"
 
 def get_album_url(artist, name):
     artist = genius_clean(artist).capitalize().rstrip('-')
@@ -78,7 +78,14 @@ def get_lyrics_from_url(url, surpress=True):
     try:
         raw_html = simple_get(url)
         soup = BeautifulSoup(raw_html, 'html.parser')
-        return "\n".join([l.get_text(separator='\n') for l in soup.select("div[class^=Lyrics]")]).strip().replace("\n[", "\n\n[").replace("\n,", ",").replace(" \n", " ").replace("\n\n\n", "\n\n")       
+        # Slice to get rid of transcription instructions
+        return re.sub(
+            r"\n([^a-zA-Z0-9\n\[\(]+)", 
+            r"\1", 
+            "\n".join([
+                l.get_text(separator='\n') for l in soup.select("div[class^=Lyrics]")[3:-1]]
+            ).strip().replace("\n[", "\n\n[").replace("\n,", ",").replace(" \n", " ").replace("\n\n\n", "\n\n").replace("(\n", "(").replace("\n)", ")").replace("\n]", "]")
+        )
     except TypeError:
         if not surpress: print(f"Get lyrics failed on URL '{url}'")
         return False
