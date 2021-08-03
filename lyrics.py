@@ -34,9 +34,11 @@ if __name__ == "__main__":
     if not (artist and title):
         curr = current_lyrics()
         if not curr: 
-            print("No song is playing!")
+            print("No song playing!") 
             exit(0)
         else:
+            if not curr.get('lyrics'): 
+                print("No lyrics found!")
             artist, title, album, existing_lyrics = curr.get('artist'), curr.get('title'), curr.get('album'), curr.get('lyrics')
     
     fellback = False
@@ -63,7 +65,6 @@ if __name__ == "__main__":
             )
         
         tracks = get_album_tracks(artist, album) 
-        
         if not tracks: 
             tracks, fellback = get_album_tracks(album, artist), True
         
@@ -75,6 +76,8 @@ if __name__ == "__main__":
             else:
                 if not fellback: webbrowser.open(get_album_url(artist, album))
                 else: webbrowser.open(get_album_url(album, artist))    
+        else:
+            print("Could not locate track list!")
 
     else:
         track = title if args.noremove else remove_after(
@@ -85,7 +88,6 @@ if __name__ == "__main__":
             ]
         )
         
-        
         lyrics = get_lyrics(artist, track) if not existing_lyrics else existing_lyrics
         if not (lyrics or existing_lyrics):
             lyrics, fellback = get_lyrics(track, artist), True   #fallback on flipping in case I forget they order they should go in (lul)
@@ -95,3 +97,5 @@ if __name__ == "__main__":
             else:
                 if not fellback: webbrowser.open(get_song_url(artist, track))
                 else: webbrowser.open(get_song_url(track, artist))
+        else:
+            print("No lyrics found!")

@@ -43,10 +43,10 @@ def has_lyrics(file):
 
 def genius_clean(field):
     #unidecode turns • into *...annoying.
-    field = unidecode.unidecode(field.lower().split("(feat. ")[0].split( " ft. ")[0].split( " feat. ")[0].split(" featuring. ")[0].split("  feat. ")[0].split(" (with ")[0].replace("&", "and").replace("•", "").replace("æ", "").replace("œ", "")) #split off featuring, replace & with and
-    field = re.sub("(?<=\s)[^a-z0-9](?=\s)", "-", field) #replace space-surrounded punctuation with hyphen
-    field = re.sub("(?<=[a-z0-9])[^a-z0-9'.](?=[a-z0-9])", "-", field).replace(" - ", "-").replace(" ", "-") #replace mid-string punctuation; i.e. "P!nk"
-    return re.sub("[^a-z0-9\-]", "", field)
+    field = unidecode.unidecode(field.lower().split("(feat. ")[0].split( " ft. ")[0].split( " feat. ")[0].split(" featuring. ")[0].split("  feat. ")[0].split(" (with ")[0].replace("&", "and").replace("•", "").replace("æ", "").replace("œ", "").replace("’", "")) #split off featuring, replace & with and
+    field = re.sub(r"(?<=\s)[^a-z0-9](?=\s)", "-", field) #replace space-surrounded punctuation with hyphen
+    field = re.sub(r"(?<=[a-z0-9])[^a-z0-9\.\'\’\'](?=[a-z0-9])", "-", field).replace(" - ", "-").replace(" ", "-") #replace mid-string punctuation; i.e. "P!nk"
+    return re.sub(r"[^a-z0-9\-]", "", field)
 
 def get_song_url(artist, name):
     artist = genius_clean(artist).capitalize()
@@ -78,13 +78,22 @@ def get_lyrics_from_url(url, surpress=True):
     try:
         raw_html = simple_get(url)
         soup = BeautifulSoup(raw_html, 'html.parser')
+        lyric_data = [l.get_text(separator='\n') for l in soup.select("div[class^=Lyrics]")]
+        if "instrumental" in lyric_data[-1].lower(): return "[Instrumental]"
+
         # Slice to get rid of transcription instructions
         return re.sub(
             r"\n([^a-zA-Z0-9\n\[\(]+)", 
             r"\1", 
-            "\n".join([
-                l.get_text(separator='\n') for l in soup.select("div[class^=Lyrics]")[3:-1]]
-            ).strip().replace("\n[", "\n\n[").replace("\n,", ",").replace(" \n", " ").replace("\n\n\n", "\n\n").replace("(\n", "(").replace("\n)", ")").replace("\n]", "]")
+            "\n".join(lyric_data[3:-1]).strip()
+            .replace("  ", " ")
+            .replace("\n[", "\n\n[")
+            .replace("\n,", ",")
+            .replace(" \n", " ")
+            .replace("\n\n\n", "\n\n")
+            .replace("(\n", "(")
+            .replace("\n)", ")")
+            .replace("\n]", "]")
         )
     except TypeError:
         if not surpress: print(f"Get lyrics failed on URL '{url}'")

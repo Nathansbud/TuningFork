@@ -42,7 +42,11 @@ def get_track(uri):
 def current(): return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {})
 def current_uri(): current().get('uri')
 def current_lyrics():
-    current_track = current()
+    try:
+        current_track = current()
+    except json.decoder.JSONDecodeError:
+        return
+
     album_artists = [artist.get('name') for artist in current_track.get('album', {}).get('artists', [])]
     lyrics = get_lyrics(album_artists[0], current_track.get('name'))
     if lyrics: 
@@ -62,8 +66,13 @@ def current_lyrics():
                     "title": current_track.get("name"), 
                     "lyrics": lyrics
                 }
-        
-        return "No lyrics found!"
+
+        return {
+            "artist": album_artists[0],
+            "album": current_track.get("album").get("name"),
+            "title": current_track.get("name"), 
+            "lyrics": None
+        }
     
 def add_group():
     tracks = []
