@@ -81,11 +81,11 @@ def get_lyrics_from_url(url, surpress=True):
         lyric_data = [l.get_text(separator='\n') for l in soup.select("div[class^=Lyrics]")]
         if "instrumental" in lyric_data[-1].lower(): return "[Instrumental]"
 
-        # Slice to get rid of transcription instructions
         return re.sub(
-            r"\n([^a-zA-Z0-9\n\[\(]+)", 
+            r"\n([^a-zA-Z0-9\"'¡\n\[\(]+)", 
             r"\1", 
-            "\n".join(lyric_data[3:-1]).strip()
+            # Slice to get rid of transcription instructions
+            "\n".join(lyric_data[4:-1]).strip()
             .replace("  ", " ")
             .replace("\n[", "\n\n[")
             .replace("\n,", ",")
