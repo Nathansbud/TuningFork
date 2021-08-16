@@ -177,8 +177,8 @@ def queue_track():
     #This arg achieves nothing, I just want queue and queue -c to do the same thing
     parser.add_argument('-c', '--current', action="store_true")
 
-    parser.add_argument('-t', '--times', default=1, type=int)
-    parser.add_argument('-p', '--previous', default=0, type=int)
+    parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int)
+    parser.add_argument('-p', '--previous', nargs='?', default=1, const=1, type=int)
     
     parser.add_argument('-l', '--list_groups', action='store_true')
     parser.add_argument('-a', '--add_group', action='store_true')
