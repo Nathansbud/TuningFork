@@ -197,7 +197,7 @@ def remember_track(artist, title, track):
             except:
                 memory = {}
 
-    memory[f"{artist or ''}{PART_SEPARATOR}{title or ''}"] = {
+    memory[f"{(artist or '').lower()}{PART_SEPARATOR}{(title or '').lower()}"] = {
         'name': track.get('name'), 
         'artist': track.get('artist'),
         'uri': track.get('uri')
@@ -263,7 +263,7 @@ def queue_track():
             except:
                 memory = {}
 
-        memory_key = f"{args.title}{PART_SEPARATOR}{args.artist or ''}"
+        memory_key = f"{args.title.lower()}{PART_SEPARATOR}{(args.artist or '').lower()}"
         artist = memory.get(memory_key, {}).get('artist', args.artist) if not args.forget else args.artist
         title = memory.get(memory_key, {}).get('name', args.title) if not args.forget else args.title
 
@@ -275,9 +275,9 @@ def queue_track():
             group=args.group
         )
 
-        if args.remember and len(tracks) == 1: 
+        if args.remember and len(tracks or []) == 1: 
             print(
-                f"Creating shortcut for {tracks[0].get('name')} by {tracks[0].get('name')}: ", 
+                f"Creating shortcut for {tracks[0].get('name')} by {tracks[0].get('artist')}: ", 
                 f"'{args.remember[0]}'", 
                 f"'{args.remember[1]}'" if len(args.remember) > 1 else ''
             )
