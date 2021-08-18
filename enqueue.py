@@ -131,7 +131,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None):
                 groups = {}
         
         group_data = groups.get(group, [])
-        track_uris = [t.get('uri') for t in group_data] 
+        tracks = group_data
         
     elif title: 
         if artist:
@@ -139,32 +139,44 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None):
         else: 
             st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}&type=track&limit=1&offset=0").json()
 
-        track_uris = [st['tracks']['items'][0]['uri']] if st['tracks']['items'] else []
+        data = st['tracks']['items'][0] if st['tracks']['items'] else {}
+        tracks = [{
+            'name': data.get('name'), 
+            'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
+            'uri': data.get('uri')
+        }] if data else []
+
     elif last:
         previous = spotify.get(f"https://api.spotify.com/v1/me/player/recently-played?limit={last}").json()
-        track_uris = [s.get('track', {}).get('uri') for s in previous.get('items')][::-1]
+        responses = [s.get('track', {}) for s in previous.get('items')][::-1]
+        tracks = [{
+            'name': data.get('name'),
+            'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
+            'uri': data.get('uri')
+        } for data in responses]
+        
     else:
         current = spotify.get("https://api.spotify.com/v1/me/player/currently-playing")
         if current.status_code == 204: 
             print("No track currently playing!")
+            tracks = []
         else:
             data = current.json().get('item', {})
-            track_uris = [data.get('uri')]
-            group_data = [{'name': data.get('name'), 'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])])}]
+            tracks = [{
+                'name': data.get('name'), 
+                'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
+                'uri': data.get('uri')
+            }]
 
-    if track_uris:
+    if tracks:
         for i in range(times):  
-           for uri in track_uris:
-               spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={uri}")
+           for t in tracks:
+               spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
 
         if last:
-            print(f"Added{' ' + str(last) if last > 1 else ''} last played item{'s' if last > 1 else ''} to queue {times}x!")
-        elif group or not title:
-            print("Added " + ", ".join([f"{t.get('name')} by {t.get('artist')}" for t in group_data]) + f" to queue {times}x!")
-        # elif not title:
-        #     print(f"Added currently playing track to queue {times}x!")
+            print(f"""Added{' ' + str(last) if last > 1 else ''} last played item{'s' if last > 1 else ''} ({', '.join([f"{t.get('name')} by {t.get('artist')}" for t in tracks])}) to queue {times}x!""")
         else:
-            print(f"Added {title.strip()} to queue {times}x!")
+            print("Added " + ", ".join([f"{t.get('name')} by {t.get('artist')}" for t in tracks]) + f" to queue {times}x!")
     else:
         print("Could not find track(s)!")
 
@@ -176,17 +188,21 @@ def queue_track():
 
     #This arg achieves nothing, I just want queue and queue -c to do the same thing
     parser.add_argument('-c', '--current', action="store_true")
+    parser.add_argument('-o', '--open', action="store_true")
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int)
-    parser.add_argument('-p', '--previous', nargs='?', default=1, const=1, type=int)
+    parser.add_argument('-p', '--previous', nargs='?', const=1, type=int)
     
+
     parser.add_argument('-l', '--list_groups', action='store_true')
     parser.add_argument('-a', '--add_group', action='store_true')
     parser.add_argument('-d', '--delete_group')
     parser.add_argument('-g', '--group', type=str)
 
+
     args = parser.parse_args()
-    if args.add_group: add_group()
+    if args.open: os.system(f'subl "{__file__}"')
+    elif args.add_group: add_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:
             try:
