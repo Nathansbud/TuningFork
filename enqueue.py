@@ -202,7 +202,6 @@ def remember_track(artist, title, track):
         'artist': track.get('artist'),
         'uri': track.get('uri')
     }
-    print(memory)
     with open(cache_file, "w+") as wf:
         json.dump(memory, wf)
 
