@@ -16,6 +16,10 @@ from scraper import get_lyrics
 
 
 group_file = os.path.join(os.path.dirname(__file__), "resources", "queue.json")
+cache_file = os.path.join(os.path.dirname(__file__), "resources", "cache.json")
+PART_SEPARATOR = '<--|-->'
+
+
 def load_groups():
     if not os.path.isfile(group_file):
         with open(group_file, 'w+') as gf: json.dump({}, gf)
@@ -177,8 +181,31 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None):
             print(f"""Added{' ' + str(last) if last > 1 else ''} last played item{'s' if last > 1 else ''} ({', '.join([f"{t.get('name')} by {t.get('artist')}" for t in tracks])}) to queue {times}x!""")
         else:
             print("Added " + ", ".join([f"{t.get('name')} by {t.get('artist')}" for t in tracks]) + f" to queue {times}x!")
+
+        return tracks
     else:
         print("Could not find track(s)!")
+
+
+
+def remember_track(artist, title, track):
+    memory = {}
+    if os.path.isfile(cache_file):
+        with open(cache_file, "r") as cf:
+            try: 
+                memory = json.load(cf)
+            except:
+                memory = {}
+
+    memory[f"{artist or ''}{PART_SEPARATOR}{title or ''}"] = {
+        'name': track.get('name'), 
+        'artist': track.get('artist'),
+        'uri': track.get('uri')
+    }
+    print(memory)
+    with open(cache_file, "w+") as wf:
+        json.dump(memory, wf)
+
 
 def queue_track():
     parser = argparse.ArgumentParser(description="Spotify track queuer")
@@ -192,13 +219,14 @@ def queue_track():
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int)
     parser.add_argument('-p', '--previous', nargs='?', const=1, type=int)
-    
 
     parser.add_argument('-l', '--list_groups', action='store_true')
     parser.add_argument('-a', '--add_group', action='store_true')
     parser.add_argument('-d', '--delete_group')
     parser.add_argument('-g', '--group', type=str)
-
+    
+    parser.add_argument('-r', '--remember', nargs='*', default=None)
+    parser.add_argument('-f', '--forget', action='store_true')
 
     args = parser.parse_args()
     if args.open: os.system(f'subl "{__file__}"')
@@ -230,13 +258,35 @@ def queue_track():
                 pass
 
     else:
-        enqueue(
-            title=args.title,
-            artist=args.artist,
+        with open(cache_file, 'r') as cf:
+            try:
+                memory = json.load(cf)
+            except:
+                memory = {}
+
+        memory_key = f"{args.title}{PART_SEPARATOR}{args.artist or ''}"
+        artist = memory.get(memory_key, {}).get('artist', args.artist) if not args.forget else args.artist
+        title = memory.get(memory_key, {}).get('name', args.title) if not args.forget else args.title
+
+        tracks = enqueue(
+            title=title,
+            artist=artist,
             times=args.times,
             last=args.previous,
             group=args.group
         )
+
+        if args.remember and len(tracks) == 1: 
+            print(
+                f"Creating shortcut for {tracks[0].get('name')} by {tracks[0].get('name')}: ", 
+                f"'{args.remember[0]}'", 
+                f"'{args.remember[1]}'" if len(args.remember) > 1 else ''
+            )
+            remember_track(
+                args.remember[0], 
+                args.remember[1] if len(args.remember) > 1 else None, 
+                tracks[0]
+            )
 
 if __name__ == '__main__':
     queue_track()    
