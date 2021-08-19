@@ -263,7 +263,7 @@ def queue_track():
             except:
                 memory = {}
 
-        memory_key = f"{args.title.lower()}{PART_SEPARATOR}{(args.artist or '').lower()}"
+        memory_key = "" if not args.title else f"{args.title.lower()}{PART_SEPARATOR}{(args.artist or '').lower()}"
         artist = memory.get(memory_key, {}).get('artist', args.artist) if not args.forget else args.artist
         title = memory.get(memory_key, {}).get('name', args.title) if not args.forget else args.title
 
