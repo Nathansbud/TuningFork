@@ -30,18 +30,21 @@ def load_groups():
 spotify = get_token()
 groups = load_groups()
 
-def get_track(uri):
+def get_track(uri, formatted=True):
     if not uri: return
     uri = uri.strip()
 
     idx = uri if ':' not in uri else uri[uri.rindex(':')+1:]
     resp = spotify.get(f'https://api.spotify.com/v1/tracks/{idx}').json()
-    if resp:
+    if resp and formatted:
         return {
             'uri': resp.get('uri'),
             'name': resp.get('name'),
             'artist': ", ".join([artist.get('name') for artist in resp.get('artists')])
         }
+    
+    return resp
+
 
 def current(): return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {})
 def current_uri(): current().get('uri')
@@ -124,7 +127,7 @@ def add_group():
                 print(e)
             
             
-def enqueue(title=None, artist=None, times=1, last=None, group=None):
+def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None):
     track_uris = []
     group_data = []    
     if group:
@@ -138,12 +141,15 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None):
         tracks = group_data
         
     elif title: 
-        if artist:
-            st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}%20artist:{artist}&type=track&limit=1&offset=0").json()
-        else: 
-            st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}&type=track&limit=1&offset=0").json()
-
-        data = st['tracks']['items'][0] if st['tracks']['items'] else {}
+        if uri: data = get_track(uri.split(":")[-1], False)
+        else:
+            if artist:
+                st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}%20artist:{artist}&type=track&limit=1&offset=0").json()
+            else: 
+                st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}&type=track&limit=1&offset=0").json()
+            
+            data = st['tracks']['items'][0] if st['tracks']['items'] else {}
+        
         tracks = [{
             'name': data.get('name'), 
             'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
@@ -267,12 +273,15 @@ def queue_track():
         artist = memory.get(memory_key, {}).get('artist', args.artist) if not args.forget else args.artist
         title = memory.get(memory_key, {}).get('name', args.title) if not args.forget else args.title
 
+        uri = memory.get(memory_key, {}).get('uri')
+
         tracks = enqueue(
             title=title,
             artist=artist,
             times=args.times,
             last=args.previous,
-            group=args.group
+            group=args.group,
+            uri=uri
         )
 
         if args.remember and len(tracks or []) == 1: 
