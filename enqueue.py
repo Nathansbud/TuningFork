@@ -158,7 +158,8 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None):
 
     elif last:
         previous = spotify.get(f"https://api.spotify.com/v1/me/player/recently-played?limit={last}").json()
-        responses = [s.get('track', {}) for s in previous.get('items')][::-1]
+        responses = [s.get('track', {}) for s in previous.get('items', [])][::-1]
+
         tracks = [{
             'name': data.get('name'),
             'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
