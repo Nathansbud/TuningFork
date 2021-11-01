@@ -17,18 +17,22 @@ from scraper import get_lyrics
 
 group_file = os.path.join(os.path.dirname(__file__), "resources", "queue.json")
 cache_file = os.path.join(os.path.dirname(__file__), "resources", "cache.json")
+prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
 PART_SEPARATOR = '<--|-->'
 
-
-def load_groups():
+def load_prefs():
     if not os.path.isfile(group_file):
         with open(group_file, 'w+') as gf: json.dump({}, gf)
+
+    if not os.path.isfile(prefs_file):              
+        with open(prefs_file, 'w+') as gf: json.dump({"DEFAULT_PLAYLIST": None}, gf)
     
-    with open(group_file, 'r') as gf: 
-        return json.load(gf)
+    with open(group_file, 'r') as gf, open(prefs_file, 'r') as pf: 
+        return json.load(gf), json.load(pf)
+
 
 spotify = get_token()
-groups = load_groups()
+groups, prefs = load_prefs()
 
 def get_track(uri, formatted=True):
     if not uri: return
@@ -230,6 +234,8 @@ def queue_track():
     parser.add_argument('-a', '--add_group', action='store_true')
     parser.add_argument('-d', '--delete_group')
     parser.add_argument('-g', '--group', type=str)
+
+    parser.add_argument('-s', '--save', action='store_true')
     
     parser.add_argument('-r', '--remember', nargs='*', default=None)
     parser.add_argument('-f', '--forget', action='store_true')
@@ -296,6 +302,19 @@ def queue_track():
                 args.remember[1] if len(args.remember) > 1 else None, 
                 tracks[0]
             )
+
+        if args.save and prefs.get("DEFAULT_PLAYLIST"):
+            ct = current()
+            new_uri = ct.get('uri')
+            if new_uri:
+                resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('DEFAULT_PLAYLIST')}/tracks?uris={new_uri}")
+                if 200 <= resp.status_code < 300:
+                    print(f"Added {ct.get('name')} to playlist!")
+                else:
+                    print(f"Something went wrong while adding to playlist (status code {resp.status_code})")
+            else:
+                print("No track is playing!")
+
 
 if __name__ == '__main__':
     queue_track()    
