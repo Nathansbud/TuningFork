@@ -1,5 +1,5 @@
+from time import sleep
 from utilities import (
-    call_applescript, 
     search, get_token, 
     SongParser, SongException,
     color, Colors
@@ -39,16 +39,28 @@ def get_track(uri, formatted=True):
     uri = uri.strip()
 
     idx = uri if ':' not in uri else uri[uri.rindex(':')+1:]
-    resp = spotify.get(f'https://api.spotify.com/v1/tracks/{idx}').json()
-    if resp and formatted:
-        return {
-            'uri': resp.get('uri'),
-            'name': resp.get('name'),
-            'artist': ", ".join([artist.get('name') for artist in resp.get('artists')])
-        }
-    
-    return resp
-
+    if ':album:' in uri:
+        album_data = spotify.get(f'https://api.spotify.com/v1/albums/{idx}').json()
+        album_tracks = spotify.get(f'https://api.spotify.com/v1/albums/{idx}/tracks?limit=50').json()
+        return [{
+            'name': t.get('name'), 
+            'artist': ', '.join([artist.get('name') for artist in t.get('artists', [])]),
+            'uri': t.get('uri'), 
+            'album': album_data.get('name'),
+            'album_uri': album_data.get('uri')
+        } for t in album_tracks.get('items', [])]
+    else:
+        resp = spotify.get(f'https://api.spotify.com/v1/tracks/{idx}').json()
+        if resp and formatted:
+            return [{
+                'uri': resp.get('uri'),
+                'name': resp.get('name'),
+                'artist': ", ".join([artist.get('name') for artist in resp.get('artists')]),
+                'album': resp.get("album", {}).get('name'),
+                'album_uri': resp.get("album", {}).get('uri')
+            }]
+        
+        return resp
 
 def current(): return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {})
 def current_uri(): current().get('uri')
@@ -85,7 +97,7 @@ def current_lyrics():
             "lyrics": None
         }
     
-def add_group():
+def make_group():
     tracks = []
     name = input("Queue Group Name: ")
     
@@ -131,9 +143,10 @@ def add_group():
                 print(e)
             
             
-def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None):
-    track_uris = []
-    group_data = []    
+def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, ignore=False, mode="tracks"):
+    group_data = []   
+    tracks = []
+    
     if group:
         with open(group_file) as gf:
             try:
@@ -143,33 +156,45 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None):
         
         group_data = groups.get(group, [])
         tracks = group_data
-        
     elif title: 
-        if uri: data = get_track(uri.split(":")[-1], False)
+        if uri: tracks = get_track(uri, True)
         else:
             if artist:
-                st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}%20artist:{artist}&type=track&limit=1&offset=0").json()
+                st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}%20artist:{artist}&type={mode[:-1]}&limit=1&offset=0").json()
             else: 
-                st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}&type=track&limit=1&offset=0").json()
+                st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}&type={mode[:-1]}&limit=1&offset=0").json()
             
-            data = st['tracks']['items'][0] if st['tracks']['items'] else {}
+            data = st[mode]['items'][0] if st[mode]['items'] else {}
         
-        tracks = [{
-            'name': data.get('name'), 
-            'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
-            'uri': data.get('uri')
-        }] if data else []
-
+            if mode == "albums" and data:
+                track_data = spotify.get(f'https://api.spotify.com/v1/albums/{data.get("uri").split(":")[-1]}/tracks?limit={data.get("total_tracks")}').json()
+                tracks = [{
+                    'name': t.get('name'), 
+                    'artist': ', '.join([artist.get('name') for artist in t.get('artists', [])]),
+                    'album': data.get('name'),
+                    'uri': t.get('uri')
+                } for t in track_data.get('items', [])]
+            else:
+                tracks = [{
+                    'name': data.get('name'), 
+                    'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
+                    'album': data.get('album'),
+                    'uri': data.get('uri')
+                }] if data else []
     elif last:
         previous = spotify.get(f"https://api.spotify.com/v1/me/player/recently-played?limit={last}").json()
         responses = [s.get('track', {}) for s in previous.get('items', [])][::-1]
-
-        tracks = [{
-            'name': data.get('name'),
-            'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
-            'uri': data.get('uri')
-        } for data in responses]
-        
+        if mode != "tracks": 
+            print("Can only re-queue tracks, not albums!")
+            exit(0)
+        else:
+            tracks = [{
+                'name': data.get('name'),
+                'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
+                'uri': data.get('uri'),
+                'album': data.get('album'),
+                'album_uri': data.get('uri'),
+            } for data in responses]
     else:
         current = spotify.get("https://api.spotify.com/v1/me/player/currently-playing")
         if current.status_code == 204: 
@@ -177,29 +202,47 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None):
             tracks = []
         else:
             data = current.json().get('item', {})
-            tracks = [{
-                'name': data.get('name'), 
-                'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
-                'uri': data.get('uri')
-            }]
+            if mode == 'albums':
+                album = data.get("album")
+                track_data = spotify.get(f'https://api.spotify.com/v1/albums/{album.get("uri").split(":")[-1]}/tracks?limit={album.get("total_tracks")}').json()
+                tracks = [{
+                    'name': t.get('name'), 
+                    'artist': ', '.join([artist.get('name') for artist in t.get('artists', [])]),
+                    'uri': t.get('uri'),
+                    'album': album.get('name'),
+                    'album_uri': album.get("uri")
+                } for t in track_data.get('items', [])]
+            else:
+                tracks = [{
+                    'name': data.get('name'), 
+                    'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
+                    'uri': data.get('uri'),
+                    'album': data.get('album', {}).get("name"),
+                    'album_uri': data.get('album', {}).get("uri"),
+                }]
 
-    if tracks:
-        for i in range(times):  
-           for t in tracks:
-               spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
-
+    if ignore: return tracks
+    elif tracks:
         if last:
-            print(f"""Added{' ' + str(last) if last > 1 else ''} last played item{'s' if last > 1 else ''} ({', '.join([f"{t.get('name')} by {t.get('artist')}" for t in tracks])}) to queue {times}x!""")
-        else:
-            print("Added " + ", ".join([f"{t.get('name')} by {t.get('artist')}" for t in tracks]) + f" to queue {times}x!")
+            print(f"""Adding{' ' + str(last) if last > 1 else ''} last played item{'s' if last > 1 else ''} ({', '.join([f"{t.get('name')} by {t.get('artist')}" for t in tracks])}) to queue {times}x!""")
+        elif mode == 'tracks':
+            print("Adding " + ", ".join([f"{t.get('name')} by {t.get('artist')}" for t in tracks]) + f" to queue {times}x!")
+        elif mode == 'albums':
+            print(f"Adding album {tracks[0].get('album')} by {tracks[0].get('artist')} ({len(tracks)} tracks) to queue {times}x!")
+            # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
+            sleep(2)
+
+        for _ in range(times):  
+            for t in tracks:
+                response = spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
+                if response.status_code >= 300: 
+                    print(f"Failed to add {t.get('name')} by {t.get('artist')} to queue (status code: {response.status_code})")
 
         return tracks
     else:
         print("Could not find track(s)!")
 
-
-
-def remember_track(artist, title, track):
+def remember_track(artist, title, track, mode):
     memory = {}
     if os.path.isfile(cache_file):
         with open(cache_file, "r") as cf:
@@ -208,11 +251,13 @@ def remember_track(artist, title, track):
             except:
                 memory = {}
 
-    memory[f"{(artist or '').lower()}{PART_SEPARATOR}{(title or '').lower()}"] = {
+    memory.get(mode, {})[f"{(artist or '').lower()}{PART_SEPARATOR}{(title or '').lower()}"] = {
         'name': track.get('name'), 
         'artist': track.get('artist'),
-        'uri': track.get('uri')
+        'album': track.get('album'),
+        'relevant_uri': track.get('uri') if mode == 'tracks' else track.get('album_uri')
     }
+
     with open(cache_file, "w+") as wf:
         json.dump(memory, wf)
 
@@ -229,9 +274,11 @@ def queue_track():
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int)
     parser.add_argument('-p', '--previous', nargs='?', const=1, type=int)
+    
+    parser.add_argument('-a', '--album', action="store_true")
 
     parser.add_argument('-l', '--list_groups', action='store_true')
-    parser.add_argument('-a', '--add_group', action='store_true')
+    parser.add_argument('-m', '--make_group', action='store_true')
     parser.add_argument('-d', '--delete_group')
     parser.add_argument('-g', '--group', type=str)
 
@@ -239,10 +286,11 @@ def queue_track():
     
     parser.add_argument('-r', '--remember', nargs='*', default=None)
     parser.add_argument('-f', '--forget', action='store_true')
+    parser.add_argument('-i', '--ignore', action='store_true')
 
     args = parser.parse_args()
     if args.open: os.system(f'subl "{__file__}"')
-    elif args.add_group: add_group()
+    elif args.make_group: make_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:
             try:
@@ -274,33 +322,41 @@ def queue_track():
             try:
                 memory = json.load(cf)
             except:
-                memory = {}
+                memory = {"tracks": {}, "albums": {}}
+
+        mode = "tracks" if not args.album else "albums"
 
         memory_key = "" if not args.title else f"{args.title.lower()}{PART_SEPARATOR}{(args.artist or '').lower()}"
-        artist = memory.get(memory_key, {}).get('artist', args.artist) if not args.forget else args.artist
-        title = memory.get(memory_key, {}).get('name', args.title) if not args.forget else args.title
-
-        uri = memory.get(memory_key, {}).get('uri')
-
+        
+        mobject = memory.get(mode, {}).get(memory_key, {})
+        
+        artist = mobject.get('artist', args.artist) if not args.forget else args.artist
+        title = mobject.get('name', args.title) if not args.forget else args.title
+        uri = mobject.get('uri') or mobject.get('relevant_uri')
+        
         tracks = enqueue(
             title=title,
             artist=artist,
             times=args.times,
             last=args.previous,
             group=args.group,
-            uri=uri
+            uri=uri,
+            ignore=args.ignore,
+            mode=mode
         )
 
-        if args.remember and len(tracks or []) == 1: 
+        if args.remember and tracks: 
             print(
-                f"Creating shortcut for {tracks[0].get('name')} by {tracks[0].get('artist')}: ", 
+                f"Creating shortcut for {tracks[0].get('name' if mode == 'tracks' else 'album')} by {tracks[0].get('artist')}: ", 
                 f"'{args.remember[0]}'", 
                 f"'{args.remember[1]}'" if len(args.remember) > 1 else ''
             )
+
             remember_track(
                 args.remember[0], 
                 args.remember[1] if len(args.remember) > 1 else None, 
-                tracks[0]
+                tracks[0],
+                mode
             )
 
         if args.save and prefs.get("DEFAULT_PLAYLIST"):
@@ -317,4 +373,7 @@ def queue_track():
 
 
 if __name__ == '__main__':
-    queue_track()    
+    try: 
+        queue_track()    
+    except KeyboardInterrupt:
+        exit(0)
