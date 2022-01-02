@@ -14,9 +14,8 @@ from itertools import permutations
 
 from scraper import get_lyrics
 
-
 group_file = os.path.join(os.path.dirname(__file__), "resources", "queue.json")
-cache_file = os.path.join(os.path.dirname(__file__), "resources", "cache.json")
+short_file = os.path.join(os.path.dirname(__file__), "resources", "shortcuts.json")
 prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
 PART_SEPARATOR = '<--|-->'
 
@@ -242,23 +241,35 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, i
     else:
         print("Could not find track(s)!")
 
-def remember_track(artist, title, track, mode):
-    memory = {}
-    if os.path.isfile(cache_file):
-        with open(cache_file, "r") as cf:
+def remember_track(title, artist, track, mode, delete=False):
+    memory = {"albums": {}, "tracks": {}}
+    if os.path.isfile(short_file):
+        with open(short_file, "r") as cf:
             try: 
                 memory = json.load(cf)
             except:
-                memory = {}
+                memory = {
+                    "albums": {},
+                    "tracks": {}
+                }
+    
+    mem_key = f"{(title or '').lower()}{PART_SEPARATOR}{(artist or '').lower()}"
 
-    memory.get(mode, {})[f"{(artist or '').lower()}{PART_SEPARATOR}{(title or '').lower()}"] = {
-        'name': track.get('name'), 
-        'artist': track.get('artist'),
-        'album': track.get('album'),
-        'relevant_uri': track.get('uri') if mode == 'tracks' else track.get('album_uri')
-    }
+    if delete: 
+        if mem_key in memory[mode]: del memory[mode][mem_key]
+        else: 
+            print(f"Could not find any existing shortcuts for {title}{'by ' + artist if artist else ''}!")
+    elif track:
+        memory[mode][mem_key] = {
+            'name': track.get('name'), 
+            'artist': track.get('artist'),
+            'album': track.get('album'),
+            'relevant_uri': track.get('uri') if mode == 'tracks' else track.get('album_uri')
+        }
+    else:
+        print("New shortcuts must have a track or album!")
 
-    with open(cache_file, "w+") as wf:
+    with open(short_file, "w+") as wf:
         json.dump(memory, wf)
 
 
@@ -269,27 +280,42 @@ def queue_track():
     parser.add_argument('artist', nargs='?', default=None)
 
     #This arg achieves nothing, I just want queue and queue -c to do the same thing
-    parser.add_argument('-c', '--current', action="store_true")
+    parser.add_argument('-a', '--album', action="store_true")
+    parser.add_argument('-i', '--ignore', action='store_true')      
     parser.add_argument('-o', '--open', action="store_true")
+    parser.add_argument('-s', '--save', action='store_true')
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int)
     parser.add_argument('-p', '--previous', nargs='?', const=1, type=int)
     
-    parser.add_argument('-a', '--album', action="store_true")
-
-    parser.add_argument('-l', '--list_groups', action='store_true')
+    parser.add_argument('-l', '--list_rules', action='store_true')
+    
     parser.add_argument('-m', '--make_group', action='store_true')
     parser.add_argument('-d', '--delete_group')
     parser.add_argument('-g', '--group', type=str)
 
-    parser.add_argument('-s', '--save', action='store_true')
-    
     parser.add_argument('-r', '--remember', nargs='*', default=None)
-    parser.add_argument('-f', '--forget', action='store_true')
-    parser.add_argument('-i', '--ignore', action='store_true')
+    parser.add_argument('-f', '--forget', nargs='*', default=None)
+    parser.add_argument('-n', '--amnesia', action='store_true')
 
     args = parser.parse_args()
-    if args.open: os.system(f'subl "{__file__}"')
+    mode = "tracks" if not args.album else "albums"
+
+    if args.open: os.system(f'code "{__file__}"')
+    if args.forget: 
+        print(
+            f"Deleting shortcut:", 
+            f"'{args.forget[0]}'", 
+            f"'{args.forget[1]}'" if len(args.forget) > 1 else ''
+        )
+        
+        remember_track(
+            args.forget[0], 
+            args.forget[1] if len(args.forget) > 1 else None, 
+            None,
+            mode,
+            delete=True
+        )
     elif args.make_group: make_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:
@@ -304,8 +330,8 @@ def queue_track():
         with open(group_file, 'w+') as gf:
             json.dump(groups, gf)
 
-    elif args.list_groups: 
-        with open(group_file) as gf:
+    elif args.list_rules: 
+        with open(group_file, 'r') as gf:
             try:
                 groups = json.load(gf)
                 for name, data in groups.items():
@@ -317,21 +343,39 @@ def queue_track():
             except json.JSONDecodeError:
                 pass
 
+        if os.path.isfile(short_file): 
+            with open(short_file, 'r') as cf:
+                try: 
+                    shortcuts = json.load(cf)
+                    tracks, albums = shortcuts.get('tracks'), shortcuts.get('albums')
+                    for title, ss in [("Track Shortcuts", tracks), ("Album Shortcuts", albums)]:
+                        if ss:
+                            print(f"[{color(title, Colors.CYAN)}]")
+                            for r in sorted([[
+                                ", ".join(key.split(PART_SEPARATOR)),
+                                color("->", Colors.YELLOW),
+                                f"{color(track.get('name' if mode == 'tracks' else 'album'), Colors.GREEN)} by {color(track.get('artist'), Colors.GREEN)}",
+                                f"[{color(track.get('relevant_uri', track.get('uri')), Colors.YELLOW)}]"
+                            ] for key, track in ss.items()], key=lambda l: l[2].lower()):
+                                print(*r)
+                        print()
+                        
+                except json.JSONDecodeError:
+                    pass
+
     else:
-        with open(cache_file, 'r') as cf:
+        with open(short_file, 'r') as cf:
             try:
                 memory = json.load(cf)
             except:
                 memory = {"tracks": {}, "albums": {}}
 
-        mode = "tracks" if not args.album else "albums"
-
         memory_key = "" if not args.title else f"{args.title.lower()}{PART_SEPARATOR}{(args.artist or '').lower()}"
         
         mobject = memory.get(mode, {}).get(memory_key, {})
         
-        artist = mobject.get('artist', args.artist) if not args.forget else args.artist
-        title = mobject.get('name', args.title) if not args.forget else args.title
+        artist = mobject.get('artist', args.artist) if not args.amnesia else args.artist
+        title = mobject.get('name', args.title) if not args.amnesia else args.title
         uri = mobject.get('uri') or mobject.get('relevant_uri')
         
         tracks = enqueue(
@@ -346,18 +390,21 @@ def queue_track():
         )
 
         if args.remember and tracks: 
-            print(
-                f"Creating shortcut for {tracks[0].get('name' if mode == 'tracks' else 'album')} by {tracks[0].get('artist')}: ", 
-                f"'{args.remember[0]}'", 
-                f"'{args.remember[1]}'" if len(args.remember) > 1 else ''
-            )
-
-            remember_track(
-                args.remember[0], 
-                args.remember[1] if len(args.remember) > 1 else None, 
-                tracks[0],
-                mode
-            )
+            if len(args.remember) == 0:
+                print("Cannot create a shortcut without any arguments!")
+            else:
+                print(
+                    f"Creating shortcut for {mode[:-1]} {tracks[0].get('name' if mode == 'tracks' else 'album')} by {tracks[0].get('artist')}: ", 
+                    f"'{args.remember[0]}'", 
+                    f"'{args.remember[1]}'" if len(args.remember) > 1 else ''
+                )
+                
+                remember_track(
+                    args.remember[0], 
+                    args.remember[1] if len(args.remember) > 1 else None, 
+                    tracks[0],
+                    mode
+                )
 
         if args.save and prefs.get("DEFAULT_PLAYLIST"):
             ct = current()
