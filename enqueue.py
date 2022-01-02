@@ -14,7 +14,7 @@ from itertools import permutations
 
 from scraper import get_lyrics
 
-group_file = os.path.join(os.path.dirname(__file__), "resources", "queue.json")
+group_file = os.path.join(os.path.dirname(__file__), "resources", "groups.json")
 short_file = os.path.join(os.path.dirname(__file__), "resources", "shortcuts.json")
 prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
 PART_SEPARATOR = '<--|-->'
@@ -34,7 +34,7 @@ spotify = get_token()
 groups, prefs = load_prefs()
 
 def get_track(uri, formatted=True):
-    if not uri: return
+    if not uri: return [{}]
     uri = uri.strip()
 
     idx = uri if ':' not in uri else uri[uri.rindex(':')+1:]
@@ -62,7 +62,7 @@ def get_track(uri, formatted=True):
         return resp
 
 def current(): return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {})
-def current_uri(): current().get('uri')
+def current_uri(): return current().get('uri')
 def current_lyrics():
     try:
         current_track = current()
@@ -129,15 +129,18 @@ def make_group():
             try:
                 track = {}           
                 args = parser.parse_args(shlex.split(candidate_track))
-                if args.title: track = get_track(search(args.title, args.artist, spotify))
-                elif args.uri: track = get_track(args.uri)
-                elif args.current: track = get_track(current_uri())
+                if args.title: track = get_track(search(args.title, args.artist, spotify))[0]
+                elif args.uri: track = get_track(args.uri)[0]
+                elif args.current: track = get_track(current_uri())[0]
                 else:
                     raise SongException("Invalid track specifier! Provide artist (and track), else specify current (-c) or uri (-u)!")
 
                 if track:
                     confirm = input(f"Found track: {track.get('name')} by {track.get('artist')}. Add to group {name} (y/n)? ").lower().strip()
                     if confirm == 'y': tracks.append(track)
+                else: 
+                    print("Could not find a matching track!")
+
             except SongException as e:
                 print(e)
             
@@ -321,7 +324,11 @@ def queue_track():
         with open(group_file, 'r+') as gf:
             try:
                 groups = json.load(gf)
-                if args.delete_group in groups: del groups[args.delete_group]
+                if args.delete_group in groups: 
+                    del groups[args.delete_group]
+                    print(f"Deleting group {args.delete_group}...")
+                    sleep(2)
+                    
                 else: print(f"Group {args.delete_group} not found!")
             except json.JSONDecodeError:
                 print("No groups found!")
@@ -334,12 +341,16 @@ def queue_track():
         with open(group_file, 'r') as gf:
             try:
                 groups = json.load(gf)
-                for name, data in groups.items():
-                    tracks = ", ".join([
-                        f"{color(d.get('name'), Colors.CYAN)} [{color(d.get('artist'), Colors.YELLOW)}]" 
-                        for d in data
-                    ])
-                    print(f"{color(name, Colors.GREEN)}: {tracks}")
+                if groups:
+                    print(f"[{color('Saved Groups', Colors.CYAN)}]\n")
+                    for name, data in groups.items():
+                        tracks = "\n".join([
+                            f"\t{i}. {color(d.get('name'), Colors.GREEN)} by {color(d.get('artist'), Colors.GREEN)} [{color(d.get('uri'), Colors.YELLOW)}]" 
+                            for i, d in enumerate(data, start=1)
+                        ])
+                        print(f"{color(name, Colors.MAGENTA)}: {tracks}\n")
+                        
+                    print()
             except json.JSONDecodeError:
                 pass
 
@@ -350,16 +361,16 @@ def queue_track():
                     tracks, albums = shortcuts.get('tracks'), shortcuts.get('albums')
                     for title, ss in [("Track Shortcuts", tracks), ("Album Shortcuts", albums)]:
                         if ss:
-                            print(f"[{color(title, Colors.CYAN)}]")
+                            print(f"[{color(title, Colors.CYAN)}]\n")
                             for r in sorted([[
-                                ", ".join(key.split(PART_SEPARATOR)),
-                                color("->", Colors.YELLOW),
+                                color(", ".join(key.split(PART_SEPARATOR)), Colors.MAGENTA),
+                                "->",
                                 f"{color(track.get('name' if mode == 'tracks' else 'album'), Colors.GREEN)} by {color(track.get('artist'), Colors.GREEN)}",
                                 f"[{color(track.get('relevant_uri', track.get('uri')), Colors.YELLOW)}]"
                             ] for key, track in ss.items()], key=lambda l: l[2].lower()):
                                 print(*r)
                         print()
-                        
+
                 except json.JSONDecodeError:
                     pass
 
