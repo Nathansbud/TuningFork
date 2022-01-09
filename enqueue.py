@@ -1,4 +1,5 @@
 from time import sleep
+import webbrowser
 from utilities import (
     search, get_token, 
     SongParser, SongException,
@@ -282,10 +283,13 @@ def queue_track():
     parser.add_argument('title', nargs='?', default=None)
     parser.add_argument('artist', nargs='?', default=None)
 
-    #This arg achieves nothing, I just want queue and queue -c to do the same thing
     parser.add_argument('-a', '--album', action="store_true")
+    
     parser.add_argument('-i', '--ignore', action='store_true')      
+
     parser.add_argument('-o', '--open', action="store_true")
+    parser.add_argument('-c', '--song', action="store_true")
+
     parser.add_argument('-s', '--save', action='store_true')
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int)
@@ -304,7 +308,6 @@ def queue_track():
     args = parser.parse_args()
     mode = "tracks" if not args.album else "albums"
 
-    if args.open: os.system(f'code "{__file__}"')
     if args.forget: 
         print(
             f"Deleting shortcut:", 
@@ -396,7 +399,7 @@ def queue_track():
             last=args.previous,
             group=args.group,
             uri=uri,
-            ignore=args.ignore,
+            ignore=args.ignore or args.open,
             mode=mode
         )
 
@@ -417,18 +420,39 @@ def queue_track():
                     mode
                 )
 
-        if args.save and prefs.get("DEFAULT_PLAYLIST"):
-            ct = current()
-            new_uri = ct.get('uri')
-            if new_uri:
-                resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('DEFAULT_PLAYLIST')}/tracks?uris={new_uri}")
-                if 200 <= resp.status_code < 300:
-                    print(f"Added {ct.get('name')} to playlist!")
+        if args.save:
+            if prefs.get("DEFAULT_PLAYLIST"):
+                track_uris = [t.get("uri") for t in tracks if t.get("uri")]
+                if len(track_uris) > 0:
+                    resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('DEFAULT_PLAYLIST')}/tracks?uris={','.join(track_uris)}")
+                    if 200 <= resp.status_code < 300:
+                        print(f"Added {', '.join(t.get('name') for t in tracks)} to playlist!")
+                    else:
+                        print(f"Something went wrong while adding to playlist (status code {resp.status_code})")
                 else:
-                    print(f"Something went wrong while adding to playlist (status code {resp.status_code})")
-            else:
-                print("No track is playing!")
+                    print("No tracks found!")
+            else: 
+                print("Could not locate a default playlist; try adding one to preferences.json?")
 
+        if args.open:
+            if prefs.get("LASTFM_USER"):
+                artist_fmt = lambda t: t.get("artist").replace(" ", "+").split(",")[0]
+
+                track_artists = set(artist_fmt(t) for t in tracks)
+                track_albums = set((artist_fmt(t), t.get("album").replace(" ", "+")) for t in tracks)
+                track_songs = set((artist_fmt(t), t.get("name").replace(" ", "+")) for t in tracks)
+
+                if args.song:
+                    for art, s in track_songs:
+                        webbrowser.open(f"https://www.last.fm/user/Nathansbud/library/music/{art}/_/{s}")
+                elif args.album:
+                    for art, alb in track_albums:
+                        webbrowser.open(f"https://www.last.fm/user/Nathansbud/library/music/{art}/{alb}")
+                else:
+                    for t in track_artists:
+                        webbrowser.open(f"https://www.last.fm/user/Nathansbud/library/music/{t}")
+            else:
+                print("Could not find a Last.fm username; try adding one to preferences.json?")
 
 if __name__ == '__main__':
     try: 
