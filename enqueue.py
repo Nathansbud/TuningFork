@@ -11,6 +11,7 @@ import os
 import json
 import argparse
 import shlex
+import random
 from itertools import permutations
 
 from scraper import get_lyrics
@@ -159,7 +160,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, i
         
         group_data = groups.get(group, [])
         tracks = group_data
-    elif title: 
+    elif title or uri: 
         if uri: tracks = get_track(uri, True)
         else:
             if artist:
@@ -291,6 +292,8 @@ def queue_track():
     parser.add_argument('-c', '--song', action="store_true")
 
     parser.add_argument('-s', '--save', action='store_true')
+    parser.add_argument('-x', '--mix', action='store_true')
+    parser.add_argument('-u', '--uri', default=None)
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int)
     parser.add_argument('-p', '--previous', nargs='?', const=1, type=int)
@@ -306,7 +309,23 @@ def queue_track():
     parser.add_argument('-n', '--amnesia', action='store_true')
 
     args = parser.parse_args()
-    mode = "tracks" if not args.album else "albums"
+    mode = "tracks" if (not args.album and not args.mix) else "albums"
+
+    if args.mix:
+        if prefs.get("ALBUM_PLAYLIST"):            
+            all_albums = []
+
+            keep_searching = True 
+            albums = {'next': f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks"}
+            while albums.get('next'):
+                albums = spotify.get(albums.get("next")).json()
+                tracks = albums.get('items', [])
+                all_albums.extend([t.get("track", {}).get("album", {}).get("uri", {}) for t in tracks])
+
+            args.uri = random.choice(all_albums)
+        else:
+            print("Could not locate an album backlog playlist; try adding an ALBUM_PLAYLIST key to preferences.json?")
+            exit(1)
 
     if args.forget: 
         print(
@@ -390,7 +409,7 @@ def queue_track():
         
         artist = mobject.get('artist', args.artist) if not args.amnesia else args.artist
         title = mobject.get('name', args.title) if not args.amnesia else args.title
-        uri = mobject.get('uri') or mobject.get('relevant_uri')
+        uri = args.uri or mobject.get('uri') or mobject.get('relevant_uri')
         
         tracks = enqueue(
             title=title,
@@ -432,7 +451,7 @@ def queue_track():
                 else:
                     print("No tracks found!")
             else: 
-                print("Could not locate a default playlist; try adding one to preferences.json?")
+                print("Could not locate a default playlist; try adding a DEFAULT_PLAYLIST key to preferences.json?")
 
         if args.open:
             if prefs.get("LASTFM_USER"):
