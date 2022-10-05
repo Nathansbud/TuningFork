@@ -19,6 +19,7 @@ from scraper import get_lyrics
 group_file = os.path.join(os.path.dirname(__file__), "resources", "groups.json")
 short_file = os.path.join(os.path.dirname(__file__), "resources", "shortcuts.json")
 prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
+
 PART_SEPARATOR = '<--|-->'
 
 def load_prefs():
@@ -201,6 +202,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, i
             } for data in responses]
     else:
         current = spotify.get("https://api.spotify.com/v1/me/player/currently-playing")
+        
         if current.status_code == 204: 
             print("No track currently playing!")
             tracks = []
@@ -293,6 +295,7 @@ def queue_track():
 
     parser.add_argument('-s', '--save', action='store_true')
     parser.add_argument('-x', '--mix', action='store_true')
+    
     parser.add_argument('-u', '--uri', default=None)
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int)
@@ -312,17 +315,38 @@ def queue_track():
     mode = "tracks" if (not args.album and not args.mix) else "albums"
 
     if args.mix:
-        if prefs.get("ALBUM_PLAYLIST"):            
-            all_albums = []
+        mix_args = input("Customize Mix Options (LIBRARY|BACKLOG [IDX]): ").split(" ")
+        source = "BACKLOG"
+        idx = -1
+        if mix_args != ['']:
+            source = mix_args[0].upper()
+            if source not in ["LIBRARY", "BACKLOG"]: 
+                print("Source must be one of: LIBRARY, BACKLOG")
+                exit(1)
 
-            keep_searching = True 
-            albums = {'next': f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks"}
-            while albums.get('next'):
-                albums = spotify.get(albums.get("next")).json()
-                tracks = albums.get('items', [])
-                all_albums.extend([t.get("track", {}).get("album", {}).get("uri", {}) for t in tracks])
+            if len(mix_args) > 1:
+                try: 
+                    idx = max(int(mix_args[1]), 0)
+                except ValueError: 
+                    print("Index must be an integer!")
+                    exit(1)
+    
+        if source == "BACKLOG" and prefs.get("ALBUM_PLAYLIST"):            
+            count = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks").json().get('total')
+            if not count > idx > -1:
+                print(f"Choosing a random backlog album from the {count} available...")
+                idx = random.randint(0, count - 1)
+            
+            chosen = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks?limit=1&offset={idx}").json()
+            args.uri = chosen.get("items")[0].get("track").get("album").get("uri")
+        elif source == "LIBRARY":
+            count = spotify.get("https://api.spotify.com/v1/me/albums?limit=1&offset=0").json().get('total')
+            if not count > idx > -1:
+                print(f"Choosing a random library album from the {count} available...")
+                idx = random.randint(0, count - 1)
 
-            args.uri = random.choice(all_albums)
+            chosen = spotify.get(f"https://api.spotify.com/v1/me/albums?limit=1&offset={idx}").json()
+            args.uri = chosen.get("items")[0].get("album").get("uri")
         else:
             print("Could not locate an album backlog playlist; try adding an ALBUM_PLAYLIST key to preferences.json?")
             exit(1)
@@ -461,15 +485,16 @@ def queue_track():
                 track_albums = set((artist_fmt(t), t.get("album").replace(" ", "+")) for t in tracks)
                 track_songs = set((artist_fmt(t), t.get("name").replace(" ", "+")) for t in tracks)
 
+                user = prefs.get("LASTFM_USER")
                 if args.song:
                     for art, s in track_songs:
-                        webbrowser.open(f"https://www.last.fm/user/Nathansbud/library/music/{art}/_/{s}")
+                        webbrowser.open(f"https://www.last.fm/user/{user}/library/music/{art}/_/{s}")
                 elif args.album:
                     for art, alb in track_albums:
-                        webbrowser.open(f"https://www.last.fm/user/Nathansbud/library/music/{art}/{alb}")
+                        webbrowser.open(f"https://www.last.fm/user/{user}/library/music/{art}/{alb}")
                 else:
                     for t in track_artists:
-                        webbrowser.open(f"https://www.last.fm/user/Nathansbud/library/music/{t}")
+                        webbrowser.open(f"https://www.last.fm/user/{user}/library/music/{t}")
             else:
                 print("Could not find a Last.fm username; try adding one to preferences.json?")
 
