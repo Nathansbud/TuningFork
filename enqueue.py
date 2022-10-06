@@ -336,6 +336,8 @@ def queue_track():
             if not count > idx > -1:
                 print(f"Choosing a random backlog album from the {count} available...")
                 idx = random.randint(0, count - 1)
+            else:
+                idx = count - idx
             
             chosen = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks?limit=1&offset={idx}").json()
             found_album = chosen.get("items")[0].get("track").get("album")
