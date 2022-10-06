@@ -338,7 +338,12 @@ def queue_track():
                 idx = random.randint(0, count - 1)
             
             chosen = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks?limit=1&offset={idx}").json()
-            args.uri = chosen.get("items")[0].get("track").get("album").get("uri")
+            found_album = chosen.get("items")[0].get("track").get("album")
+            args.uri = found_album.get("uri")
+            if not args.uri: 
+                print(f"Can't queue album {idx}; {found_album.get('name')} is hosted locally, and can't be queued via API!")
+                exit(0)
+
         elif source == "LIBRARY":
             count = spotify.get("https://api.spotify.com/v1/me/albums?limit=1&offset=0").json().get('total')
             if not count > idx > -1:
