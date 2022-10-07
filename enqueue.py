@@ -294,8 +294,10 @@ def queue_track():
     parser.add_argument('-c', '--song', action="store_true")
 
     parser.add_argument('-s', '--save', action='store_true')
-    parser.add_argument('-x', '--mix', action='store_true')
     
+    parser.add_argument('-x', '--source', nargs="?", const="LIBRARY")
+    parser.add_argument('-#', '--offset', type=int)
+
     parser.add_argument('-u', '--uri', default=None)
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int)
@@ -312,25 +314,14 @@ def queue_track():
     parser.add_argument('-n', '--amnesia', action='store_true')
 
     args = parser.parse_args()
-    mode = "tracks" if (not args.album and not args.mix) else "albums"
-
-    if args.mix:
-        mix_args = input("Customize Mix Options (LIBRARY|BACKLOG [IDX]): ").split(" ")
-        source = "BACKLOG"
-        idx = -1
-        if mix_args != ['']:
-            source = mix_args[0].upper()
-            if source not in ["LIBRARY", "BACKLOG"]: 
-                print("Source must be one of: LIBRARY, BACKLOG")
-                exit(1)
-
-            if len(mix_args) > 1:
-                try: 
-                    idx = max(int(mix_args[1]), 0)
-                except ValueError: 
-                    print("Index must be an integer!")
-                    exit(1)
-    
+    mode = "tracks" if (not args.album and not args.source) else "albums"
+    if args.source:
+        source = args.source.upper()
+        if source not in ["LIBRARY", "BACKLOG"]: 
+            print("Source must be one of: LIBRARY, BACKLOG")
+            exit(1)
+        
+        idx = args.offset or -1
         if source == "BACKLOG" and prefs.get("ALBUM_PLAYLIST"):            
             count = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks").json().get('total')
             if not count > idx > -1:
