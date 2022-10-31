@@ -5,6 +5,7 @@ A collection of projects related to music files: lyric scraping, iTunes parsing,
 - **Cleanser**: CLI tool to remove unwanted ID3 tags from MP3 files
 - **Enqueue**: Add tracks (or groups of tracks) to Spotify queue
 - **Logger**: Script to read differences in iTunes Library.xml, and log change
+- **Lastly**: Create playlists from Last.fm data
 - **Lyrical**: Lyric grabber from random/specified songs
 - **LyricBot**: Script used to post random lyrics to Twitter for various artist bots, using Genius/Google Doc/Sheets as source
 - **Migrator**: Spotify playlist creator from iTunes or tracks by name/artist
