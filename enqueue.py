@@ -12,6 +12,7 @@ import argparse
 import shlex
 import random
 from itertools import permutations
+from sys import argv
 
 from scraper import get_lyrics
 
@@ -311,8 +312,12 @@ def queue_track():
     parser.add_argument('-r', '--remember', nargs='*', default=None)
     parser.add_argument('-f', '--forget', nargs='*', default=None)
     parser.add_argument('-n', '--amnesia', action='store_true')
-
+    
+    parser.add_argument('-st', '--spaced_track', nargs='*', default=None)
+        
     args = parser.parse_args()
+    if args.spaced_track: args.title = " ".join(args.spaced_track)
+
     mode = "tracks" if (not args.album and not args.source) else "albums"
     if args.source:
         source = args.source.upper()
@@ -430,6 +435,7 @@ def queue_track():
         
         artist = mobject.get('artist', args.artist) if not args.amnesia else args.artist
         title = mobject.get('name', args.title) if not args.amnesia else args.title
+
         uri = args.uri or mobject.get('uri') or mobject.get('relevant_uri')
         
         tracks = enqueue(
@@ -496,7 +502,7 @@ def queue_track():
                 print("Could not find a Last.fm username; try adding one to preferences.json?")
 
 if __name__ == '__main__':
-    try: 
-        queue_track()    
+    try:
+        queue_track()
     except KeyboardInterrupt:
         exit(0)
