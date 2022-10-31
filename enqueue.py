@@ -39,7 +39,6 @@ groups, prefs = load_prefs()
 def get_track(uri, formatted=True):
     if not uri: return [{}]
     uri = uri.strip()
-
     idx = uri if ':' not in uri else uri[uri.rindex(':')+1:]
     if ':album:' in uri:
         album_data = spotify.get(f'https://api.spotify.com/v1/albums/{idx}').json()
@@ -177,7 +176,8 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, i
                     'name': t.get('name'), 
                     'artist': ', '.join([artist.get('name') for artist in t.get('artists', [])]),
                     'album': data.get('name'),
-                    'uri': t.get('uri')
+                    'uri': t.get('uri'),
+                    'album_uri': data.get('uri')
                 } for t in track_data.get('items', [])]
             else:
                 tracks = [{
