@@ -6,7 +6,6 @@ from utilities import (
     color, Colors
 )
 
-import sys
 import os
 import json
 import argparse
