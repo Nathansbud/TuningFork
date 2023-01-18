@@ -17,15 +17,16 @@ MONTHS = ["January", "February", "March", "April", "May", "June", "July", "Augus
 
 spotify = get_token()
 lastfm_file = os.path.join(os.path.dirname(__file__), "credentials", "lastfm.json")
+prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
 atom_dir = os.path.join(os.path.dirname(__file__), "resources", "atoms")
 
-with open(lastfm_file, "r") as cf:
-    lastfm_creds = json.load(cf)
+with open(lastfm_file, "r") as cf: lastfm_creds = json.load(cf)
+with open(prefs_file, "r") as pf: prefs = json.load(pf)
 
 lastfm = pylast.LastFMNetwork(
     api_key=lastfm_creds["api_key"],
     api_secret=lastfm_creds["api_secret"],
-    username=lastfm_creds["username"],
+    username=prefs.get("LASTFM_USER"),
 )
 
 def get_top_tracks(start_date, end_date, limit=25):
@@ -34,7 +35,7 @@ def get_top_tracks(start_date, end_date, limit=25):
         "http://ws.audioscrobbler.com/2.0/?",
         params={
             "method": "user.getweeklytrackchart",
-            "user": "Nathansbud",
+            "user": prefs.get("LASTFM_USER"),
             "from": ts(start_date),
             "to": ts(end_date),
             "limit": limit,
