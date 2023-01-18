@@ -1,16 +1,23 @@
+import base64
 import json
 import os
 import pytz
 
 from datetime import datetime, timedelta, tzinfo
+from io import BytesIO
 
 import requests
 import pylast
+from PIL import Image
 
 from utilities import search, get_token
 
+MODE = "auto"
+MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
 spotify = get_token()
 lastfm_file = os.path.join(os.path.dirname(__file__), "credentials", "lastfm.json")
+atom_dir = os.path.join(os.path.dirname(__file__), "resources", "atoms")
 
 with open(lastfm_file, "r") as cf:
     lastfm_creds = json.load(cf)
@@ -42,6 +49,18 @@ def get_top_tracks(start_date, end_date, limit=25):
         "plays": t["playcount"]  
     } for t in resp["weeklytrackchart"]["track"]]
 
+def build_playlist_image(dt: datetime):
+    with \
+        Image.open(os.path.join(atom_dir, f"{dt.month:02d}.png")) as month_atom, \
+        Image.open(os.path.join(atom_dir, f"{dt.year}.png")) as year_atom, \
+        Image.open(os.path.join(atom_dir, f"blackground.png")) as bg:
+        bg.alpha_composite(month_atom)
+        bg.alpha_composite(year_atom)
+        
+        buff = BytesIO()
+        bg.convert('RGB').save(buff, format='JPEG', quality=100, subsampling=0)
+        return base64.b64encode(buff.getvalue())
+
 # annoying limitation: Spotify API doesn't really expose playlist folders through the API, so can't set
 def make_date_playlist(name, start_date, end_date, limit=25, description="", public=True):
     top_tracks = [
@@ -49,6 +68,8 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
         for t in get_top_tracks(start_date, end_date, limit)
     ]
     
+    playlist_image = build_playlist_image(start_date)
+
     created_playlist = spotify.post(
         "https://api.spotify.com/v1/users/6rcq1j21davq3yhbk1t0l5xnt/playlists",
         data=json.dumps({
@@ -59,15 +80,28 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
     ).json()
 
     spotify.post(f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/tracks?uris={','.join((turi for turi in top_tracks if turi))}")
+    spotify.put(
+        f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/images", 
+        headers={'Content-Type': 'image/jpeg'},
+        data=playlist_image
+    )
 
+def generate_last_month_playlist(dt):
+    this_month = dt.replace(day=1, hour=0, minute=0, second=1)
+    last_month = (this_month - timedelta(days=1)).replace(day=1, second=0)
+    playlist_for = f"{MONTHS[last_month.month - 1]} {last_month.year}"
+    make_date_playlist(
+        playlist_for,
+        last_month,
+        this_month,
+        description=f"most played tracks for {playlist_for} (per last.fm)"
+    ) 
+        
 if __name__ == "__main__":
     TZ = pytz.timezone("US/Eastern")
-    
-    month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    for i in range(1, 10):
-        make_date_playlist(
-            f"{month[i - 1]} 2022",
-            datetime(2022, i, 1, 0, 0, 1, tzinfo=TZ),
-            datetime(2022, i + 1, 1, 0, 0, 0, tzinfo=TZ),
-            description=f"Most played tracks for {month[i - 1]} 2022 (per last.fm)"
-        )    
+    if MODE == "auto":
+        generate_last_month_playlist(datetime.now(tz=TZ))
+    else:
+        for i in range(2, 13):
+            generate_last_month_playlist(datetime(2022, i, 1, 0, 0, 1, tzinfo=TZ))
+        generate_last_month_playlist(datetime(2023, 1, 1, 0, 0, 1, tzinfo=TZ))
