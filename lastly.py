@@ -72,7 +72,7 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
     playlist_image = build_playlist_image(start_date)
 
     created_playlist = spotify.post(
-        "https://api.spotify.com/v1/users/6rcq1j21davq3yhbk1t0l5xnt/playlists",
+        f"https://api.spotify.com/v1/users/{prefs.get('SPOTIFY_USER')}/playlists",
         data=json.dumps({
             "name": name,
             "public": public,

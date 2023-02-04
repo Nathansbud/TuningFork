@@ -437,7 +437,6 @@ def queue_track():
         title = mobject.get('name', args.title) if not args.amnesia else args.title
 
         uri = args.uri or mobject.get('uri') or mobject.get('relevant_uri')
-        
         tracks = enqueue(
             title=title,
             artist=artist,
