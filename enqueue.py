@@ -497,12 +497,12 @@ def queue_track():
                     uri = search(track["title"], track["artist"], spotify)
                     resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('SHARED_PLAYLIST')}/tracks?uris={uri}")
                     if 200 <= resp.status_code < 300:
-                        print(f"Added {track.get('title')} to shared playlist!")
+                        print(f"Added {color(track.get('title'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)} to shared playlist!")
                     else:
                         print(f"Something went wrong while adding to shared playlist (status code {resp.status_code})")
                 else:
                     print("Could not find a SHARED_PLAYLIST to add song to; try adding one to preferences.json?")
-
+                
             else:
                 print("Could not find a valid LASTFM_WATCH_USER to save track from; try adding one to preferences.json?")
 
