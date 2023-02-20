@@ -18,13 +18,13 @@ A collection of projects related to music files: lyric scraping, play logging, L
 
 # Setup
 
-Everything in this repository was built to serve my personal needs. I used to utilize iTunes, then migrated over to Spotify. iTunes scripts should still work, but haven't been tested in years. Spotify and Last.fm scripts (namely: `enqueue.py`, `lastly.py`) require various API keys to be added to `credentials/`:
+Everything in this repository was built to serve my personal needs. I used to utilize iTunes, then migrated over to Spotify. iTunes scripts should still work, but haven't been tested in years. Spotify and Last.fm scripts (namely: `enqueue.py`, `lastly.py`) require various API keys to be added to `credentials/`. Otherwise, setup is as it would be for any Python project (install dependencies from `requirements.txt`).
 
 ## Spotify API
 
 Before using Spotify-dependent tools (e.g. Enqueue, Turntable, Migrator), a token must be generated. Add a `spotify.json` file to `credentials`, and populate with `client_id`, `client_secret`, and `redirect_uri` corresponding with [a created Spotify app](https://developer.spotify.com/dashboard/). 
 
-Authorization flow is a little jank, but you should only need to deal with it once. You can spin up a local server by running `utilities.py` (by default, hosted on port 6813), and set your Spotify app's redirect URI accordingly (i.e. `localhost:6813`). Follow the instructions given when trying to run a Spotify-dependent service for the first time, and you should be good to go :)
+Authorization flow is a little jank, but you should only need to deal with it once. You can spin up a local server by running `utilities.py` (by default, hosted on port 6813), and set your Spotify app's redirect URI accordingly (i.e. `localhost:6813`). Follow the instructions given when trying to run a Spotify-dependent service for the first time, and you should be good to go. As is, the server requires certificate files (such that https requests work), so if need be create a `certificates/` folder and run the provided command to generate certificats :)
 
 ## Last.fm API
 
