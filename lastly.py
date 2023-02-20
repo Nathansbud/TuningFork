@@ -29,6 +29,28 @@ lastfm = pylast.LastFMNetwork(
     username=prefs.get("LASTFM_USER"),
 )
 
+def get_current_track(user): 
+    k = get_recent_tracks(user, 1)
+    return k[0] if k else []
+
+def get_recent_tracks(user, limit=25):
+    resp = requests.get(
+        "http://ws.audioscrobbler.com/2.0/?",
+        params={
+            "method": "user.getrecenttracks",
+            "user": user,
+            "limit": limit,
+            "api_key": lastfm_creds["api_key"],
+            "format": "json"
+        }
+    ).json()
+
+    return [{
+        "artist": t["artist"]["#text"],
+        "title": t["name"],
+    } for t in resp["recenttracks"]["track"]]
+    
+
 def get_top_tracks(start_date, end_date, limit=25):
     ts = lambda dt: int(dt.timestamp())
     resp = requests.get(
@@ -99,6 +121,8 @@ def generate_last_month_playlist(dt):
     ) 
         
 if __name__ == "__main__":
+    print(get_recent_tracks("JoshyBoy"))
+    exit(0)
     TZ = pytz.timezone("US/Eastern")
     if MODE == "auto":
         generate_last_month_playlist(datetime.now(tz=TZ))

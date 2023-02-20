@@ -15,6 +15,7 @@ from itertools import permutations
 from sys import argv
 
 from scraper import get_lyrics
+from lastly import get_current_track
 
 group_file = os.path.join(os.path.dirname(__file__), "resources", "groups.json")
 short_file = os.path.join(os.path.dirname(__file__), "resources", "shortcuts.json")
@@ -294,6 +295,7 @@ def queue_track():
     parser.add_argument('-c', '--song', action="store_true")
 
     parser.add_argument('-s', '--save', action='store_true')
+    parser.add_argument('-z', '--save_watched', action='store_true')
     
     parser.add_argument('-x', '--source', nargs="?", const="LIBRARY")
     parser.add_argument('-#', '--offset', type=int)
@@ -312,7 +314,9 @@ def queue_track():
     parser.add_argument('-r', '--remember', nargs='*', default=None)
     parser.add_argument('-f', '--forget', nargs='*', default=None)
     parser.add_argument('-n', '--amnesia', action='store_true')
-    
+
+    parser.add_argument('-w', '--which', action='store_true')
+
     parser.add_argument('-st', '--spaced_track', nargs='*', default=None)
         
     args = parser.parse_args()
@@ -367,6 +371,13 @@ def queue_track():
             mode,
             delete=True
         )
+    elif args.which:
+        cs = spotify.get("https://api.spotify.com/v1/me/player/currently-playing")
+        if cs.status_code == 204: 
+            print("No track currently playing!")
+        else:
+            playing = cs.json().get('item', {})
+            print(f"{color(playing.get('name'), Colors.CYAN)} by {color(', '.join([artist.get('name') for artist in playing.get('artists', [])]), Colors.GREEN)}")
     elif args.make_group: make_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:
@@ -478,6 +489,22 @@ def queue_track():
                     print("No tracks found!")
             else: 
                 print("Could not locate a default playlist; try adding a DEFAULT_PLAYLIST key to preferences.json?")
+
+        if args.save_watched:
+            track = get_current_track(prefs.get("LASTFM_WATCH_USER"))
+            if track:
+                if prefs.get("SHARED_PLAYLIST"):
+                    uri = search(track["title"], track["artist"], spotify)
+                    resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('SHARED_PLAYLIST')}/tracks?uris={uri}")
+                    if 200 <= resp.status_code < 300:
+                        print(f"Added {track.get('title')} to shared playlist!")
+                    else:
+                        print(f"Something went wrong while adding to shared playlist (status code {resp.status_code})")
+                else:
+                    print("Could not find a SHARED_PLAYLIST to add song to; try adding one to preferences.json?")
+
+            else:
+                print("Could not find a valid LASTFM_WATCH_USER to save track from; try adding one to preferences.json?")
 
         if args.open:
             if prefs.get("LASTFM_USER"):
