@@ -233,7 +233,9 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, i
         if last:
             print(f"""Adding{' ' + str(last) if last > 1 else ''} last played item{'s' if last > 1 else ''} ({', '.join([f"{t.get('name')} by {t.get('artist')}" for t in tracks])}) to queue {times}x!""")
         elif mode == 'tracks':
-            print("Adding " + ", ".join([f"{t.get('name')} by {t.get('artist')}" for t in tracks]) + f" to queue {times}x!")
+            print("Adding " + ", ".join([
+                f"{color(t.get('name'), Colors.CYAN)} by {color(t.get('artist'), Colors.GREEN)}" for t in tracks
+            ]) + f" to queue {times}x!")
         elif mode == 'albums':
             print(f"Adding album {tracks[0].get('album')} by {tracks[0].get('artist')} ({len(tracks)} tracks) to queue {times}x!")
             # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
@@ -295,7 +297,7 @@ def queue_track():
     parser.add_argument('-c', '--song', action="store_true")
 
     parser.add_argument('-s', '--save', action='store_true')
-    parser.add_argument('-z', '--save_watched', action='store_true')
+    parser.add_argument('-z', '--watch', action='store_true')
     
     parser.add_argument('-x', '--source', nargs="?", const="LIBRARY")
     parser.add_argument('-#', '--offset', type=int)
@@ -476,7 +478,23 @@ def queue_track():
                     mode
                 )
 
-        if args.save:
+        if args.watch:
+            track = get_current_track(prefs.get("LASTFM_WATCH_USER"))
+            if track:
+                if args.save and prefs.get("SHARED_PLAYLIST"):
+                    uri = search(track["title"], track["artist"], spotify)
+                    resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('SHARED_PLAYLIST')}/tracks?uris={uri}")
+                    if 200 <= resp.status_code < 300:
+                        print(f"Added {color(track.get('title'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)} to shared playlist!")
+                    else:
+                        print(f"Something went wrong while adding to shared playlist (status code {resp.status_code})")
+                elif not prefs.get("SHARED_PLAYLIST"):
+                    print("Could not find a SHARED_PLAYLIST to add song to; try adding one to preferences.json?")
+                else:
+                    print(f"{color(prefs.get('LASTFM_WATCH_USER'), Colors.YELLOW)} is listening to {color(track.get('title'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)}!")
+            else:
+                print("Could not find a valid LASTFM_WATCH_USER to save track from; try adding one to preferences.json?")
+        elif args.save:
             if prefs.get("DEFAULT_PLAYLIST"):
                 track_uris = [t.get("uri") for t in tracks if t.get("uri")]
                 if len(track_uris) > 0:
@@ -489,22 +507,6 @@ def queue_track():
                     print("No tracks found!")
             else: 
                 print("Could not locate a default playlist; try adding a DEFAULT_PLAYLIST key to preferences.json?")
-
-        if args.save_watched:
-            track = get_current_track(prefs.get("LASTFM_WATCH_USER"))
-            if track:
-                if prefs.get("SHARED_PLAYLIST"):
-                    uri = search(track["title"], track["artist"], spotify)
-                    resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('SHARED_PLAYLIST')}/tracks?uris={uri}")
-                    if 200 <= resp.status_code < 300:
-                        print(f"Added {color(track.get('title'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)} to shared playlist!")
-                    else:
-                        print(f"Something went wrong while adding to shared playlist (status code {resp.status_code})")
-                else:
-                    print("Could not find a SHARED_PLAYLIST to add song to; try adding one to preferences.json?")
-                
-            else:
-                print("Could not find a valid LASTFM_WATCH_USER to save track from; try adding one to preferences.json?")
 
         if args.open:
             if prefs.get("LASTFM_USER"):
