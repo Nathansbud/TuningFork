@@ -10,8 +10,8 @@ from time import sleep
 import argparse
 from enum import Enum
 
-from requests_oauthlib import OAuth2, OAuth2Session
-from oauthlib.oauth2 import TokenExpiredError
+from requests_oauthlib import OAuth2Session
+from simple_term_menu import TerminalMenu
 
 class Colors(Enum):
     DEFAULT = "\033[0m"
@@ -125,6 +125,31 @@ def search(title, artist=None, spotify=None):
         resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}&type=track&limit=1&offset=0").json()
     
     return (resp.get('tracks', {}).get('items') or [{}])[0].get('uri')
+
+def dropdown(options: dict):
+    # options contains k-v pairs
+    o_keys = list(options.keys())
+    select = TerminalMenu(o_keys)
+    selected = select.show()
+    if selected is not None: 
+        return o_keys[selected], selected
+    
+    return None, None
+
+def album_display(alb: dict, use_color=True):
+    alb_o = alb.get('album', {})
+    
+    if not isinstance(alb_o, str):
+        alb_name = alb_o.get('name')
+        alb_artist = ', '.join(artist.get('name') for artist in alb_o.get('artists', []))
+    else:
+        alb_name = alb.get('album')
+        alb_artist = alb.get('artist')
+
+    if use_color:
+        return f"{color(alb_name, Colors.CYAN)} by {color(alb_artist, Colors.YELLOW)}"
+    else:
+        return f"{alb_name} by {alb_artist}"
 
 class SongException(Exception): pass
 class SongParser(argparse.ArgumentParser):

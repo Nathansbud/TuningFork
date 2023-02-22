@@ -2,6 +2,8 @@ from time import sleep
 import webbrowser
 from utilities import (
     search, get_token, 
+    album_display,
+    dropdown,
     SongParser, SongException,
     color, Colors
 )
@@ -12,7 +14,6 @@ import argparse
 import shlex
 import random
 from itertools import permutations
-from sys import argv
 
 from scraper import get_lyrics
 from lastly import get_current_track
@@ -237,7 +238,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, i
                 f"{color(t.get('name'), Colors.CYAN)} by {color(t.get('artist'), Colors.GREEN)}" for t in tracks
             ]) + f" to queue {times}x!")
         elif mode == 'albums':
-            print(f"Adding album {tracks[0].get('album')} by {tracks[0].get('artist')} ({len(tracks)} tracks) to queue {times}x!")
+            print(f"Adding album {album_display(tracks[0])} ({len(tracks)} tracks) to queue {times}x!")
             # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
             sleep(2)
 
@@ -300,7 +301,7 @@ def queue_track():
     parser.add_argument('-z', '--watch', action='store_true')
     
     parser.add_argument('-x', '--source', nargs="?", const="LIBRARY")
-    parser.add_argument('-#', '--offset', type=int)
+    parser.add_argument('-#', '--offset', nargs="+", type=int)
 
     parser.add_argument('-u', '--uri', default=None)
 
@@ -331,7 +332,10 @@ def queue_track():
             print("Source must be one of: LIBRARY, BACKLOG")
             exit(1)
         
-        idx = args.offset or -1
+        idx = args.offset[0] or -1
+        ran = args.offset[1] if len(args.offset) > 1 else 1
+        offset = 0
+
         if source == "BACKLOG" and prefs.get("ALBUM_PLAYLIST"):            
             count = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks").json().get('total')
             if not count > idx > -1:
@@ -340,8 +344,15 @@ def queue_track():
             else:
                 idx = count - idx
             
-            chosen = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks?limit=1&offset={idx}").json()
-            found_album = chosen.get("items")[0].get("track").get("album")
+            chosen = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks?limit={ran}&offset={idx - ran + 1}").json()
+            if ran > 1:
+                opts = {album_display(c.get("track"), use_color=False): c.get("track", {}).get('album', {}).get('uri') for c in reversed(chosen.get("items"))}
+                z, offset = dropdown(opts)
+                if not z: exit(0) 
+                # flip to account for non-reversed chosen
+                offset = (ran - 1) - offset
+            
+            found_album = chosen.get("items")[offset].get("track").get("album")
             args.uri = found_album.get("uri")
             if not args.uri: 
                 print(f"Can't queue album {idx}; {found_album.get('name')} is hosted locally, and can't be queued via API!")
@@ -353,8 +364,15 @@ def queue_track():
                 print(f"Choosing a random library album from the {count} available...")
                 idx = random.randint(0, count - 1)
 
-            chosen = spotify.get(f"https://api.spotify.com/v1/me/albums?limit=1&offset={idx}").json()
-            args.uri = chosen.get("items")[0].get("album").get("uri")
+            chosen = spotify.get(f"https://api.spotify.com/v1/me/albums?limit={ran}&offset={idx}").json()
+            if ran > 1:
+                opts = {album_display(c, use_color=False): c.get('album', {}).get('uri') for c in reversed(chosen.get("items"))}
+                z, offset = dropdown(opts)
+                if not z: exit(0) 
+                # flip to account for non-reversed chosen
+                offset = (ran - 1) - offset
+            
+            args.uri = chosen.get("items")[offset].get("album").get("uri")
         else:
             print("Could not locate an album backlog playlist; try adding an ALBUM_PLAYLIST key to preferences.json?")
             exit(1)
