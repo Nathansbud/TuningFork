@@ -52,4 +52,4 @@ time-machine==2.8.2
 tweepy==3.8.0
 Unidecode==1.1.1
 uritemplate==3.0.1
-urllib3==1.25.8
+urllib3==1.26.5
