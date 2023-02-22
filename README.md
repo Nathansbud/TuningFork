@@ -24,7 +24,9 @@ Everything in this repository was built to serve my personal needs. I used to ut
 
 Before using Spotify-dependent tools (e.g. Enqueue, Turntable, Migrator), a token must be generated. Add a `spotify.json` file to `credentials`, and populate with `client_id`, `client_secret`, and `redirect_uri` corresponding with [a created Spotify app](https://developer.spotify.com/dashboard/). 
 
-Authorization flow is a little jank, but you should only need to deal with it once. You can spin up a local server by running `utilities.py` (by default, hosted on port 6813), and set your Spotify app's redirect URI accordingly (i.e. `localhost:6813`). Follow the instructions given when trying to run a Spotify-dependent service for the first time, and you should be good to go. As is, the server requires certificate files (such that https requests work), so if need be create a `certificates/` folder and run the provided command to generate certificats :)
+Authorization flow is a little jank, but you should only need to deal with it once. When trying to make a request without authentication, the provided `redirect_uri` will be used. From personal testing, a `localhost` redirect works even without spinning up the local server, as the relevant authentication information is passed as URL parameters which can be copied over (and no response actually needs to come from the server).
+
+Regardless, if this is for some reason no longer the case, you can spin up a local server by running `utilities.py` (which will, by default, host a local server on port 6813), and set your Spotify app's redirect URI accordingly (e.g. `localhost:6813`). Follow the instructions given when trying to run a Spotify-dependent service for the first time, and you should be good to go. As is, the server requires certificate files (such that https requests work), so if need be create a `certificates/` folder and run the provided command to generate certificates :)
 
 ## Last.fm API
 

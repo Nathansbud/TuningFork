@@ -30,6 +30,7 @@ auth_url, token_url = "https://accounts.spotify.com/authorize", "https://account
 default_spotify_scopes = [
     "playlist-modify-private", 
     "playlist-modify-public", 
+    "ugc-image-upload",
     "user-modify-playback-state",
     "user-read-currently-playing",
     "user-read-playback-state",

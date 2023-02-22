@@ -5,6 +5,7 @@ import pytz
 
 from datetime import datetime, timedelta, tzinfo
 from io import BytesIO
+from time import sleep
 
 import requests
 import pylast
@@ -93,6 +94,7 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
     
     playlist_image = build_playlist_image(start_date)
 
+    print(f"Building playlist {name}...")
     created_playlist = spotify.post(
         f"https://api.spotify.com/v1/users/{prefs.get('SPOTIFY_USER')}/playlists",
         data=json.dumps({
@@ -103,11 +105,16 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
     ).json()
 
     spotify.post(f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/tracks?uris={','.join((turi for turi in top_tracks if turi))}")
-    spotify.put(
+    
+    # for some reason, the playlist takes a bit before a playlist cover can be updated; wait a few seconds first
+    sleep(5)
+    img = spotify.put(
         f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/images", 
         headers={'Content-Type': 'image/jpeg'},
         data=playlist_image
     )
+    
+    print(f"Created playlist {name}!")
 
 def generate_last_month_playlist(dt):
     this_month = dt.replace(day=1, hour=0, minute=0, second=1)
@@ -121,8 +128,6 @@ def generate_last_month_playlist(dt):
     ) 
         
 if __name__ == "__main__":
-    print(get_recent_tracks("JoshyBoy"))
-    exit(0)
     TZ = pytz.timezone("US/Eastern")
     if MODE == "auto":
         generate_last_month_playlist(datetime.now(tz=TZ))
