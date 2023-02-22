@@ -1,12 +1,21 @@
 # TuningFork
 
-A collection of projects related to music files: lyric scraping, play logging, Last.fm snapshots, Spotify playlist migration, queue management, you name it! Everything is for personal use, so a tad rough around the edges (and everywhere else, to be honest):
+A collection of projects related to music files: lyric scraping, play logging, Last.fm snapshots, Spotify playlist migration, queue management, you name it! Everything is for personal use, so a tad rough around the edges...and everywhere else, to be honest.
+
+# Core
+
+The main parts of this repo that are actively used (and often updated with new features!) are those dealing with Spotify queue management and Last.fm integration. That is to say...
+
+- **Enqueue**: Add tracks (or groups of tracks) to Spotify queue
+- **Lastly**: Create playlists from Last.fm data
+
+# Rest of the Owl
+
+Much of this repo's utility is tied to the Spotify API; legacy iTunes scripts should still work, but many were fragile at the time, especially those relying on scraping Genius (which has since been updated numerous times), so no guarantees that tools like `Lyrical` still work:
 
 - **Cleanser**: CLI tool to remove unwanted ID3 tags from MP3 files
-- **Enqueue**: Add tracks (or groups of tracks) to Spotify queue
 - **Logger**: Script to read differences in iTunes Library.xml, and log change
-- **Lastly**: Create playlists from Last.fm data
-- **Lyrical**: Lyric grabber from random/specified songs
+- **Lyrical**: Lyric grabber using Genius for random/specified songs 
 - **LyricBot**: Script used to post random lyrics to Twitter for various artist bots, using Genius/Google Doc/Sheets as source
 - **Migrator**: Spotify playlist creator from iTunes or tracks by name/artist
 - **Parser**: Script to run through iTunes Library.xml file to load in song data, or query iTunes Library via Swift executable
