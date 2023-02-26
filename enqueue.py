@@ -346,7 +346,11 @@ def queue_track():
             count = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks").json().get('total')
             if not count > idx > -1:
                 idx = random.randint(0, count - 1)
-                print(f"Choosing a {color('random', Colors.RAINBOW)} backlog album from the {count} available...how about #{color(idx, Colors.WHITE)}?")
+                if ran == 1:
+                    print(f"Choosing a {color('random', Colors.RAINBOW)} backlog album from the {count} available...how about #{color(idx, Colors.WHITE)}?")
+                else:
+                    print(f"Choosing {color(ran, Colors.WHITE)} backlog albums from a {color('random', Colors.RAINBOW)} offset of the {count} available...#{color(idx, Colors.WHITE)}?")
+            
             else:
                 idx = count - idx
             
@@ -368,8 +372,10 @@ def queue_track():
             count = spotify.get("https://api.spotify.com/v1/me/albums?limit=1&offset=0").json().get('total')
             if not count > idx > -1:
                 idx = random.randint(0, count - 1)
-                print(f"Choosing a {color('random', Colors.RAINBOW)} library album from the {count} available...how about #{color(idx, Colors.WHITE)}?")
-
+                if ran == 1:
+                    print(f"Choosing a {color('random', Colors.RAINBOW)} library album from the {count} available...how about #{color(idx, Colors.WHITE)}?")
+                else:
+                    print(f"Choosing {color(ran, Colors.WHITE)} library albums from a {color('random', Colors.RAINBOW)} offset of the {count} available...#{color(idx, Colors.WHITE)}?")
 
             chosen = spotify.get(f"https://api.spotify.com/v1/me/albums?limit={ran}&offset={idx}").json()
             if ran > 1:
