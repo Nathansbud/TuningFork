@@ -356,7 +356,7 @@ def queue_track():
                 z, offset = dropdown(opts)
                 if not z: exit(0) 
                 # flip to account for non-reversed chosen
-                offset = (ran - 1) - offset
+                offset = min(ran, len(chosen.get("items"))) - 1 - offset
             
             found_album = chosen.get("items")[offset].get("track").get("album")
             args.uri = found_album.get("uri")
@@ -377,7 +377,7 @@ def queue_track():
                 z, offset = dropdown(opts)
                 if not z: exit(0) 
                 # flip to account for non-reversed chosen
-                offset = (ran - 1) - offset
+                offset = min(ran, len(chosen.get("items"))) - 1 - offset
             
             args.uri = chosen.get("items")[offset].get("album").get("uri")
         else:
