@@ -1,6 +1,7 @@
 from subprocess import Popen, PIPE
 
 import os
+import itertools
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import ssl
 import json
@@ -23,7 +24,20 @@ class Colors(Enum):
     CYAN = "\033[36;1m"
     WHITE = "\033[37;1m"
 
-def color(text, color): return f"{color.value}{text}{Colors.DEFAULT.value}"
+    # Does nothing on its own, but if passed to color used as a flag
+    RAINBOW = ""
+
+
+def color(text, color):
+    if color != Colors.RAINBOW:
+        return f"{color.value}{text}{Colors.DEFAULT.value}"
+    else:
+        return "".join([
+            f"{c.value}{l}{Colors.DEFAULT.value}" 
+            for l, c in zip(text, itertools.cycle(list(Colors)[1:-1]))
+        ])
+
+
 
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"        

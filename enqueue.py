@@ -1,22 +1,28 @@
-from time import sleep
-import webbrowser
-from utilities import (
-    search, get_token, 
-    album_display,
-    dropdown,
-    SongParser, SongException,
-    color, Colors
-)
+try: 
+    from time import sleep
+    import webbrowser
+    from utilities import (
+        search, get_token, 
+        album_display,
+        dropdown,
+        SongParser, SongException,
+        color, Colors
+    )
 
-import os
-import json
-import argparse
-import shlex
-import random
-from itertools import permutations
+    import os
+    import json
+    import argparse
+    import shlex
+    import random
+    from itertools import permutations
 
-from scraper import get_lyrics
-from lastly import get_current_track
+    from scraper import get_lyrics
+    from lastly import get_current_track
+except KeyboardInterrupt:
+    # this is terrible form and i have never seen any code do it but
+    # i am doing it anyways because these imports take a hot minute and
+    # they give me very ugly error messages...also idk how else to do it
+    exit(0)
 
 group_file = os.path.join(os.path.dirname(__file__), "resources", "groups.json")
 short_file = os.path.join(os.path.dirname(__file__), "resources", "shortcuts.json")
@@ -332,15 +338,15 @@ def queue_track():
             print("Source must be one of: LIBRARY, BACKLOG")
             exit(1)
         
-        idx = args.offset[0] or -1
-        ran = args.offset[1] if len(args.offset) > 1 else 1
+        idx = (args.offset[0] or -1) if args.offset else -1
+        ran = args.offset[1] if args.offset and len(args.offset) > 1 else 1
         offset = 0
 
         if source == "BACKLOG" and prefs.get("ALBUM_PLAYLIST"):            
             count = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks").json().get('total')
             if not count > idx > -1:
-                print(f"Choosing a random backlog album from the {count} available...")
                 idx = random.randint(0, count - 1)
+                print(f"Choosing a {color('random', Colors.RAINBOW)} backlog album from the {count} available...how about #{color(idx, Colors.WHITE)}?")
             else:
                 idx = count - idx
             
@@ -361,8 +367,9 @@ def queue_track():
         elif source == "LIBRARY":
             count = spotify.get("https://api.spotify.com/v1/me/albums?limit=1&offset=0").json().get('total')
             if not count > idx > -1:
-                print(f"Choosing a random library album from the {count} available...")
                 idx = random.randint(0, count - 1)
+                print(f"Choosing a {color('random', Colors.RAINBOW)} library album from the {count} available...how about #{color(idx, Colors.WHITE)}?")
+
 
             chosen = spotify.get(f"https://api.spotify.com/v1/me/albums?limit={ran}&offset={idx}").json()
             if ran > 1:
