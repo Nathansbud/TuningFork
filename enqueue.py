@@ -531,7 +531,7 @@ def queue_track():
                 if len(track_uris) > 0:
                     resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('DEFAULT_PLAYLIST')}/tracks?uris={','.join(track_uris)}")
                     if 200 <= resp.status_code < 300:
-                        print(f"Added {', '.join(t.get('name') for t in tracks)} to playlist!")
+                        print(f"Added {', '.join(color(t.get('name'), Colors.CYAN) for t in tracks)} to playlist!")
                     else:
                         print(f"Something went wrong while adding to playlist (status code {resp.status_code})")
                 else:
