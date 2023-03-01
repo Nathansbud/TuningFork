@@ -280,7 +280,7 @@ def remember_track(title, artist, track, mode, delete=False):
         memory[mode][mem_key] = {
             'name': track.get('name'), 
             'artist': track.get('artist'),
-            'album': track.get('album'),
+            'album': track.get('album') if (type(track.get('album')) == str) else track.get('album', {}).get('name'),
             'relevant_uri': track.get('uri') if mode == 'tracks' else track.get('album_uri')
         }
     else:
