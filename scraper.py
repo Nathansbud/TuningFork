@@ -9,7 +9,7 @@ from mutagen import MutagenError
 
 from urllib import parse
 
-from parser import parse_itunes_xml, get_tracks
+from sparser import parse_itunes_xml, get_tracks
 import unidecode
 import re
 import argparse

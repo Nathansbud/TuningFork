@@ -5,7 +5,7 @@ from math import ceil
 
 import re
 
-from parser import get_tracks
+from sparser import get_tracks
 from unidecode import unidecode
 
 

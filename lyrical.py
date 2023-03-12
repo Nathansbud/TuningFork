@@ -1,4 +1,4 @@
-from parser import parse_itunes_xml
+from sparser import parse_itunes_xml
 
 from scraper import path_prettify
 from scraper import get_lyrics_from_url
