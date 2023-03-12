@@ -1,6 +1,16 @@
 try: 
-    from time import sleep
+    import argparse
+    import json
+    import os
+    import random
+    import shlex
     import webbrowser
+    from datetime import datetime, timedelta
+    from itertools import permutations
+    from time import sleep
+
+    from lastly import get_current_track, get_top_tracks
+    from scraper import get_lyrics
     from utilities import (
         search, get_token, 
         album_display,
@@ -8,16 +18,6 @@ try:
         SongParser, SongException,
         color, Colors
     )
-
-    import os
-    import json
-    import argparse
-    import shlex
-    import random
-    from itertools import permutations
-
-    from scraper import get_lyrics
-    from lastly import get_current_track
 except KeyboardInterrupt:
     # this is terrible form and i have never seen any code do it but
     # i am doing it anyways because these imports take a hot minute and
@@ -155,7 +155,7 @@ def make_group():
                 print(e)
             
             
-def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, ignore=False, mode="tracks"):
+def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, uri=None, ignore=False, mode="tracks"):
     group_data = []   
     tracks = []
     
@@ -168,6 +168,12 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, i
         
         group_data = groups.get(group, [])
         tracks = group_data
+    elif user:
+        track_data = get_top_tracks(start_date=datetime.now() - timedelta(days=365), end_date=datetime.now(), user=user, limit=max(50, times))
+        tracks = [{"uri": search(td['name'], td['artist'], spotify), **td} for td in random.sample(track_data, times)]
+        # we can't use times with this flag!
+        if times > 0: 
+            times = 1
     elif title or uri: 
         if uri: tracks = get_track(uri, True)
         else:
@@ -241,10 +247,11 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, i
             print(f"""Adding{' ' + str(last) if last > 1 else ''} last played item{'s' if last > 1 else ''} ({', '.join([f"{t.get('name')} by {t.get('artist')}" for t in tracks])}) to queue {times}x!""")
         elif mode == 'tracks':
             print("Adding " + ", ".join([
-                f"{color(t.get('name'), Colors.CYAN)} by {color(t.get('artist'), Colors.GREEN)}" for t in tracks
+                f"{color(t.get('name'), Colors.GREEN)} by {color(t.get('artist'), Colors.YELLOW)}" for t in tracks
             ]) + f" to queue {times}x!")
         elif mode == 'albums':
-            print(f"Adding album {album_display(tracks[0])} ({len(tracks)} tracks) to queue {times}x!")
+            nt = color(f"{len(tracks)} tracks", Colors.WHITE)
+            print(f"Adding album {album_display(tracks[0])} ({nt}) to queue {times}x!")
             # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
             sleep(2)
 
@@ -252,7 +259,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, uri=None, i
             for t in tracks:
                 response = spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
                 if response.status_code >= 300: 
-                    print(f"Failed to add {t.get('name')} by {t.get('artist')} to queue (status code: {response.status_code})")
+                    print(f"Failed to add {color(t.get('name'), Colors.GREEN)} by {color(t.get('artist'), Colors.YELLOW)} to queue (status code: {response.status_code})")
 
         return tracks
     else:
@@ -305,6 +312,8 @@ def queue_track():
 
     parser.add_argument('-s', '--save', action='store_true')
     parser.add_argument('-z', '--watch', action='store_true')
+
+    parser.add_argument('-@', '--user', nargs='?', default="", type=str), 
     
     parser.add_argument('-x', '--source', nargs="?", const="LIBRARY")
     parser.add_argument('-#', '--offset', nargs="+", type=int)
@@ -410,7 +419,7 @@ def queue_track():
             print("No track currently playing!")
         else:
             playing = cs.json().get('item', {})
-            print(f"{color(playing.get('name'), Colors.CYAN)} by {color(', '.join([artist.get('name') for artist in playing.get('artists', [])]), Colors.GREEN)}")
+            print(f"{color(playing.get('name'), Colors.GREEN)} by {color(', '.join([artist.get('name') for artist in playing.get('artists', [])]), Colors.YELLOW)}")
     elif args.make_group: make_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:
@@ -434,10 +443,10 @@ def queue_track():
             try:
                 groups = json.load(gf)
                 if groups:
-                    print(f"[{color('Saved Groups', Colors.CYAN)}]\n")
+                    print(f"[{color('Saved Groups', Colors.WHITE)}]\n")
                     for name, data in groups.items():
                         tracks = "\n".join([
-                            f"\t{i}. {color(d.get('name'), Colors.GREEN)} by {color(d.get('artist'), Colors.GREEN)} [{color(d.get('uri'), Colors.YELLOW)}]" 
+                            f"\t{i}. {color(d.get('name'), Colors.GREEN)} by {color(d.get('artist'), Colors.YELLOW)} [{color(d.get('uri'), Colors.MAGENTA)}]" 
                             for i, d in enumerate(data, start=1)
                         ])
                         print(f"{color(name, Colors.MAGENTA)}: {tracks}\n")
@@ -451,14 +460,14 @@ def queue_track():
                 try: 
                     shortcuts = json.load(cf)
                     tracks, albums = shortcuts.get('tracks'), shortcuts.get('albums')
-                    for title, ss in [("Track Shortcuts", tracks), ("Album Shortcuts", albums)]:
+                    for i, (title, ss) in enumerate([(color("Track Shortcuts", Colors.GREEN), tracks), (color("Album Shortcuts", Colors.CYAN), albums)]):
                         if ss:
-                            print(f"[{color(title, Colors.CYAN)}]\n")
+                            print(f"[{title}]\n")
                             for r in sorted([[
                                 color(", ".join(key.split(PART_SEPARATOR)), Colors.MAGENTA),
                                 "->",
-                                f"{color(track.get('name' if mode == 'tracks' else 'album'), Colors.GREEN)} by {color(track.get('artist'), Colors.GREEN)}",
-                                f"[{color(track.get('relevant_uri', track.get('uri')), Colors.YELLOW)}]"
+                                f"{color(track.get('name' if mode == 'tracks' else 'album'), Colors.GREEN if not i else Colors.CYAN)} by {color(track.get('artist'), Colors.YELLOW)}",
+                                f"[{color(track.get('relevant_uri', track.get('uri')), Colors.MAGENTA)}]"
                             ] for key, track in ss.items()], key=lambda l: l[2].lower()):
                                 print(*r)
                         print()
@@ -487,6 +496,7 @@ def queue_track():
             times=args.times,
             last=args.previous,
             group=args.group,
+            user=args.user,
             uri=uri,
             ignore=args.ignore or args.open,
             mode=mode
@@ -522,7 +532,7 @@ def queue_track():
                 elif not prefs.get("SHARED_PLAYLIST"):
                     print("Could not find a SHARED_PLAYLIST to add song to; try adding one to preferences.json?")
                 else:
-                    print(f"{color(prefs.get('LASTFM_WATCH_USER'), Colors.YELLOW)} is listening to {color(track.get('title'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)}!")
+                    print(f"{color(prefs.get('LASTFM_WATCH_USER'), Colors.MAGENTA)} is listening to {color(track.get('title'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)}!")
             else:
                 print("Could not find a valid LASTFM_WATCH_USER to save track from; try adding one to preferences.json?")
         elif args.save:

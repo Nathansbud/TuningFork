@@ -48,17 +48,17 @@ def get_recent_tracks(user, limit=25):
 
     return [{
         "artist": t["artist"]["#text"],
-        "title": t["name"],
+        "name": t["name"],
     } for t in resp["recenttracks"]["track"]]
     
 
-def get_top_tracks(start_date, end_date, limit=25):
+def get_top_tracks(start_date, end_date, limit=25, user=prefs.get("LASTFM_USER")):
     ts = lambda dt: int(dt.timestamp())
     resp = requests.get(
         "http://ws.audioscrobbler.com/2.0/?",
         params={
             "method": "user.getweeklytrackchart",
-            "user": prefs.get("LASTFM_USER"),
+            "user": user,
             "from": ts(start_date),
             "to": ts(end_date),
             "limit": limit,
@@ -69,7 +69,7 @@ def get_top_tracks(start_date, end_date, limit=25):
 
     return [{
         "artist": t["artist"]["#text"],
-        "title": t["name"],
+        "name": t["name"],
         "plays": t["playcount"]  
     } for t in resp["weeklytrackchart"]["track"]]
 
@@ -88,7 +88,7 @@ def build_playlist_image(dt: datetime):
 # annoying limitation: Spotify API doesn't really expose playlist folders through the API, so can't set
 def make_date_playlist(name, start_date, end_date, limit=25, description="", public=True):
     top_tracks = [
-        search(t["title"], t["artist"], spotify)
+        search(t["name"], t["artist"], spotify)
         for t in get_top_tracks(start_date, end_date, limit)
     ]
     
