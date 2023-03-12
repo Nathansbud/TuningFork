@@ -298,45 +298,39 @@ def remember_track(title, artist, track, mode, delete=False):
 
 
 def queue_track():
-    parser = argparse.ArgumentParser(description="Spotify track queuer")
+    parser = argparse.ArgumentParser(description=f"{color('Enqueue', Colors.MAGENTA)}: {color('Spotify Queue Manager', Colors.GREEN)}")
 
     parser.add_argument('title', nargs='?', default=None)
     parser.add_argument('artist', nargs='?', default=None)
+    parser.add_argument('-u', '--uri', default=None, help="Queue Spotify URI")
+    parser.add_argument('-c', '--song', action="store_true", help="Queue current song")
+    parser.add_argument('-a', '--album', action="store_true", help="Queue album by title rather than song")
+    parser.add_argument('-g', '--group', type=str, help="Queue group name")
+    parser.add_argument('-st', '--spaced_track', nargs='*', default=None, help="Treat positional arguments as song title")
 
-    parser.add_argument('-a', '--album', action="store_true")
+    parser.add_argument('-x', '--source', nargs="?", const="LIBRARY", help="Queue source (LIBRARY, BACKLOG)")
+    parser.add_argument('-#', '--offset', nargs="+", type=int, help="Queue offset within source")
+
+    parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int, help="Times to repeat request action")
+    parser.add_argument('-p', '--previous', nargs='?', const=1, type=int, help="Queue previous n tracks")
     
-    parser.add_argument('-i', '--ignore', action='store_true')      
-
-    parser.add_argument('-o', '--open', action="store_true")
-    parser.add_argument('-c', '--song', action="store_true")
-
-    parser.add_argument('-s', '--save', action='store_true')
-    parser.add_argument('-z', '--watch', action='store_true')
-
-    parser.add_argument('-@', '--user', nargs='?', default="", type=str), 
+    parser.add_argument('-@', '--user', nargs='?', default="", type=str, help="Queue random top track from provided last.fm username"), 
+    parser.add_argument('-z', '--watch', action='store_true', help="Queue most recent track from watched last.fm user (requires LASTFM_WATCH_USER)")
+    parser.add_argument('-o', '--open', action="store_true", help="Open the artist library page in Last.fm (requires LASTFM_USER)")
     
-    parser.add_argument('-x', '--source', nargs="?", const="LIBRARY")
-    parser.add_argument('-#', '--offset', nargs="+", type=int)
+    parser.add_argument('-r', '--remember', nargs='*', default=None, help="Create custom rule for queue behavior")
+    parser.add_argument('-f', '--forget', nargs='*', default=None, help="Delete custom rule for queue behavior")
+    parser.add_argument('-l', '--list_rules', action='store_true', help="List all created custom rules for queue behavior")
+    parser.add_argument('-n', '--amnesia', action='store_true', help="Queue ignoring custom rules")
 
-    parser.add_argument('-u', '--uri', default=None)
+    parser.add_argument('-s', '--save', action='store_true', help="Save queue to primary playlist (requires DEFAULT_PLAYLIST)")    
 
-    parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int)
-    parser.add_argument('-p', '--previous', nargs='?', const=1, type=int)
-    
-    parser.add_argument('-l', '--list_rules', action='store_true')
-    
-    parser.add_argument('-m', '--make_group', action='store_true')
-    parser.add_argument('-d', '--delete_group')
-    parser.add_argument('-g', '--group', type=str)
+    parser.add_argument('-m', '--make_group', action='store_true', help="Create custom named group of items to queue together")
+    parser.add_argument('-d', '--delete_group', help="Delete custom named group")
 
-    parser.add_argument('-r', '--remember', nargs='*', default=None)
-    parser.add_argument('-f', '--forget', nargs='*', default=None)
-    parser.add_argument('-n', '--amnesia', action='store_true')
+    parser.add_argument('-w', '--which', action='store_true', help="Print currently playing track")    
+    parser.add_argument('-i', '--ignore', action='store_true', help="Ignore the request to queue (e.g. if trying to save a rule)")      
 
-    parser.add_argument('-w', '--which', action='store_true')
-
-    parser.add_argument('-st', '--spaced_track', nargs='*', default=None)
-        
     args = parser.parse_args()
     if args.spaced_track: args.title = " ".join(args.spaced_track)
 
