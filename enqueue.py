@@ -13,7 +13,7 @@ try:
     from scraper import get_lyrics
     from utilities import (
         search, get_token, 
-        album_display, track_display,
+        album_format, track_format,
         dropdown,
         SongParser, SongException,
         color, Colors
@@ -251,7 +251,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
             ]) + f" to queue {times}x!")
         elif mode == 'albums':
             nt = color(f"{len(tracks)} tracks", Colors.WHITE)
-            print(f"Adding album {album_display(tracks[0])} ({nt}) to queue {times}x!")
+            print(f"Adding album {album_format(tracks[0])} ({nt}) to queue {times}x!")
             # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
             sleep(2)
 
@@ -345,12 +345,12 @@ def queue_track():
         if len(q['queue']) == 0: print("No track currently playing!")
         else:
             now = current()
-            print(f"{color('C', Colors.MAGENTA)}.\t{track_display(now)}")
+            print(f"{color('C', Colors.MAGENTA)}.\t{track_format(now)}")
             
             # if the current track in the queue is local, current won't equal queue's currently_playing; 
             # there is currently no good solution for local tracks in the queue, alas
             for i, t in enumerate(([] if not now['is_local'] else [q['currently_playing']]) + q['queue'], start=1):
-                print(f"{color(i, Colors.MAGENTA)}.\t{track_display(t)}")
+                print(f"{color(i, Colors.MAGENTA)}.\t{track_format(t)}")
         
         exit(0)
     elif args.next > 0:
@@ -362,7 +362,7 @@ def queue_track():
         # Spotify API takes a second to catch up, so we need to sleep before hitting current track endpoint, 
         # since next doesn't return track info
         sleep(1)
-        print(f"Now playing: {track_display(current())}!")
+        print(f"Now playing: {track_format(current())}!")
         exit(0)
     elif args.primary:
         if prefs.get('DEFAULT_PLAYLIST'):
@@ -402,7 +402,7 @@ def queue_track():
             
             chosen = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks?limit={ran}&offset={idx - ran + 1}").json()
             if ran > 1:
-                opts = {album_display(c.get("track"), use_color=False): c.get("track", {}).get('album', {}).get('uri') for c in reversed(chosen.get("items"))}
+                opts = {album_format(c.get("track"), use_color=False): c.get("track", {}).get('album', {}).get('uri') for c in reversed(chosen.get("items"))}
                 z, offset = dropdown(opts)
                 if not z: exit(0) 
                 # flip to account for non-reversed chosen
@@ -425,7 +425,7 @@ def queue_track():
 
             chosen = spotify.get(f"https://api.spotify.com/v1/me/albums?limit={ran}&offset={idx}").json()
             if ran > 1:
-                opts = {album_display(c, use_color=False): c.get('album', {}).get('uri') for c in reversed(chosen.get("items"))}
+                opts = {album_format(c, use_color=False): c.get('album', {}).get('uri') for c in reversed(chosen.get("items"))}
                 z, offset = dropdown(opts)
                 if not z: exit(0) 
                 # flip to account for non-reversed chosen
@@ -456,7 +456,7 @@ def queue_track():
             print("No track currently playing!")
         else:
             playing = cs.json().get('item', {})
-            print(f"{color('Now playing', Colors.WHITE)}: {track_display(playing)}")
+            print(f"{color('Now playing', Colors.WHITE)}: {track_format(playing)}")
     elif args.make_group: make_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:
@@ -578,7 +578,7 @@ def queue_track():
                 if len(track_uris) > 0:
                     resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('DEFAULT_PLAYLIST')}/tracks?uris={','.join(track_uris)}")
                     if 200 <= resp.status_code < 300:
-                        print(f"Added {', '.join(color(t.get('name'), Colors.CYAN) for t in tracks)} to playlist!")
+                        print(f"Added {', '.join(track_format(t) for t in tracks)} to {color('default playlist', Colors.MAGENTA)}!")
                     else:
                         print(f"Something went wrong while adding to playlist (status code {resp.status_code})")
                 else:

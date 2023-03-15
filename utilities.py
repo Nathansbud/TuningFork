@@ -150,7 +150,7 @@ def dropdown(options: dict):
     
     return None, None
 
-def album_display(alb: dict, use_color=True):
+def album_format(alb: dict, use_color=True):
     alb_o = alb.get('album', {})
     
     if not isinstance(alb_o, str):
@@ -165,9 +165,9 @@ def album_display(alb: dict, use_color=True):
     else:
         return f"{alb_name} by {alb_artist}"
 
-def track_display(track: dict, use_color=True): 
+def track_format(track: dict, use_color=True): 
     track_name = track.get('name')
-    track_artist = ', '.join([artist.get('name') for artist in track.get('artists', [])])
+    track_artist = ', '.join([artist.get('name') for artist in track.get('artists', [])]) if not track.get('artist') else track.get('artist')
 
     if use_color:
         return f"{color(track_name, Colors.GREEN)} by {color(track_artist, Colors.YELLOW)}"
