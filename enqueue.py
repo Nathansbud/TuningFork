@@ -314,6 +314,7 @@ def queue_track():
 
     parser.add_argument('-x', '--source', nargs="?", const="LIBRARY", help="Queue source (LIBRARY, BACKLOG)")
     parser.add_argument('-#', '--offset', nargs="+", type=int, help="Queue offset within source")
+    parser.add_argument('--primary', action='store_true', help="Restore playback to the primary playlist")
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int, help="Times to repeat request action")
     parser.add_argument('-p', '--previous', nargs='?', const=1, type=int, help="Queue previous n tracks")
@@ -363,7 +364,20 @@ def queue_track():
         sleep(1)
         print(f"Now playing: {track_display(current())}!")
         exit(0)
-    
+    elif args.primary:
+        if prefs.get('DEFAULT_PLAYLIST'):
+            playlist_uri = prefs.get('DEFAULT_PLAYLIST')
+            req_p = spotify.put(f"https://api.spotify.com/v1/me/player/play", data=json.dumps({
+                "context_uri": f"spotify:playlist:{playlist_uri}",
+            }))
+
+            if not 200 <= req_p.status_code < 300:
+                print(f"Failed to transfer playlist to provided {color('DEFAULT_PLAYLIST', Colors.MAGENTA)}, double check your preference or try again later!")
+        else:
+            print(f"Cannot restore playback to primary playlist; try adding a {color('DEFAULT_PLAYLIST', Colors.MAGENTA)} preference!")
+        
+        exit(0)
+
     if args.source:
         source = args.source.upper()
         if source not in ["LIBRARY", "BACKLOG"]: 
