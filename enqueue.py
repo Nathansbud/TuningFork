@@ -13,7 +13,7 @@ try:
     from scraper import get_lyrics
     from utilities import (
         search, get_token, 
-        album_display,
+        album_display, track_display,
         dropdown,
         SongParser, SongException,
         color, Colors
@@ -308,6 +308,10 @@ def queue_track():
     parser.add_argument('-g', '--group', type=str, help="Queue group name")
     parser.add_argument('-st', '--spaced_track', nargs='*', default=None, help="Treat positional arguments as song title")
 
+    parser.add_argument('-q', '--queue', action='store_true', help="Print current play queue")
+    parser.add_argument('-w', '--which', action='store_true', help="Print currently playing track")
+    parser.add_argument('-n', '--next', nargs='?', default=0, const=0, type=int, help="Skip the next n tracks")    
+
     parser.add_argument('-x', '--source', nargs="?", const="LIBRARY", help="Queue source (LIBRARY, BACKLOG)")
     parser.add_argument('-#', '--offset', nargs="+", type=int, help="Queue offset within source")
 
@@ -321,20 +325,42 @@ def queue_track():
     parser.add_argument('-r', '--remember', nargs='*', default=None, help="Create custom rule for queue behavior")
     parser.add_argument('-f', '--forget', nargs='*', default=None, help="Delete custom rule for queue behavior")
     parser.add_argument('-l', '--list_rules', action='store_true', help="List all created custom rules for queue behavior")
-    parser.add_argument('-n', '--amnesia', action='store_true', help="Queue ignoring custom rules")
+    parser.add_argument('--amnesia', action='store_true', help="Queue ignoring custom rules")
 
     parser.add_argument('-s', '--save', action='store_true', help="Save queue to primary playlist (requires DEFAULT_PLAYLIST)")    
 
-    parser.add_argument('-m', '--make_group', action='store_true', help="Create custom named group of items to queue together")
-    parser.add_argument('-d', '--delete_group', help="Delete custom named group")
-
-    parser.add_argument('-w', '--which', action='store_true', help="Print currently playing track")    
+    parser.add_argument('--make_group', action='store_true', help="Create custom named group of items to queue together")
+    parser.add_argument('--delete_group', help="Delete custom named group")
+    
     parser.add_argument('-i', '--ignore', action='store_true', help="Ignore the request to queue (e.g. if trying to save a rule)")      
 
     args = parser.parse_args()
     if args.spaced_track: args.title = " ".join(args.spaced_track)
 
     mode = "tracks" if (not args.album and not args.source) else "albums"
+    if args.queue:
+        # Finally, a queue endpoint exists...it doesn't differentiate between Queue vs Up Next, but we will mf take it
+        q = spotify.get("https://api.spotify.com/v1/me/player/queue").json()
+        if len(q['queue']) == 0: print("No track currently playing!")
+        else:
+            now = current()
+            print(f"{color('C', Colors.MAGENTA)}.\t{track_display(now)}")
+            for i, t in enumerate(q['queue'], start=1):
+                print(f"{color(i, Colors.MAGENTA)}.\t{track_display(t)}")
+        
+        exit(0)
+    elif args.next > 0:
+        print(f"Attempting to skip next {color(args.next, Colors.WHITE)} {color('tracks', Colors.WHITE)}...")
+        # This is probably not the optimal way to do this...but if we get rate limited, so be it
+        for _ in range(args.next): 
+            _ = spotify.post("https://api.spotify.com/v1/me/player/next")
+
+        # Spotify API takes a second to catch up, so we need to sleep before hitting current track endpoint, 
+        # since next doesn't return track info
+        sleep(1)
+        print(f"Now playing: {track_display(current())}!")
+        exit(0)
+    
     if args.source:
         source = args.source.upper()
         if source not in ["LIBRARY", "BACKLOG"]: 
@@ -391,7 +417,7 @@ def queue_track():
             args.uri = chosen.get("items")[offset].get("album").get("uri")
         else:
             print("Could not locate an album backlog playlist; try adding an ALBUM_PLAYLIST key to preferences.json?")
-            exit(1)
+            exit(1)        
 
     if args.forget: 
         print(
