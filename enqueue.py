@@ -345,7 +345,10 @@ def queue_track():
         else:
             now = current()
             print(f"{color('C', Colors.MAGENTA)}.\t{track_display(now)}")
-            for i, t in enumerate(q['queue'], start=1):
+            
+            # if the current track in the queue is local, current won't equal queue's currently_playing; 
+            # there is currently no good solution for local tracks in the queue, alas
+            for i, t in enumerate(([] if not now['is_local'] else [q['currently_playing']]) + q['queue'], start=1):
                 print(f"{color(i, Colors.MAGENTA)}.\t{track_display(t)}")
         
         exit(0)
@@ -439,7 +442,7 @@ def queue_track():
             print("No track currently playing!")
         else:
             playing = cs.json().get('item', {})
-            print(f"{color(playing.get('name'), Colors.GREEN)} by {color(', '.join([artist.get('name') for artist in playing.get('artists', [])]), Colors.YELLOW)}")
+            print(f"{color('Now playing', Colors.WHITE)}: {track_display(playing)}")
     elif args.make_group: make_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:
