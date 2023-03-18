@@ -1,33 +1,19 @@
 # TuningFork
 
-A collection of projects related to music files: lyric scraping, play logging, Last.fm snapshots, Spotify playlist migration, queue management, you name it! Everything is for personal use, so a tad rough around the edges...and everywhere else, to be honest.
+![](./media/demo.mov)
+
+A collection of projects related to music: queue management, playlist migration, listening snapshots, and more. Everything was designed for personal use, so is a tad rough around the edges :)
 
 # Core
 
-The main parts of this repo that are actively used (and often updated with new features!) are those dealing with Spotify queue management and Last.fm integration. That is to say...
+The main projects in this repo are those that interface with Spotify and Last.fm, which I actively use (and thus often update with new features. These include:
 
 - **Enqueue**: Add tracks (or groups of tracks) to Spotify queue
 - **Lastly**: Create playlists from Last.fm data
 
-# Rest of the Owl
-
-Much of this repo's utility is tied to the Spotify API; legacy iTunes scripts should still work, but many were fragile at the time, especially those relying on scraping Genius (which has since been updated numerous times), so no guarantees that tools like `Lyrical` still work:
-
-- **Cleanser**: CLI tool to remove unwanted ID3 tags from MP3 files
-- **Logger**: Script to read differences in iTunes Library.xml, and log change
-- **Lyrical**: Lyric grabber using Genius for random/specified songs 
-- **LyricBot**: Script used to post random lyrics to Twitter for various artist bots, using Genius/Google Doc/Sheets as source
-- **Migrator**: Spotify playlist creator from iTunes or tracks by name/artist
-- **Parser**: Script to run through iTunes Library.xml file to load in song data, or query iTunes Library via Swift executable
-- **Plotter**: Fun scripts to plot Logger data via matplotlib
-- **Profane**: CLI tool to check if track lyrics contain profanity and build profanity-free playlist
-- **Scraper**: Lyric scraper from Genius to update lyric tag of all songs specified as having scrapable vocals (Vocal in comments)
-- **Turntable**: Custom track start/stop point and auto-queue manager for Spotify
-    - **Jockey**: CLI tool to create Turntable rules (stored in `resources/rules.json`)
-
 # Setup
 
-Everything in this repository was built to serve my personal needs. I used to utilize iTunes, then migrated over to Spotify. iTunes scripts should still work, but haven't been tested in years. Spotify and Last.fm scripts (namely: `enqueue.py`, `lastly.py`) require various API keys to be added to `credentials/`. Otherwise, setup is as it would be for any Python project (install dependencies from `requirements.txt`).
+Everything in this repository was built to serve my personal needs, which primarily center around Spotify and Last.fm. Both platforms require various API keys to be added to `credentials/`, detailed below.  Otherwise, setup is as it would be for any Python project (install dependencies from `requirements.txt`).
 
 ## Spotify API
 
@@ -44,3 +30,31 @@ Last.fm is [fairly straightforward](https://www.last.fm/api/account/create); add
 ## Preferences
 
 If interfacing with Last.fm, a `LASTFM_USER` must be set in your preferences file. Further, for my Spotify usage, I maintain a primary playlist, [Muzack](https://open.spotify.com/playlist/2bQJC2lUa4pXkAt2qQejlx?si=d8f644fb726249ba), and a backlog playlist for albums I plan to listen to, [Zacklog](https://open.spotify.com/playlist/79mpaUsn0LPGUyCkBRnSgZ?si=7d8c16c7b73045d4). These are used by `enqueue` in the form of the `--save` flag (to save the current track to primary playlist), and the `--source` flag (which takes `LIBRARY` or `BACKLOG` as arguments). To use these features, add their playlist IDs (extractable from a URI of the form `spotify:playlist:id`) to the preferences file.
+
+# Rest of the Owl
+
+Many projects have fallen by the wayside in the time that this repo has housed musical miscellany. I've long since migrated away from iTunes, meaning projects dealing with local files haven't been tested in a several years. 
+
+Tools reliant upon `iTunes Library.xml` won't be able to work with `Music.app` (which deprecated the XML interface), nor likely work with the `reader/TuneSwiftly` provided to query tracks in a users iTunes library via the Swift API. Further, scripts with web scraping components (e.g. `Lyrical`, which interfaces with Genius) were fragile to begin with, and have almost certainly been broken by site redesigns.
+
+Unmaintained projects housed under the TuningFork umbrella include:
+
+**iTunes**:
+- **Logger**: Local iTunes listening tracker by monitoring changes to `iTunes Library.xml`
+    - **Plotter**: Fun scripts to graph `Logger` data
+- **Parser**: Load local music library from `iTunes Library.xml` or `Music.app` using a Swift exectuable
+
+**Spotify**:
+
+- **Migrator**: Spotify playlist creator from iTunes or tracks by name/artist
+- **Profane**: Tool to check if track lyrics contain profanity and build classroom-friendly playlists
+- **Turntable**: Custom track start/stop point and queue rules for Spotify
+    - **Jockey**: CLI tool to create Turntable rules (stored in `resources/rules.json`)
+
+**Other**: 
+
+- **Cleanser**: CLI tool to remove unwanted ID3 tags from MP3 files
+- **Scraper**: Tool to add lyrics to local files using Genius data
+    - **Lyrical**: Lyric grabber using Genius for random/specified songs 
+    - **LyricBot**: Create Twitter bots which post lyrics (using Genius, GDocs, or GSheets as a source)
+
