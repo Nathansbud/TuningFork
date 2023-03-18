@@ -37,8 +37,6 @@ def color(text, color):
             for l, c in zip(text, itertools.cycle(list(Colors)[1:-1]))
         ])
 
-
-
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"        
 default_spotify_scopes = [
@@ -98,11 +96,26 @@ def get_token(scope=default_spotify_scopes):
                                 auto_refresh_kwargs={'client_id': spotify_creds['client_id'], 'client_secret': spotify_creds['client_secret']},
                                 token_updater=save_token)
 
-
 def call_applescript(script):
     p = Popen(['osascript'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
     stdout, stderr = p.communicate(script)
     return {"output": stdout, "error": stderr,"code": p.returncode}
+
+def get_share_link(track, apple=False):
+    # this depends on the shortcut used here https://www.icloud.com/shortcuts/54fcecba0c614f97ab2d664b6ea21450,
+    # which uses the iTunes Search API to get back an Apple Music track; not guaranteed to continue working on 
+    # future macOS versions (and will not work for Windows)
+    
+    # copy the passed in track URI to a URL
+    process = Popen(['pbcopy'], env={'LANG': 'en_US.UTF-8'}, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    procout, procerr = process.communicate(bytes(track.encode('UTF-8')))
+
+    if apple:
+        p = Popen(['shortcuts', 'run', 'spotify-to-apple-music-link'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        stdout, stderr = p.communicate()
+        return {"output": stdout, "error": stderr,"code": p.returncode}
+
+    return {"output": procout, "error": procerr,"code": process.returncode}
 
 def get_vocal_paths():
     get_tracks = """
@@ -151,7 +164,7 @@ def dropdown(options: dict):
     return None, None
 
 def album_format(alb: dict, use_color=True):
-    alb_o = alb.get('album', {})
+    alb_o = alb.get('album', alb)
     
     if not isinstance(alb_o, str):
         alb_name = alb_o.get('name')

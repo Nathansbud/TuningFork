@@ -14,6 +14,7 @@ try:
     from utilities import (
         search, get_token, 
         album_format, track_format,
+        get_share_link,
         dropdown,
         SongParser, SongException,
         color, Colors
@@ -329,6 +330,7 @@ def queue_track():
     parser.add_argument('--amnesia', action='store_true', help="Queue ignoring custom rules")
 
     parser.add_argument('-s', '--save', action='store_true', help="Save queue to primary playlist (requires DEFAULT_PLAYLIST)")    
+    parser.add_argument('--share', nargs="?", const="SPOTIFY", help="Copy queued link to share (SPOTIFY, APPLE)")
 
     parser.add_argument('--make_group', action='store_true', help="Create custom named group of items to queue together")
     parser.add_argument('--delete_group', help="Delete custom named group")
@@ -539,6 +541,17 @@ def queue_track():
             mode=mode
         )
 
+        if args.share and tracks:
+            if mode == "albums":
+                item = spotify.get(f"https://api.spotify.com/v1/albums/{tracks[0]['album_uri'].split(':')[-1]}").json()
+            else:
+                item = spotify.get(f"https://api.spotify.com/v1/tracks/{tracks[0]['uri'].split(':')[-1]}").json()
+            
+            res = get_share_link(item['external_urls']['spotify'], args.share != 'SPOTIFY')
+            if res['code'] == 0:
+                print(f"{color('Copying', Colors.WHITE)} {color('Apple Music' if args.share != 'SPOTIFY' else 'Spotify', Colors.MAGENTA)} share link for {album_format(item) if mode == 'albums' else track_format(item)} to clipboard!")
+            else:
+                print(f"Failed to copy to clipboard; if Apple Music, make sure the required shortcut (https://www.icloud.com/shortcuts/54fcecba0c614f97ab2d664b6ea21450) is installed and named {color('spotify-to-apple-music-link', Colors.WHITE)}!")
         if args.remember and tracks: 
             if len(args.remember) == 0:
                 print("Cannot create a shortcut without any arguments!")
