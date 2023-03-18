@@ -6,7 +6,7 @@ https://user-images.githubusercontent.com/20943979/226144553-e9b09682-9999-43da-
 
 # Core
 
-The main projects in this repo are those that interface with Spotify and Last.fm, which I actively use (and thus often update with new features. These include:
+The actively maintained projects in this repo are those that interface with Spotify and Last.fm, which I often update with new features:
 
 - **Enqueue**: Add tracks (or groups of tracks) to Spotify queue
 - **Lastly**: Create playlists from Last.fm data
