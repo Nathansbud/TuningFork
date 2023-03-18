@@ -1,8 +1,8 @@
 # TuningFork
 
-![](./media/demo.mov)
+A collection of projects related to music: queue management, playlist migration, listening snapshots, and more. Everything designed for personal use, so a tad rough around the edges :)
 
-A collection of projects related to music: queue management, playlist migration, listening snapshots, and more. Everything was designed for personal use, so is a tad rough around the edges :)
+https://user-images.githubusercontent.com/20943979/226144553-e9b09682-9999-43da-bdb3-3c9ffa58d2f9.mp4
 
 # Core
 
