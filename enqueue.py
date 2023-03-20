@@ -548,12 +548,12 @@ def queue_track():
                 item = spotify.get(f"https://api.spotify.com/v1/tracks/{tracks[0]['uri'].split(':')[-1]}").json()
             
             res = get_share_link(item['external_urls']['spotify'], args.share != 'SPOTIFY')
-            if res['code'] == 0 and len(res['output']) > 0:
+            if res['code'] == 0 and (len(res['output']) > 0 or args.share != "APPLE"):
                 print(f"{color('Copying', Colors.WHITE)} {color('Apple Music' if args.share != 'SPOTIFY' else 'Spotify', Colors.MAGENTA)} share link for {album_format(item) if mode == 'albums' else track_format(item)} to clipboard!")
             else:
                 if args.share == "APPLE":
                     print(f"{color('Failed to copy to clipboard', Colors.RED)}! This track may be named differently between platforms, or the required shortcut ({color('https://tinyurl.com/yxwxw4ua', Colors.WHITE)}) is not installed and named {color('spotify-to-apple-music-link', Colors.WHITE)}")
-                else:
+                elif res['code'] != 0:
                     print(f"{color('Failed to copy to clipboard', Colors.RED)}!")
         if args.remember and tracks: 
             if len(args.remember) == 0:
