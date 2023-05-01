@@ -61,17 +61,29 @@ def get_top_tracks(start_date, end_date, limit=25, user=prefs.get("LASTFM_USER")
             "user": user,
             "from": ts(start_date),
             "to": ts(end_date),
-            "limit": limit,
+            # "limit": limit,
             "api_key": lastfm_creds["api_key"],
             "format": "json"
         }
     ).json()
-
-    return [{
+    
+    unlimited = [{
         "artist": t["artist"]["#text"],
         "name": t["name"],
         "plays": t["playcount"]  
     } for t in resp["weeklytrackchart"]["track"]]
+    
+    last = limit
+    if len(unlimited) > limit: 
+        last_plays = unlimited[limit - 1]["plays"]
+        for l in unlimited[limit:]:
+            if l["plays"] == last_plays:
+                last += 1
+            else:
+                break
+    
+    return unlimited[:last]
+
 
 def build_playlist_image(dt: datetime):
     with \
@@ -91,7 +103,7 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
         search(t["name"], t["artist"], spotify)
         for t in get_top_tracks(start_date, end_date, limit)
     ]
-    
+        
     playlist_image = build_playlist_image(start_date)
 
     print(f"Building playlist {name}...")
