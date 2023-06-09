@@ -7,3 +7,4 @@ logs/*
 venv/
 certificates/
 data/failed.txt
+resources/preferences.json
