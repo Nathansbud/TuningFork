@@ -37,6 +37,14 @@ def color(text, color):
             for l, c in zip(text, itertools.cycle(list(Colors)[1:-1]))
         ])
 
+def red(text): return color(text, Colors.RED)
+def green(text): return color(text, Colors.GREEN)
+def yellow(text): return color(text, Colors.YELLOW)
+def blue(text): return color(text, Colors.BLUE)
+def magenta(text): return color(text, Colors.MAGENTA)
+def cyan(text): return color(text, Colors.CYAN)
+def white(text): return color(text, Colors.WHITE)
+
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"        
 default_spotify_scopes = [

@@ -311,7 +311,10 @@ def queue_track():
 
     parser.add_argument('-q', '--queue', action='store_true', help="Print current play queue")
     parser.add_argument('-w', '--which', action='store_true', help="Print currently playing track")
-    parser.add_argument('-n', '--next', nargs='?', default=0, const=0, type=int, help="Skip the next n tracks")    
+    parser.add_argument('-n', '--next', nargs='?', const=1, type=int, help="Skip the next n tracks")
+    
+    parser.add_argument('--pause', action='store_true', help='Pause playback')
+    parser.add_argument('--playpause', action='store_true', help="Resume or pause playback")
 
     parser.add_argument('-x', '--source', nargs="?", const="LIBRARY", help="Queue source (LIBRARY, BACKLOG)")
     parser.add_argument('-#', '--offset', nargs="+", type=int, help="Queue offset within source")
@@ -336,9 +339,24 @@ def queue_track():
     parser.add_argument('--delete_group', help="Delete custom named group")
     
     parser.add_argument('-i', '--ignore', action='store_true', help="Ignore the request to queue (e.g. if trying to save a rule)")      
-
+    
     args = parser.parse_args()
     if args.spaced_track: args.title = " ".join(args.spaced_track)
+    
+    if args.pause or args.playpause:
+        player = spotify.get("https://api.spotify.com/v1/me/player")
+        if not 200 <= player.status_code < 300 or player.status_code == 204:
+            print(white("Could not communicate with an active device; try manually playing/pausing instead!"))
+            exit(0)
+        else:
+            if player.json().get("is_playing"):
+                spotify.put("https://api.spotify.com/v1/me/player/pause")
+                print(f'{color("Pausing", Colors.YELLOW)} {color("playback...", Colors.WHITE)}')
+            elif not args.pause:
+                spotify.put("https://api.spotify.com/v1/me/player/play")
+                print(f'{color("Resuming", Colors.GREEN)} {color("playback...", Colors.WHITE)}')
+                
+        exit(0)    
 
     mode = "tracks" if (not args.album and not args.source) else "albums"
     if args.queue:
@@ -355,7 +373,7 @@ def queue_track():
                 print(f"{color(i, Colors.MAGENTA)}.\t{track_format(t)}")
         
         exit(0)
-    elif args.next > 0:
+    elif args.next and args.next > 1:
         print(f"Attempting to skip next {color(args.next, Colors.WHITE)} {color('tracks', Colors.WHITE)}...")
         # This is probably not the optimal way to do this...but if we get rate limited, so be it
         for _ in range(args.next): 
