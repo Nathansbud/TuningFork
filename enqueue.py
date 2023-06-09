@@ -373,7 +373,7 @@ def queue_track():
                 print(f"{color(i, Colors.MAGENTA)}.\t{track_format(t)}")
         
         exit(0)
-    elif args.next and args.next > 1:
+    elif args.next and args.next > 0:
         print(f"Attempting to skip next {color(args.next, Colors.WHITE)} {color('tracks', Colors.WHITE)}...")
         # This is probably not the optimal way to do this...but if we get rate limited, so be it
         for _ in range(args.next): 
