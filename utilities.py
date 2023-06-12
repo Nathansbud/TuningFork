@@ -29,12 +29,12 @@ class Colors(Enum):
     RAINBOW = ""
 
 
-def color(text, color=None, background=None):
-    if color != Colors.RAINBOW:
-        return f"\033[{('3' + color.value + ';') if color else ''}{('4' + background.value + ';') if background else ''}1m{text}{DEFAULT}"
+def color(text, foreground=None, background=None):
+    if foreground != Colors.RAINBOW and background != Colors.RAINBOW:
+        return f"\033[{('3' + foreground.value + ';') if foreground else ''}{('4' + background.value + ';') if background else ''}1m{text}{DEFAULT}"
     else:
         return "".join([
-            f"{c.value}{l}{Colors.DEFAULT.value}" 
+            f"{color(l, c if foreground else None, c if background else None)}" 
             for l, c in zip(text, itertools.cycle(list(Colors)[1:-1]))
         ])
 
@@ -42,7 +42,6 @@ def col(text, c, background):
     if not background: return color(text, c)
     else: return color(text, None, c)
 
-def bold(text): return color(text)
 def black(text, bg=False): return col(text, Colors.BLACK, bg)
 def red(text, bg=False): return col(text, Colors.RED, bg)
 def green(text, bg=False): return col(text, Colors.GREEN, bg)
@@ -51,7 +50,8 @@ def blue(text, bg=False): return col(text, Colors.BLUE, bg)
 def magenta(text, bg=False): return col(text, Colors.MAGENTA, bg)
 def cyan(text, bg=False): return col(text, Colors.CYAN, bg)
 def white(text, bg=False): return col(text, Colors.WHITE, bg)
-
+def rainbow(text, bg=False): return col(text, Colors.RAINBOW, bg)
+def bold(text): return color(text)
 
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"        

@@ -17,7 +17,7 @@ try:
         get_share_link,
         dropdown,
         SongParser, SongException,
-        color, Colors, bold, black, red, green, yellow, blue, magenta, cyan, white
+        color, Colors, black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow
     )
 except KeyboardInterrupt:
     # this is terrible form and i have never seen any code do it but
@@ -262,7 +262,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
                 f"{color(t.get('name'), Colors.GREEN)} by {color(t.get('artist'), Colors.YELLOW)}" for t in tracks
             ]) + f" to queue {times}x!")
         elif mode == 'albums':
-            nt = color(f"{len(tracks)} tracks", Colors.WHITE)
+            nt = bold(f"{len(tracks)} tracks")
             print(f"Adding album {album_format(tracks[0])} ({nt}) to queue {times}x!")
             # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
             sleep(2)
@@ -368,10 +368,10 @@ def queue_track():
         else:
             if player.json().get("is_playing"):
                 spotify.put("https://api.spotify.com/v1/me/player/pause")
-                print(f'{color("Pausing", Colors.YELLOW)} {color("playback...", Colors.WHITE)}')
+                print(f'{color("Pausing", Colors.YELLOW)} {bold("playback...")}')
             elif not args.pause:
                 spotify.put("https://api.spotify.com/v1/me/player/play")
-                print(f'{color("Resuming", Colors.GREEN)} {color("playback...", Colors.WHITE)}')
+                print(f'{color("Resuming", Colors.GREEN)} {bold("playback...")}')
                 
         exit(0)    
 
@@ -391,7 +391,7 @@ def queue_track():
         
         exit(0)
     elif args.next and args.next > 0:
-        print(f"Attempting to skip {color(args.next, Colors.WHITE)} {color('tracks', Colors.WHITE)}...")
+        print(f"Attempting to skip {bold(f'{args.next} track(s)')}...")
         # This is probably not the optimal way to do this...but if we get rate limited, so be it
         for _ in range(args.next): 
             _ = spotify.post("https://api.spotify.com/v1/me/player/next")
@@ -433,9 +433,9 @@ def queue_track():
             if not count > idx > -1:
                 idx = random.randint(0, count - 1)
                 if ran == 1:
-                    print(f"Choosing a {color('random', Colors.RAINBOW)} backlog album from the {count} available...how about #{color(idx, Colors.WHITE)}?")
+                    print(f"Choosing a {color('random', Colors.RAINBOW)} backlog album from the {count} available...how about #{bold(idx)}?")
                 else:
-                    print(f"Choosing {color(ran, Colors.WHITE)} backlog albums from a {color('random', Colors.RAINBOW)} offset of the {count} available...#{color(idx, Colors.WHITE)}?")
+                    print(f"Choosing {bold(ran)} backlog albums from a {color('random', Colors.RAINBOW)} offset of the {count} available...#{bold(idx)}?")
             
             else:
                 idx = count - idx
@@ -459,9 +459,9 @@ def queue_track():
             if not count > idx > -1:
                 idx = random.randint(0, count - 1)
                 if ran == 1:
-                    print(f"Choosing a {color('random', Colors.RAINBOW)} library album from the {count} available...how about #{color(idx, Colors.WHITE)}?")
+                    print(f"Choosing a {rainbow('random')} library album from the {count} available...how about #{bold(idx)}?")
                 else:
-                    print(f"Choosing {color(ran, Colors.WHITE)} library albums from a {color('random', Colors.RAINBOW)} offset of the {count} available...#{color(idx, Colors.WHITE)}?")
+                    print(f"Choosing {white(ran)} library albums from a {rainbow('random')} offset of the {count} available...#{bold(idx)}?")
 
             chosen = spotify.get(f"https://api.spotify.com/v1/me/albums?limit={ran}&offset={idx}").json()
             if ran > 1:
@@ -496,7 +496,7 @@ def queue_track():
             print("No track currently playing!")
         else:
             playing = cs.json().get('item', {})
-            print(f"{color('Now playing', Colors.WHITE)}: {track_format(playing)}")
+            print(f"{bold('Now playing')}: {track_format(playing)}")
     elif args.make_group: make_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:
@@ -520,7 +520,7 @@ def queue_track():
             try:
                 groups = json.load(gf)
                 if groups:
-                    print(f"[{color('Saved Groups', Colors.WHITE)}]\n")
+                    print(f"[{bold('Saved Groups')}]\n")
                     for name, data in groups.items():
                         tracks = "\n".join([
                             f"\t{i}. {color(d.get('name'), Colors.GREEN)} by {color(d.get('artist'), Colors.YELLOW)} [{color(d.get('uri'), Colors.MAGENTA)}]" 
@@ -551,7 +551,6 @@ def queue_track():
 
                 except json.JSONDecodeError:
                     pass
-
     else:
         with open(short_file, 'r') as cf:
             try:
@@ -587,10 +586,10 @@ def queue_track():
             
             res = get_share_link(item['external_urls']['spotify'], args.share != 'SPOTIFY')
             if res['code'] == 0 and (len(res['output']) > 0 or args.share != "APPLE"):
-                print(f"{color('Copying', Colors.WHITE)} {color('Apple Music' if args.share != 'SPOTIFY' else 'Spotify', Colors.MAGENTA)} share link for {album_format(item) if mode == 'albums' else track_format(item)} to clipboard!")
+                print(f"{bold('Copying')} {magenta('Apple Music' if args.share != 'SPOTIFY' else 'Spotify')} share link for {album_format(item) if mode == 'albums' else track_format(item)} to clipboard!")
             else:
                 if args.share == "APPLE":
-                    print(f"{color('Failed to copy to clipboard', Colors.RED)}! This track may be named differently between platforms, or the required shortcut ({color('https://tinyurl.com/yxwxw4ua', Colors.WHITE)}) is not installed and named {color('spotify-to-apple-music-link', Colors.WHITE)}")
+                    print(f"{red('Failed to copy to clipboard')}! This track may be named differently between platforms, or the required shortcut ({bold('https://tinyurl.com/yxwxw4ua')}) is not installed and named {bold('spotify-to-apple-music-link')}")
                 elif res['code'] != 0:
                     print(f"{color('Failed to copy to clipboard', Colors.RED)}!")
         if args.remember and tracks: 
