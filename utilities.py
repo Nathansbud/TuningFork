@@ -14,38 +14,44 @@ from enum import Enum
 from requests_oauthlib import OAuth2Session
 from simple_term_menu import TerminalMenu
 
+DEFAULT = "\033[0m"
 class Colors(Enum):
-    DEFAULT = "\033[0m"
-    BLACK = "\033[30;1m"
-    RED = "\033[31;1m"
-    GREEN = "\033[32;1m"
-    YELLOW = "\33[33;1m"
-    BLUE = '\033[34;1m'
-    MAGENTA = "\033[35;1m"
-    CYAN = "\033[36;1m"
-    WHITE = "\033[37;1m"
-
+    BLACK = "0"
+    RED = "1"
+    GREEN = "2"
+    YELLOW = "3"
+    BLUE = "4"
+    MAGENTA = "5"
+    CYAN = "6"
+    WHITE = "7"
+    
     # Does nothing on its own, but if passed to color used as a flag
     RAINBOW = ""
 
 
-def color(text, color):
+def color(text, color=None, background=None):
     if color != Colors.RAINBOW:
-        return f"{color.value}{text}{Colors.DEFAULT.value}"
+        return f"\033[{('3' + color.value + ';') if color else ''}{('4' + background.value + ';') if background else ''}1m{text}{DEFAULT}"
     else:
         return "".join([
             f"{c.value}{l}{Colors.DEFAULT.value}" 
             for l, c in zip(text, itertools.cycle(list(Colors)[1:-1]))
         ])
 
-def black(text): return color(text, Colors.RED)
-def red(text): return color(text, Colors.RED)
-def green(text): return color(text, Colors.GREEN)
-def yellow(text): return color(text, Colors.YELLOW)
-def blue(text): return color(text, Colors.BLUE)
-def magenta(text): return color(text, Colors.MAGENTA)
-def cyan(text): return color(text, Colors.CYAN)
-def white(text): return color(text, Colors.WHITE)
+def col(text, c, background):
+    if not background: return color(text, c)
+    else: return color(text, None, c)
+
+def bold(text): return color(text)
+def black(text, bg=False): return col(text, Colors.BLACK, bg)
+def red(text, bg=False): return col(text, Colors.RED, bg)
+def green(text, bg=False): return col(text, Colors.GREEN, bg)
+def yellow(text, bg=False): return col(text, Colors.YELLOW, bg)
+def blue(text, bg=False): return col(text, Colors.BLUE, bg)
+def magenta(text, bg=False): return col(text, Colors.MAGENTA, bg)
+def cyan(text, bg=False): return col(text, Colors.CYAN, bg)
+def white(text, bg=False): return col(text, Colors.WHITE, bg)
+
 
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"        

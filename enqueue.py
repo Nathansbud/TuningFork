@@ -17,7 +17,7 @@ try:
         get_share_link,
         dropdown,
         SongParser, SongException,
-        color, Colors, black, red, green, yellow, blue, magenta, cyan, white
+        color, Colors, bold, black, red, green, yellow, blue, magenta, cyan, white
     )
 except KeyboardInterrupt:
     # this is terrible form and i have never seen any code do it but
