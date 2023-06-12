@@ -572,7 +572,7 @@ def queue_track():
             group=args.group,
             user=args.user,
             uri=uri,
-            ignore=args.ignore or args.open,
+            ignore=args.ignore or args.open or args.save,
             mode=mode
         )
 
