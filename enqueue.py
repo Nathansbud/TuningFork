@@ -36,14 +36,25 @@ def load_prefs():
         with open(group_file, 'w+') as gf: json.dump({}, gf)
 
     if not os.path.isfile(prefs_file):              
-        with open(prefs_file, 'w+') as gf: json.dump({"DEFAULT_PLAYLIST": None}, gf)
-    
+        with open(prefs_file, 'w+') as gf: json.dump({
+                "PLAYLISTS": {
+                    "DEFAULT": "",
+                    "PRIMARY": "",
+                    "BACKLOG": "",
+                    "SHARED": ""
+                },
+                "LASTFM_USER": "",
+                "LASTFM_WATCH_USER": "Nathansbud"
+            })
+
     with open(group_file, 'r') as gf, open(prefs_file, 'r') as pf: 
         return json.load(gf), json.load(pf)
 
 
 spotify = get_token()
 groups, prefs = load_prefs()
+
+def playlist_uri(name): return prefs.get("PLAYLISTS", {}).get(name.upper())
 
 def get_track(uri, formatted=True):
     if not uri: return [{}]
@@ -332,7 +343,7 @@ def queue_track():
     parser.add_argument('-l', '--list_rules', action='store_true', help="List all created custom rules for queue behavior")
     parser.add_argument('--amnesia', action='store_true', help="Queue ignoring custom rules")
 
-    parser.add_argument('-s', '--save', action='store_true', help="Save queue to primary playlist (requires DEFAULT_PLAYLIST)")    
+    parser.add_argument('-s', '--save', nargs="*", help="Save track to playlist specified in preferences")
     parser.add_argument('--share', nargs="?", const="SPOTIFY", help="Copy queued link to share (SPOTIFY, APPLE)")
 
     parser.add_argument('--make_group', action='store_true', help="Create custom named group of items to queue together")
@@ -341,8 +352,13 @@ def queue_track():
     parser.add_argument('-i', '--ignore', action='store_true', help="Ignore the request to queue (e.g. if trying to save a rule)")      
     
     args = parser.parse_args()
+    
     if args.spaced_track: args.title = " ".join(args.spaced_track)
     
+    # if --save, args.save == [], else it will be None
+    if not args.save: args.save = ["DEFAULT"] if isinstance(args.save, list) else []
+    save_to = {p.upper(): playlist_uri(p) for p in args.save}    
+
     if args.pause or args.playpause:
         player = spotify.get("https://api.spotify.com/v1/me/player")
         if not 200 <= player.status_code < 300 or player.status_code == 204:
@@ -385,16 +401,16 @@ def queue_track():
         print(f"Now playing: {track_format(current())}!")
         exit(0)
     elif args.primary:
-        if prefs.get('DEFAULT_PLAYLIST'):
-            playlist_uri = prefs.get('DEFAULT_PLAYLIST')
+        puri = playlist_uri("PRIMARY")
+        if puri:
             req_p = spotify.put(f"https://api.spotify.com/v1/me/player/play", data=json.dumps({
-                "context_uri": f"spotify:playlist:{playlist_uri}",
+                "context_uri": f"spotify:playlist:{puri}",
             }))
 
             if not 200 <= req_p.status_code < 300:
-                print(f"Failed to transfer playlist to provided {color('DEFAULT_PLAYLIST', Colors.MAGENTA)}, double check your preference or try again later!")
+                print(f"Failed to transfer playlist to {color('primary playlist', Colors.MAGENTA)}, double check your preferences or try again later!")
         else:
-            print(f"Cannot restore playback to primary playlist; try adding a {color('DEFAULT_PLAYLIST', Colors.MAGENTA)} preference!")
+            print(f"Cannot restore playback to primary playlist; try adding a {color('PRIMARY', Colors.MAGENTA)} to your PLAYLISTS in preferences.json!")
         
         exit(0)
 
@@ -408,8 +424,9 @@ def queue_track():
         ran = args.offset[1] if args.offset and len(args.offset) > 1 else 1
         offset = 0
 
-        if source == "BACKLOG" and prefs.get("ALBUM_PLAYLIST"):            
-            count = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks").json().get('total')
+        backlog_uri = playlist_uri("BACKLOG")
+        if source == "BACKLOG" and backlog_uri:
+            count = spotify.get(f"https://api.spotify.com/v1/playlists/{backlog_uri}/tracks").json().get('total')
             if not count > idx > -1:
                 idx = random.randint(0, count - 1)
                 if ran == 1:
@@ -420,7 +437,7 @@ def queue_track():
             else:
                 idx = count - idx
             
-            chosen = spotify.get(f"https://api.spotify.com/v1/playlists/{prefs.get('ALBUM_PLAYLIST')}/tracks?limit={ran}&offset={idx - ran + 1}").json()
+            chosen = spotify.get(f"https://api.spotify.com/v1/playlists/{backlog_uri}/tracks?limit={ran}&offset={idx - ran + 1}").json()
             if ran > 1:
                 opts = {album_format(c.get("track"), use_color=False): c.get("track", {}).get('album', {}).get('uri') for c in reversed(chosen.get("items"))}
                 z, offset = dropdown(opts)
@@ -453,7 +470,7 @@ def queue_track():
             
             args.uri = chosen.get("items")[offset].get("album").get("uri")
         else:
-            print("Could not locate an album backlog playlist; try adding an ALBUM_PLAYLIST key to preferences.json?")
+            print("Could not locate an album backlog playlist; try adding a BACKLOG to PLAYLISTS in preferences.json?")
             exit(1)        
 
     if args.forget: 
@@ -593,32 +610,36 @@ def queue_track():
         if args.watch:
             track = get_current_track(prefs.get("LASTFM_WATCH_USER"))
             if track:
-                if args.save and prefs.get("SHARED_PLAYLIST"):
-                    uri = search(track["title"], track["artist"], spotify)
-                    resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('SHARED_PLAYLIST')}/tracks?uris={uri}")
+                shared_playlist = playlist_uri("SHARED")
+                if args.save and shared_playlist:
+                    uri = search(track["name"], track["artist"], spotify)
+                    resp = spotify.post(f"https://api.spotify.com/v1/playlists/{shared_playlist}/tracks?uris={uri}")
                     if 200 <= resp.status_code < 300:
-                        print(f"Added {color(track.get('title'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)} to shared playlist!")
+                        print(f"Added {color(track.get('name'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)} to shared playlist!")
                     else:
                         print(f"Something went wrong while adding to shared playlist (status code {resp.status_code})")
-                elif not prefs.get("SHARED_PLAYLIST"):
-                    print("Could not find a SHARED_PLAYLIST to add song to; try adding one to preferences.json?")
+                elif not shared_playlist:
+                    print("Could not find valid SHARED under PLAYLISTS to add song to; try adding one to preferences.json?")
                 else:
-                    print(f"{color(prefs.get('LASTFM_WATCH_USER'), Colors.MAGENTA)} is listening to {color(track.get('title'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)}!")
+                    print(f"{color(prefs.get('LASTFM_WATCH_USER'), Colors.MAGENTA)} is listening to {color(track.get('name'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)}!")
             else:
                 print("Could not find a valid LASTFM_WATCH_USER to save track from; try adding one to preferences.json?")
         elif args.save:
-            if prefs.get("DEFAULT_PLAYLIST"):
+            save_uris = set(save_to.values())
+            if not (len(save_uris) == 1 and None in save_uris):
                 track_uris = [t.get("uri") for t in tracks if t.get("uri")]
-                if len(track_uris) > 0:
-                    resp = spotify.post(f"https://api.spotify.com/v1/playlists/{prefs.get('DEFAULT_PLAYLIST')}/tracks?uris={','.join(track_uris)}")
-                    if 200 <= resp.status_code < 300:
-                        print(f"Added {', '.join(track_format(t) for t in tracks)} to {color('default playlist', Colors.MAGENTA)}!")
+                for p, puri in save_to.items():
+                    if len(track_uris) > 0:
+                        resp = spotify.post(f"https://api.spotify.com/v1/playlists/{puri}/tracks?uris={','.join(track_uris)}")
+                        if 200 <= resp.status_code < 300:
+                            print(f"Added {', '.join(track_format(t) for t in tracks)} to {color(p, Colors.MAGENTA)}!")
+                        else:
+                            print(f"Something went wrong while adding to playlist {p} (status code {resp.status_code})")
                     else:
-                        print(f"Something went wrong while adding to playlist (status code {resp.status_code})")
-                else:
-                    print("No tracks found!")
+                        print("No tracks found!")
+                        break
             else: 
-                print("Could not locate a default playlist; try adding a DEFAULT_PLAYLIST key to preferences.json?")
+                print("No valid playlists were provided; try adding a DEFAULT to PLAYLISTS in preferences.json")
 
         if args.open:
             if prefs.get("LASTFM_USER"):
