@@ -17,7 +17,7 @@ try:
         get_share_link,
         dropdown,
         SongParser, SongException,
-        color, Colors
+        color, Colors, black, red, green, yellow, blue, magenta, cyan, white
     )
 except KeyboardInterrupt:
     # this is terrible form and i have never seen any code do it but
@@ -329,10 +329,9 @@ def queue_track():
 
     parser.add_argument('-x', '--source', nargs="?", const="LIBRARY", help="Queue source (LIBRARY, BACKLOG)")
     parser.add_argument('-#', '--offset', nargs="+", type=int, help="Queue offset within source")
-    parser.add_argument('--primary', action='store_true', help="Restore playback to the primary playlist")
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int, help="Times to repeat request action")
-    parser.add_argument('-p', '--previous', nargs='?', const=1, type=int, help="Queue previous n tracks")
+    parser.add_argument('--previous', nargs='?', const=1, type=int, help="Queue previous n tracks")
     
     parser.add_argument('-@', '--user', nargs='?', default="", type=str, help="Queue random top track from provided last.fm username"), 
     parser.add_argument('-z', '--watch', action='store_true', help="Queue most recent track from watched last.fm user (requires LASTFM_WATCH_USER)")
@@ -344,6 +343,8 @@ def queue_track():
     parser.add_argument('--amnesia', action='store_true', help="Queue ignoring custom rules")
 
     parser.add_argument('-s', '--save', nargs="*", help="Save track to playlist specified in preferences")
+    parser.add_argument('-p', '--playlist', nargs="?", const="PRIMARY", help="Move playback to a playlist specified in preferences")
+
     parser.add_argument('--share', nargs="?", const="SPOTIFY", help="Copy queued link to share (SPOTIFY, APPLE)")
 
     parser.add_argument('--make_group', action='store_true', help="Create custom named group of items to queue together")
@@ -357,7 +358,7 @@ def queue_track():
     
     # if --save, args.save == [], else it will be None
     if not args.save: args.save = ["DEFAULT"] if isinstance(args.save, list) else []
-    save_to = {p.upper(): playlist_uri(p) for p in args.save}    
+    save_to = {p.upper(): playlist_uri(p) for p in args.save}
 
     if args.pause or args.playpause:
         player = spotify.get("https://api.spotify.com/v1/me/player")
@@ -400,17 +401,19 @@ def queue_track():
         sleep(1)
         print(f"Now playing: {track_format(current())}!")
         exit(0)
-    elif args.primary:
-        puri = playlist_uri("PRIMARY")
+    elif args.playlist:
+        puri = playlist_uri(args.playlist)
         if puri:
             req_p = spotify.put(f"https://api.spotify.com/v1/me/player/play", data=json.dumps({
                 "context_uri": f"spotify:playlist:{puri}",
             }))
 
             if not 200 <= req_p.status_code < 300:
-                print(f"Failed to transfer playlist to {color('primary playlist', Colors.MAGENTA)}, double check your preferences or try again later!")
+                print(f"Failed to transfer playlist to {magenta(args.playlist)}, double check your preferences or try again later!")
+            else:
+                print(f"Transferred playback to playlist: {magenta(args.playlist)}!")
         else:
-            print(f"Cannot restore playback to primary playlist; try adding a {color('PRIMARY', Colors.MAGENTA)} to your PLAYLISTS in preferences.json!")
+            print(f"Cannot restore playback to playlist '{magenta(args.playlist)}'; try adding '{magenta(args.playlist)}' to your PLAYLISTS in preferences.json!")
         
         exit(0)
 

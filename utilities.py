@@ -16,6 +16,7 @@ from simple_term_menu import TerminalMenu
 
 class Colors(Enum):
     DEFAULT = "\033[0m"
+    BLACK = "\033[30;1m"
     RED = "\033[31;1m"
     GREEN = "\033[32;1m"
     YELLOW = "\33[33;1m"
@@ -37,6 +38,7 @@ def color(text, color):
             for l, c in zip(text, itertools.cycle(list(Colors)[1:-1]))
         ])
 
+def black(text): return color(text, Colors.RED)
 def red(text): return color(text, Colors.RED)
 def green(text): return color(text, Colors.GREEN)
 def yellow(text): return color(text, Colors.YELLOW)
