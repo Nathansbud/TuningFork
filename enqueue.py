@@ -339,11 +339,12 @@ def queue_track():
     
     parser.add_argument('-r', '--remember', nargs='*', default=None, help="Create custom rule for queue behavior")
     parser.add_argument('-f', '--forget', nargs='*', default=None, help="Delete custom rule for queue behavior")
-    parser.add_argument('-l', '--list_rules', action='store_true', help="List all created custom rules for queue behavior")
+    parser.add_argument('--list_rules', action='store_true', help="List all created custom rules for queue behavior")
     parser.add_argument('--amnesia', action='store_true', help="Queue ignoring custom rules")
 
-    parser.add_argument('-s', '--save', nargs="*", help="Save track to playlist specified in preferences")
+    parser.add_argument('-s', '--save', nargs="*", help="Save queue set to playlist specified in preferences")
     parser.add_argument('-p', '--playlist', nargs="?", const="PRIMARY", help="Move playback to a playlist specified in preferences")
+    parser.add_argument('-l', '--like', action='store_true', help="Add queue set to Liked Songs")
 
     parser.add_argument('--share', nargs="?", const="SPOTIFY", help="Copy queued link to share (SPOTIFY, APPLE)")
 
@@ -574,7 +575,7 @@ def queue_track():
             group=args.group,
             user=args.user,
             uri=uri,
-            ignore=args.ignore or args.open or args.save,
+            ignore=any((args.ignore, args.open, args.save, args.like)),
             mode=mode
         )
 
@@ -642,7 +643,17 @@ def queue_track():
                         break
             else: 
                 print("No valid playlists were provided; try adding a DEFAULT to PLAYLISTS in preferences.json")
+        
+        if args.like:
+            liked = spotify.put("https://api.spotify.com/v1/me/tracks/", data=json.dumps({
+                "ids": [t.get("uri").split(":")[-1] for t in tracks if t.get("uri")]
+            }))
 
+            if 200 <= liked.status_code < 300:
+                print(f"Added {', '.join(track_format(t) for t in tracks)} to {magenta('Liked Songs')}!")
+            else:
+                print(f"Something went wrong while adding to {magenta('Liked Songs')} (status code: {liked.status_code})")
+                
         if args.open:
             if prefs.get("LASTFM_USER"):
                 artist_fmt = lambda t: t.get("artist").replace(" ", "+").split(",")[0]
