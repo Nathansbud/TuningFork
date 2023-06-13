@@ -17,7 +17,8 @@ try:
         get_share_link,
         dropdown,
         SongParser, SongException,
-        color, Colors, black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow
+        color, Colors, black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow,
+        timestamp, time_progress
     )
 except KeyboardInterrupt:
     # this is terrible form and i have never seen any code do it but
@@ -83,11 +84,12 @@ def get_track(uri, formatted=True):
         
         return resp
 
-def current(): return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {})
-def current_uri(): return current().get('uri')
+def current(): return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json()
+def current_track(): return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {})
+def current_uri(): return current_track().get('uri')
 def current_lyrics():
     try:
-        current_track = current()
+        current_track = current_track()
     except json.decoder.JSONDecodeError:
         return
 
@@ -382,8 +384,9 @@ def queue_track():
         q = spotify.get("https://api.spotify.com/v1/me/player/queue").json()
         if len(q['queue']) == 0: print("No track currently playing!")
         else:
-            now = current()
-            print(f"{color('C', Colors.MAGENTA)}.\t{track_format(now)}")
+            nt = current()
+            now = nt.get('item')
+            print(f"{color('C', Colors.MAGENTA)}.\t{track_format(now)} {time_progress(nt.get('progress_ms'), now.get('duration_ms'), True)}")
             
             # if the current track in the queue is local, current won't equal queue's currently_playing; 
             # there is currently no good solution for local tracks in the queue, alas
@@ -400,7 +403,7 @@ def queue_track():
         # Spotify API takes a second to catch up, so we need to sleep before hitting current track endpoint, 
         # since next doesn't return track info
         sleep(1)
-        print(f"Now playing: {track_format(current())}!")
+        print(f"Now playing: {track_format(current_track())}!")
         exit(0)
     elif args.playlist:
         puri = playlist_uri(args.playlist)
@@ -496,8 +499,9 @@ def queue_track():
         if cs.status_code == 204: 
             print("No track currently playing!")
         else:
-            playing = cs.json().get('item', {})
-            print(f"{bold('Now playing')}: {track_format(playing)}")
+            curr = cs.json()
+            citem = curr.get('item')
+            print(f"{bold('Now playing')}: {track_format(citem)} {time_progress(curr.get('progress_ms'), citem.get('duration_ms'), True)}")
     elif args.make_group: make_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:

@@ -209,6 +209,14 @@ class SongParser(argparse.ArgumentParser):
     def error(self, msg):
         raise SongException("Invalid track specifier!")
 
+def timestamp(ms): 
+    secs, mils = divmod(ms, 1000)
+    mins, secs = divmod(secs, 60)
+    return (f'{int(mins)}:{int(secs):02d}')
+
+def time_progress(curr, total, paren=False):
+    return ('(' * paren) + f"{bold(timestamp(curr))} / {bold(timestamp(total))}" + (')' * paren)
+
 if __name__ == '__main__':
     start_server(6813)
     pass
