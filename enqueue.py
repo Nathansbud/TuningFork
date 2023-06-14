@@ -258,11 +258,9 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
     if ignore: return tracks
     elif tracks:
         if last:
-            print(f"""Adding{' ' + str(last) if last > 1 else ''} last played item{'s' if last > 1 else ''} ({', '.join([f"{t.get('name')} by {t.get('artist')}" for t in tracks])}) to queue {times}x!""")
+            print(f"""Adding {bold(last)} last played item(s) ({', '.join([track_format(t) for t in tracks])}) to queue {bold(f'{times}x')}!""")
         elif mode == 'tracks':
-            print("Adding " + ", ".join([
-                f"{color(t.get('name'), Colors.GREEN)} by {color(t.get('artist'), Colors.YELLOW)}" for t in tracks
-            ]) + f" to queue {times}x!")
+            print(f"Adding {', '.join([track_format(t) for t in tracks])} to queue {bold(f'{times}x')}!")
         elif mode == 'albums':
             nt = bold(f"{len(tracks)} tracks")
             print(f"Adding album {album_format(tracks[0])} ({nt}) to queue {times}x!")
@@ -579,7 +577,7 @@ def queue_track():
             group=args.group,
             user=args.user,
             uri=uri,
-            ignore=any((args.ignore, args.open, args.save, args.like)),
+            ignore=any((args.ignore, args.open, args.save, args.like, args.share)),
             mode=mode
         )
 
