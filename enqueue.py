@@ -84,8 +84,11 @@ def get_track(uri, formatted=True):
         
         return resp
 
-def current(): return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json()
-def current_track(): return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {})
+def current(): 
+    c = spotify.get("https://api.spotify.com/v1/me/player/currently-playing")
+    return {} if c.status_code == 204 else c.json()
+    
+def current_track(): return current().get('item', {})
 def current_uri(): return current_track().get('uri')
 def current_lyrics():
     try:
@@ -173,6 +176,8 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
     group_data = []   
     tracks = []
     
+    playing = True
+    
     if group:
         with open(group_file) as gf:
             try:
@@ -229,13 +234,11 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
                 'album_uri': data.get('uri'),
             } for data in responses]
     else:
-        current = spotify.get("https://api.spotify.com/v1/me/player/currently-playing")
-        
-        if current.status_code == 204: 
+        data = current_track()
+        if not data:
             print("No track currently playing!")
-            tracks = []
+            exit(1)
         else:
-            data = current.json().get('item', {})
             if mode == 'albums':
                 album = data.get("album")
                 track_data = spotify.get(f'https://api.spotify.com/v1/albums/{album.get("uri").split(":")[-1]}/tracks?limit={album.get("total_tracks")}').json()
@@ -364,7 +367,7 @@ def queue_track():
     if args.pause or args.playpause:
         player = spotify.get("https://api.spotify.com/v1/me/player")
         if not 200 <= player.status_code < 300 or player.status_code == 204:
-            print(white("Could not communicate with an active device; try manually playing/pausing instead!"))
+            print("Could not communicate with an active device; try manually playing/pausing instead!")
             exit(0)
         else:
             if player.json().get("is_playing"):
@@ -396,7 +399,10 @@ def queue_track():
         print(f"Attempting to skip {bold(f'{args.next} track(s)')}...")
         # This is probably not the optimal way to do this...but if we get rate limited, so be it
         for _ in range(args.next): 
-            _ = spotify.post("https://api.spotify.com/v1/me/player/next")
+            resp = spotify.post("https://api.spotify.com/v1/me/player/next")
+            if resp.status_code == 404:
+                print("No track currently playing!")
+                exit(1)
 
         # Spotify API takes a second to catch up, so we need to sleep before hitting current track endpoint, 
         # since next doesn't return track info
