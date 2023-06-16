@@ -56,6 +56,12 @@ spotify = get_token()
 groups, prefs = load_prefs()
 
 def playlist_uri(name): return prefs.get("PLAYLISTS", {}).get(name.upper())
+def playlist_name(pid):
+    playlist_data = spotify.get(f"https://api.spotify.com/v1/playlists/{pid}")
+    if playlist_data.status_code == 200: 
+        return playlist_data.json().get('name')
+    else:
+        return None 
 
 def get_track(uri, formatted=True):
     if not uri: return [{}]
@@ -362,6 +368,7 @@ def queue_track():
     
     # if --save, args.save == [], else it will be None
     if not args.save: args.save = ["DEFAULT"] if isinstance(args.save, list) else []
+    if args.playlist: args.playlist = args.playlist.upper()
     save_to = {p.upper(): playlist_uri(p) for p in args.save}
 
     if args.pause or args.playpause:
@@ -412,6 +419,7 @@ def queue_track():
     elif args.playlist:
         puri = playlist_uri(args.playlist)
         if puri:
+            play_name = playlist_name(puri)
             req_p = spotify.put(f"https://api.spotify.com/v1/me/player/play", data=json.dumps({
                 "context_uri": f"spotify:playlist:{puri}",
             }))
@@ -419,9 +427,9 @@ def queue_track():
             if not 200 <= req_p.status_code < 300:
                 print(f"Failed to transfer playlist to {magenta(args.playlist)}, double check your preferences or try again later!")
             else:
-                print(f"Transferred playback to playlist: {magenta(args.playlist)}!")
+                print(f"Transferred playback to playlist: {magenta(play_name)} ({magenta(args.playlist)})!")
         else:
-            print(f"Cannot restore playback to playlist '{magenta(args.playlist)}'; try adding '{magenta(args.playlist)}' to your PLAYLISTS in preferences.json!")
+            print(f"Cannot restore playback to playlist {magenta(args.playlist)}; try adding {magenta(args.playlist)} to your PLAYLISTS in preferences.json!")
         
         exit(0)
 
@@ -639,11 +647,17 @@ def queue_track():
             save_uris = set(save_to.values())
             if not (len(save_uris) == 1 and None in save_uris):
                 track_uris = [t.get("uri") for t in tracks if t.get("uri")]
+
                 for p, puri in save_to.items():
+                    play_name = playlist_name(puri)
+                    if not playlist_name:
+                        print(f"Could not find playlist {p} from provided ID; make sure your preferences file has the correct ID ({bold('spotify:playlist:[id]')})!")
+                        continue 
+                    
                     if len(track_uris) > 0:
                         resp = spotify.post(f"https://api.spotify.com/v1/playlists/{puri}/tracks?uris={','.join(track_uris)}")
                         if 200 <= resp.status_code < 300:
-                            print(f"Added {', '.join(track_format(t) for t in tracks)} to {color(p, Colors.MAGENTA)}!")
+                            print(f"Added {', '.join(track_format(t) for t in tracks)} to {magenta(play_name)} ({magenta(p)})!")
                         else:
                             print(f"Something went wrong while adding to playlist {p} (status code {resp.status_code})")
                     else:
