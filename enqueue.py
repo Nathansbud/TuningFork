@@ -653,15 +653,26 @@ def queue_track():
                 print("No valid playlists were provided; try adding a DEFAULT to PLAYLISTS in preferences.json")
         
         if args.like:
-            liked = spotify.put("https://api.spotify.com/v1/me/tracks/", data=json.dumps({
-                "ids": [t.get("uri").split(":")[-1] for t in tracks if t.get("uri")]
-            }))
+            if not args.album:
+                liked = spotify.put("https://api.spotify.com/v1/me/tracks/", data=json.dumps({
+                    "ids": [t.get("uri").split(":")[-1] for t in tracks if t.get("uri")]
+                }))
 
-            if 200 <= liked.status_code < 300:
-                print(f"Added {', '.join(track_format(t) for t in tracks)} to {magenta('Liked Songs')}!")
+                if 200 <= liked.status_code < 300:
+                    print(f"Added {', '.join(track_format(t) for t in tracks)} to {magenta('Liked Songs')}!")
+                else:
+                    print(f"Something went wrong while adding to {magenta('Liked Songs')} (status code: {liked.status_code})")
             else:
-                print(f"Something went wrong while adding to {magenta('Liked Songs')} (status code: {liked.status_code})")
-                
+                rep = tracks[0]
+                saved = spotify.put("https://api.spotify.com/v1/me/albums/", data=json.dumps({
+                    "ids": [rep.get("album_uri").split(":")[-1]]
+                }))
+
+                if 200 <= saved.status_code < 300:
+                    print(f"Saved {album_format(rep)} to {magenta('Library')}!")
+                else:
+                    print(f"Something went wrong while adding to {magenta('Library')} (status code: {liked.status_code})")
+
         if args.open:
             if prefs.get("LASTFM_USER"):
                 artist_fmt = lambda t: t.get("artist").replace(" ", "+").split(",")[0]
