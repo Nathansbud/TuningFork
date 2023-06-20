@@ -194,14 +194,21 @@ def album_format(alb: dict, use_color=True):
     else:
         return f"{alb_name} by {alb_artist}"
 
-def track_format(track: dict, use_color=True): 
+def track_format(track: dict, use_color=True, album=False): 
     track_name = track.get('name')
     track_artist = ', '.join([artist.get('name') for artist in track.get('artists', [])]) if not track.get('artist') else track.get('artist')
+    alb_name = track.get('album', {}).get('name') if type(track.get('album')) != str else track.get('album')
 
     if use_color:
-        return f"{color(track_name, Colors.GREEN)} by {color(track_artist, Colors.YELLOW)}"
+        if not album or not alb_name:
+            return f"{color(track_name, Colors.GREEN)} by {color(track_artist, Colors.YELLOW)}" 
+        elif alb_name:
+            return f"{color(track_name, Colors.GREEN)} by {color(track_artist, Colors.YELLOW)} ({cyan(alb_name)})" 
     else:
-        return f"{track_name} by {track_artist}"
+        if not album or not alb_name:
+            return f"{track_name} by {track_artist}"
+        elif alb_name:
+            return f"{track_name} by {track_artist} ({alb_name})"
 
 
 class SongException(Exception): pass

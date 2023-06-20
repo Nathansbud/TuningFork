@@ -516,7 +516,7 @@ def queue_track():
         else:
             curr = cs.json()
             citem = curr.get('item')
-            print(f"{bold('Now playing')}: {track_format(citem)} {time_progress(curr.get('progress_ms'), citem.get('duration_ms'), True)}")
+            print(f"{bold('Now playing')}: {track_format(citem, album=True)} {time_progress(curr.get('progress_ms'), citem.get('duration_ms'), True)}")
     elif args.make_group: make_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:
