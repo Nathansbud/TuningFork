@@ -178,7 +178,7 @@ def make_group():
                 print(e)
             
             
-def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, uri=None, ignore=False, mode="tracks"):
+def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, uri=None, ignore=False, mode="tracks", limit=None):
     group_data = []   
     tracks = []
     
@@ -208,15 +208,16 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
                 st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}&type={mode[:-1]}&limit=1&offset=0").json()
             
             data = st[mode]['items'][0] if st[mode]['items'] else {}
-        
+            
             if mode == "albums" and data:
+                # album_data = spotify.get(f'https://api.spotify.com/v1/albums/{data.get("uri").split(":")[-1]}').json()
                 track_data = spotify.get(f'https://api.spotify.com/v1/albums/{data.get("uri").split(":")[-1]}/tracks?limit={data.get("total_tracks")}').json()
                 tracks = [{
                     'name': t.get('name'), 
                     'artist': ', '.join([artist.get('name') for artist in t.get('artists', [])]),
-                    'album': data.get('name'),
                     'uri': t.get('uri'),
-                    'album_uri': data.get('uri')
+                    'album': data.get('name'),
+                    'album_uri': data.get('uri'),
                 } for t in track_data.get('items', [])]
             else:
                 tracks = [{
@@ -266,13 +267,15 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
 
     if ignore: return tracks
     elif tracks:
+        og = len(tracks)
+        tracks = tracks[:limit] if limit is not None and limit > 0 else tracks
         if last:
             print(f"""Adding {bold(last)} last played item(s) ({', '.join([track_format(t) for t in tracks])}) to queue {bold(f'{times}x')}!""")
         elif mode == 'tracks':
             print(f"Adding {', '.join([track_format(t) for t in tracks])} to queue {bold(f'{times}x')}!")
         elif mode == 'albums':
-            nt = bold(f"{len(tracks)} tracks")
-            print(f"Adding album {album_format(tracks[0])} ({nt}) to queue {times}x!")
+            nt = f'{len(tracks)} tracks' if og == len(tracks) else f'{len(tracks)} / {og} tracks'
+            print(f"Adding album {album_format(tracks[0])} ({bold(nt)}) to queue {times}x!")
             # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
             sleep(2)
 
@@ -308,7 +311,7 @@ def remember_track(title, artist, track, mode, delete=False):
         memory[mode][mem_key] = {
             'name': track.get('name'), 
             'artist': track.get('artist'),
-            'album': track.get('album') if (type(track.get('album')) == str) else track.get('album', {}).get('name'),
+            'album': track.get('album') if (type(track.get('album')) == str) else track.get('album', {}).get('name', ""), 
             'relevant_uri': track.get('uri') if mode == 'tracks' else track.get('album_uri')
         }
     else:
@@ -325,7 +328,7 @@ def queue_track():
     parser.add_argument('artist', nargs='?', default=None)
     parser.add_argument('-u', '--uri', default=None, help="Queue Spotify URI")
     parser.add_argument('-c', '--song', action="store_true", help="Queue current song")
-    parser.add_argument('-a', '--album', action="store_true", help="Queue album by title rather than song")
+    parser.add_argument('-a', '--album', nargs='?', type=int, const=-1, help="Queue album by title rather than song")
     parser.add_argument('-g', '--group', type=str, help="Queue group name")
     parser.add_argument('-st', '--spaced_track', nargs='*', default=None, help="Treat positional arguments as song title")
 
@@ -387,6 +390,7 @@ def queue_track():
         exit(0)    
 
     mode = "tracks" if (not args.album and not args.source) else "albums"
+    
     if args.queue:
         # Finally, a queue endpoint exists...it doesn't differentiate between Queue vs Up Next, but we will mf take it
         q = spotify.get("https://api.spotify.com/v1/me/player/queue").json()
@@ -592,7 +596,8 @@ def queue_track():
             user=args.user,
             uri=uri,
             ignore=any((args.ignore, args.open, args.save, args.like, args.share)),
-            mode=mode
+            mode=mode,
+            limit=args.album
         )
 
         if args.share and tracks:
@@ -667,7 +672,7 @@ def queue_track():
                 print("No valid playlists were provided; try adding a DEFAULT to PLAYLISTS in preferences.json")
         
         if args.like:
-            if not args.album:
+            if mode == 'tracks':
                 liked = spotify.put("https://api.spotify.com/v1/me/tracks/", data=json.dumps({
                     "ids": [t.get("uri").split(":")[-1] for t in tracks if t.get("uri")]
                 }))
@@ -699,7 +704,7 @@ def queue_track():
                 if args.song:
                     for art, s in track_songs:
                         webbrowser.open(f"https://www.last.fm/user/{user}/library/music/{art}/_/{s}")
-                elif args.album:
+                elif mode == 'albums':
                     for art, alb in track_albums:
                         webbrowser.open(f"https://www.last.fm/user/{user}/library/music/{art}/{alb}")
                 else:
