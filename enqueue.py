@@ -66,8 +66,14 @@ def playlist_name(pid):
 def get_track(uri, formatted=True):
     if not uri: return [{}]
     uri = uri.strip()
-    idx = uri if ':' not in uri else uri[uri.rindex(':')+1:]
-    if ':album:' in uri:
+    
+    # accidentally pasted in URL instead of URI
+    if uri.startswith('http'):
+        idx = uri.split("/")[-1].split("?")[0]
+    else:
+        idx = uri if ':' not in uri else uri[uri.rindex(':')+1:]
+    
+    if 'album' in uri:
         album_data = spotify.get(f'https://api.spotify.com/v1/albums/{idx}').json()
         album_tracks = spotify.get(f'https://api.spotify.com/v1/albums/{idx}/tracks?limit=50').json()
         return [{
@@ -78,17 +84,20 @@ def get_track(uri, formatted=True):
             'album_uri': album_data.get('uri')
         } for t in album_tracks.get('items', [])]
     else:
-        resp = spotify.get(f'https://api.spotify.com/v1/tracks/{idx}').json()
-        if resp and formatted:
-            return [{
-                'uri': resp.get('uri'),
-                'name': resp.get('name'),
-                'artist': ", ".join([artist.get('name') for artist in resp.get('artists')]),
-                'album': resp.get("album", {}).get('name'),
-                'album_uri': resp.get("album", {}).get('uri')
-            }]
+        r = spotify.get(f'https://api.spotify.com/v1/tracks/{idx}')
+        if r.status_code == 404: return []
+        else:
+            resp = r.json()
+            if not resp.get('error') and formatted:
+                return [{
+                    'uri': resp.get('uri'),
+                    'name': resp.get('name'),
+                    'artist': ", ".join([artist.get('name') for artist in resp.get('artists')]),
+                    'album': resp.get("album", {}).get('name'),
+                    'album_uri': resp.get("album", {}).get('uri')
+                }]
         
-        return resp
+        return []
 
 def current(): 
     c = spotify.get("https://api.spotify.com/v1/me/player/currently-playing")
