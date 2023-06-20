@@ -98,34 +98,34 @@ def current_track(): return current().get('item', {})
 def current_uri(): return current_track().get('uri')
 def current_lyrics():
     try:
-        current_track = current_track()
+        curr = current_track()
     except json.decoder.JSONDecodeError:
         return
 
-    album_artists = [artist.get('name') for artist in current_track.get('album', {}).get('artists', [])]
-    lyrics = get_lyrics(album_artists[0], current_track.get('name'))
+    album_artists = [artist.get('name') for artist in curr.get('album', {}).get('artists', [])]
+    lyrics = get_lyrics(album_artists[0], curr.get('name'))
     if lyrics: 
         return {
             "artist": album_artists[0],
-            "album": current_track.get("album").get("name"),
-            "title": current_track.get("name"), 
+            "album": curr.get("album").get("name"),
+            "title": curr.get("name"), 
             "lyrics": lyrics
         }
     else:
         for p in permutations(album_artists):
-            lyrics = get_lyrics(" and ".join(p), current_track.get('name'))
+            lyrics = get_lyrics(" and ".join(p), curr.get('name'))
             if lyrics:
                 return {
                     "artist": " and ".join(p),
-                    "album": current_track.get("album").get("name"),
-                    "title": current_track.get("name"), 
+                    "album": curr.get("album").get("name"),
+                    "title": curr.get("name"), 
                     "lyrics": lyrics
                 }
 
         return {
             "artist": album_artists[0],
-            "album": current_track.get("album").get("name"),
-            "title": current_track.get("name"), 
+            "album": curr.get("album").get("name"),
+            "title": curr.get("name"), 
             "lyrics": None
         }
     
@@ -366,7 +366,6 @@ def queue_track():
     parser.add_argument('-i', '--ignore', action='store_true', help="Ignore the request to queue (e.g. if trying to save a rule)")      
     
     args = parser.parse_args()
-    
     if args.spaced_track: args.title = " ".join(args.spaced_track)
     
     # if --save, args.save == [], else it will be None
