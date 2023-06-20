@@ -8,3 +8,4 @@ venv/
 certificates/
 data/failed.txt
 resources/preferences.json
+resources/custom.json
