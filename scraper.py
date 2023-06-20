@@ -78,11 +78,16 @@ def get_lyrics_from_url(url, surpress=True):
     try:
         raw_html = simple_get(url)
         soup = BeautifulSoup(raw_html, 'html.parser')
-        container = soup.select_one('[data-lyrics-container]')
-        for br in container('br'):
-            br.replace_with('\n')
+        container = soup.select('[data-lyrics-container]')
         
-        return container.text
+        text_collection = []
+        for c in container:
+            for br in c('br'):
+                br.replace_with('\n')
+            
+            text_collection.append(c.text)
+                
+        return "\n".join(text_collection)
     except TypeError:
         if not surpress: print(f"Get lyrics failed on URL '{url}'")
         return False
