@@ -51,7 +51,7 @@ def genius_clean(field):
 def get_song_url(artist, name):
     artist = genius_clean(artist).capitalize()
     name = genius_clean(name).rstrip("-")
-    return "https://genius.com/" + artist + "-" + name + "-lyrics?react=0"
+    return "https://genius.com/" + artist + "-" + name + "-lyrics"
 
 def get_album_url(artist, name):
     artist = genius_clean(artist).capitalize().rstrip('-')

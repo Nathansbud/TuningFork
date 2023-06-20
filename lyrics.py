@@ -4,6 +4,10 @@ import re
 
 from scraper import get_lyrics, get_song_url, get_album_tracks, get_album_url
 from enqueue import current_lyrics
+from utilities import (
+    bold, magenta, cyan, yellow, green
+)
+
 
 def remove_after(inp, endings=None, regex_endings=None):
     if regex_endings:
@@ -70,9 +74,9 @@ if __name__ == "__main__":
         
         if tracks: 
             if not args.open: 
-                print(f"[{f'{album} - {artist}' if not fellback else f'{artist} - {album}'} Tracklist]")
+                print(f"[{f'{cyan(album)} - {yellow(artist)}' if not fellback else f'{cyan(artist)} - {yellow(album)}'} {bold('Tracklist')}]")
                 for i, track in enumerate(tracks, start=1): 
-                    print(f'{i}. {track}')
+                    print(f'{magenta(i)}. {green(track)}')
             else:
                 if not fellback: webbrowser.open(get_album_url(artist, album))
                 else: webbrowser.open(get_album_url(album, artist))    
@@ -93,7 +97,12 @@ if __name__ == "__main__":
             lyrics, fellback = get_lyrics(track, artist), True   #fallback on flipping in case I forget they order they should go in (lul)
 
         if lyrics:
-            if not args.open: print(f"[{artist if not fellback else track} - {track if not fellback else artist}]", lyrics.strip(), sep='\n')
+            if not args.open: 
+                print(
+                    f"[{green(track if not fellback else artist)} - {yellow(artist if not fellback else track)}]", 
+                    '\n'.join([bold(l) if l.startswith('[') else l for l in lyrics.strip().split('\n')]),
+                    sep='\n'
+                )
             else:
                 if not fellback: webbrowser.open(get_song_url(artist, track))
                 else: webbrowser.open(get_song_url(track, artist))
