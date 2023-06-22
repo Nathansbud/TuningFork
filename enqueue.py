@@ -17,7 +17,7 @@ try:
         get_share_link,
         dropdown,
         SongParser, SongException,
-        color, Colors, black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow,
+        rgb, cc, color, Colors, black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow,
         timestamp, time_progress
     )
 except KeyboardInterrupt:
@@ -355,7 +355,7 @@ def queue_track():
     parser.add_argument('--previous', nargs='?', const=1, type=int, help="Queue previous n tracks")
     
     parser.add_argument('-@', '--user', nargs='?', default="", type=str, help="Queue random top track from provided last.fm username"), 
-    parser.add_argument('-z', '--watch', action='store_true', help="Queue most recent track from watched last.fm user (requires LASTFM_WATCH_USER)")
+    parser.add_argument('-z', '--watch', nargs='?', const=prefs.get("LASTFM_WATCH_USER"), help="Queue most recent track from watched last.fm user (requires LASTFM_WATCH_USER)")
     parser.add_argument('-o', '--open', action="store_true", help="Open the artist library page in Last.fm (requires LASTFM_USER)")
     
     parser.add_argument('-r', '--remember', nargs='*', default=None, help="Create custom rule for queue behavior")
@@ -461,9 +461,9 @@ def queue_track():
             if not count > idx > -1:
                 idx = random.randint(0, count - 1)
                 if ran == 1:
-                    print(f"Choosing a {color('random', Colors.RAINBOW)} backlog album from the {count} available...how about #{bold(idx)}?")
+                    print(f"Choosing a {rainbow('random')} backlog album from the {count} available...how about #{bold(idx)}?")
                 else:
-                    print(f"Choosing {bold(ran)} backlog albums from a {color('random', Colors.RAINBOW)} offset of the {count} available...#{bold(idx)}?")
+                    print(f"Choosing {bold(ran)} backlog albums from a {rainbow('random')} offset of the {count} available...#{bold(idx)}?")
             
             else:
                 idx = count - idx
@@ -502,7 +502,7 @@ def queue_track():
             args.uri = chosen.get("items")[offset].get("album").get("uri")
         else:
             print("Could not locate an album backlog playlist; try adding a BACKLOG to PLAYLISTS in preferences.json?")
-            exit(1)        
+            exit(1) 
 
     if args.forget: 
         print(
@@ -580,6 +580,26 @@ def queue_track():
 
                 except json.JSONDecodeError:
                     pass
+    elif args.watch:
+        track = get_current_track(args.watch)
+        if track:
+            shared_playlist = playlist_uri("SHARED")
+            if args.save: 
+                if shared_playlist:
+                    uri = search(track["name"], track["artist"], spotify)
+                    resp = spotify.post(f"https://api.spotify.com/v1/playlists/{shared_playlist}/tracks?uris={uri}")
+                    if 200 <= resp.status_code < 300:
+                        print(f"Added {track_format(track)} to shared playlist!")
+                    else:
+                        print(f"Something went wrong while adding to shared playlist (status code {resp.status_code})")
+                else:
+                    print(f"Could not find playlist {magenta('SHARED')} under PLAYLISTS to add song to; try adding one to preferences.json?")
+            else:
+                print(f"{magenta(args.watch)} is listening to {track_format(track)}!")
+        else:
+            print(f"Could not Last.fm username; watch takes a valid username, or uses preference {magenta('LASTFM_WATCH_USER')}!")
+        
+        exit(0)
     else:
         with open(short_file, 'r') as cf:
             try:
@@ -639,24 +659,7 @@ def queue_track():
                     mode
                 )
 
-        if args.watch:
-            track = get_current_track(prefs.get("LASTFM_WATCH_USER"))
-            if track:
-                shared_playlist = playlist_uri("SHARED")
-                if args.save and shared_playlist:
-                    uri = search(track["name"], track["artist"], spotify)
-                    resp = spotify.post(f"https://api.spotify.com/v1/playlists/{shared_playlist}/tracks?uris={uri}")
-                    if 200 <= resp.status_code < 300:
-                        print(f"Added {color(track.get('name'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)} to shared playlist!")
-                    else:
-                        print(f"Something went wrong while adding to shared playlist (status code {resp.status_code})")
-                elif not shared_playlist:
-                    print("Could not find valid SHARED under PLAYLISTS to add song to; try adding one to preferences.json?")
-                else:
-                    print(f"{color(prefs.get('LASTFM_WATCH_USER'), Colors.MAGENTA)} is listening to {color(track.get('name'), Colors.CYAN)} by {color(track.get('artist'), Colors.GREEN)}!")
-            else:
-                print("Could not find a valid LASTFM_WATCH_USER to save track from; try adding one to preferences.json?")
-        elif args.save:
+        if args.save:
             save_uris = set(save_to.values())
             if not (len(save_uris) == 1 and None in save_uris):
                 track_uris = [t.get("uri") for t in tracks if t.get("uri")]

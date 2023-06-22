@@ -14,6 +14,7 @@ from enum import Enum
 from requests_oauthlib import OAuth2Session
 from simple_term_menu import TerminalMenu
 
+ESC = "\033"
 DEFAULT = "\033[0m"
 class Colors(Enum):
     BLACK = "0"
@@ -24,19 +25,15 @@ class Colors(Enum):
     MAGENTA = "5"
     CYAN = "6"
     WHITE = "7"
-    
-    # Does nothing on its own, but if passed to color used as a flag
-    RAINBOW = ""
 
+def rgb(text: str, rgb_triple: tuple) -> str:
+    return f"\033[38;2;{rgb_triple[0]};{rgb_triple[1]};{rgb_triple[2]}m{text}{DEFAULT}"
+
+def cc(text: str, color_code: int) -> str:
+    return f"\033[38;5;{color_code}m{text}{DEFAULT}"
 
 def color(text, foreground=None, background=None):
-    if foreground != Colors.RAINBOW and background != Colors.RAINBOW:
-        return f"\033[{('3' + foreground.value + ';') if foreground else ''}{('4' + background.value + ';') if background else ''}1m{text}{DEFAULT}"
-    else:
-        return "".join([
-            f"{color(l, c if foreground else None, c if background else None)}" 
-            for l, c in zip(text, itertools.cycle(list(Colors)[1:-1]))
-        ])
+    return f"\033[{('3' + foreground.value + ';') if foreground else ''}{('4' + background.value + ';') if background else ''}1m{text}{DEFAULT}"
 
 def col(text, c, background):
     if not background: return color(text, c)
@@ -50,8 +47,13 @@ def blue(text, bg=False): return col(text, Colors.BLUE, bg)
 def magenta(text, bg=False): return col(text, Colors.MAGENTA, bg)
 def cyan(text, bg=False): return col(text, Colors.CYAN, bg)
 def white(text, bg=False): return col(text, Colors.WHITE, bg)
-def rainbow(text, bg=False): return col(text, Colors.RAINBOW, bg)
 def bold(text): return color(text)
+def rainbow(text, bg=False): 
+    return "".join([
+        f"{col(l, c if not bg else None, c if bg else None)}" 
+        for l, c in zip(text, itertools.cycle(list(Colors)[1:-1]))
+    ])
+
 
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"        
