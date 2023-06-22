@@ -17,7 +17,8 @@ try:
         get_share_link,
         dropdown,
         SongParser, SongException,
-        rgb, cc, color, Colors, black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow,
+        black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
+        rgb, cc, 
         timestamp, time_progress
     )
 except KeyboardInterrupt:
@@ -292,7 +293,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
             for t in tracks:
                 response = spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
                 if response.status_code >= 300: 
-                    print(f"Failed to add {color(t.get('name'), Colors.GREEN)} by {color(t.get('artist'), Colors.YELLOW)} to queue (status code: {response.status_code})")
+                    print(f"Failed to add {track_format(t)} to queue (status code: {response.status_code})")
 
         return tracks
     else:
@@ -331,7 +332,7 @@ def remember_track(title, artist, track, mode, delete=False):
 
 
 def queue_track():
-    parser = argparse.ArgumentParser(description=f"{color('Enqueue', Colors.MAGENTA)}: {color('Spotify Queue Manager', Colors.GREEN)}")
+    parser = argparse.ArgumentParser(description=f"{magenta('Enqueue')}: {green('Spotify')} {bold('Queue Manager')}!")
 
     parser.add_argument('title', nargs='?', default=None)
     parser.add_argument('artist', nargs='?', default=None)
@@ -390,10 +391,10 @@ def queue_track():
         else:
             if player.json().get("is_playing"):
                 spotify.put("https://api.spotify.com/v1/me/player/pause")
-                print(f'{color("Pausing", Colors.YELLOW)} {bold("playback...")}')
+                print(f'{yellow("Pausing")} {bold("playback...")}')
             elif not args.pause:
                 spotify.put("https://api.spotify.com/v1/me/player/play")
-                print(f'{color("Resuming", Colors.GREEN)} {bold("playback...")}')
+                print(f'{yellow("Resuming")} {bold("playback...")}')
                 
         exit(0)    
 
@@ -406,12 +407,12 @@ def queue_track():
         else:
             nt = current()
             now = nt.get('item')
-            print(f"{color('C', Colors.MAGENTA)}.\t{track_format(now)} {time_progress(nt.get('progress_ms'), now.get('duration_ms'), True)}")
+            print(f"{magenta('C')}.\t{track_format(now)} {time_progress(nt.get('progress_ms'), now.get('duration_ms'), True)}")
             
             # if the current track in the queue is local, current won't equal queue's currently_playing; 
             # there is currently no good solution for local tracks in the queue, alas
             for i, t in enumerate(([] if not now['is_local'] else [q['currently_playing']]) + q['queue'], start=1):
-                print(f"{color(i, Colors.MAGENTA)}.\t{track_format(t)}")
+                print(f"{magenta(i)}.\t{track_format(t)}")
         
         exit(0)
     elif args.next and args.next > 0:
@@ -552,10 +553,10 @@ def queue_track():
                     print(f"[{bold('Saved Groups')}]\n")
                     for name, data in groups.items():
                         tracks = "\n".join([
-                            f"\t{i}. {color(d.get('name'), Colors.GREEN)} by {color(d.get('artist'), Colors.YELLOW)} [{color(d.get('uri'), Colors.MAGENTA)}]" 
+                            f"\t{i}. {track_format(d)} [{magenta(d.get('uri'))}]" 
                             for i, d in enumerate(data, start=1)
                         ])
-                        print(f"{color(name, Colors.MAGENTA)}: {tracks}\n")
+                        print(f"{album_format(name)}: {tracks}\n")
                         
                     print()
             except json.JSONDecodeError:
@@ -566,14 +567,14 @@ def queue_track():
                 try: 
                     shortcuts = json.load(cf)
                     tracks, albums = shortcuts.get('tracks'), shortcuts.get('albums')
-                    for i, (title, ss) in enumerate([(color("Track Shortcuts", Colors.GREEN), tracks), (color("Album Shortcuts", Colors.CYAN), albums)]):
+                    for i, (title, ss) in enumerate([(green("Track Shortcuts"), tracks), (cyan("Album Shortcuts"), albums)]):
                         if ss:
                             print(f"[{title}]\n")
                             for r in sorted([[
-                                color(", ".join(key.split(PART_SEPARATOR)), Colors.MAGENTA),
+                                magenta(", ".join(key.split(PART_SEPARATOR))),
                                 "->",
-                                f"{color(track.get('name' if mode == 'tracks' else 'album'), Colors.GREEN if not i else Colors.CYAN)} by {color(track.get('artist'), Colors.YELLOW)}",
-                                f"[{color(track.get('relevant_uri', track.get('uri')), Colors.MAGENTA)}]"
+                                track_format(track) if mode == 'tracks' else album_format(track),
+                                f"[{magenta(track.get('relevant_uri', track.get('uri')))}]"
                             ] for key, track in ss.items()], key=lambda l: l[2].lower()):
                                 print(*r)
                         print()
@@ -641,7 +642,7 @@ def queue_track():
                 if args.share == "APPLE":
                     print(f"{red('Failed to copy to clipboard')}! This track may be named differently between platforms, or the required shortcut ({bold('https://tinyurl.com/yxwxw4ua')}) is not installed and named {bold('spotify-to-apple-music-link')}")
                 elif res['code'] != 0:
-                    print(f"{color('Failed to copy to clipboard', Colors.RED)}!")
+                    print(f"{red('Failed to copy to clipboard')}!")
         if args.remember and tracks: 
             if len(args.remember) == 0:
                 print("Cannot create a shortcut without any arguments!")
