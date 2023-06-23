@@ -348,6 +348,7 @@ def queue_track():
     
     parser.add_argument('--pause', action='store_true', help='Pause playback')
     parser.add_argument('--playpause', action='store_true', help="Resume or pause playback")
+    parser.add_argument('-v', '--volume', nargs='?', const=0, type=int, help="Set volume level")
 
     parser.add_argument('-x', '--source', nargs="?", const="LIBRARY", help="Queue source (LIBRARY, BACKLOG)")
     parser.add_argument('-#', '--offset', nargs="+", type=int, help="Queue offset within source")
@@ -397,6 +398,20 @@ def queue_track():
                 print(f'{yellow("Resuming")} {bold("playback...")}')
                 
         exit(0)    
+    elif args.volume is not None:
+        if 0 <= args.volume <= 100:
+            vol = spotify.put("https://api.spotify.com/v1/me/player/volume?volume_percent=0", data=json.dumps({
+                "volume_percent": args.volume
+            }))
+
+            if "VOLUME_CONTROL_DISALLOW" in vol.text:
+                print(f"Unfortunately, the current device {red('does not allow')} programmatic volume changes!")
+            else:
+                print(f"Set device volume to {green(args.volume)}%!")
+        else:
+            print(f"{magenta('Volume level')} must be a value from {bold('0–100')}!")
+        
+        exit(0)
 
     mode = "tracks" if (not args.album and not args.source) else "albums"
     
