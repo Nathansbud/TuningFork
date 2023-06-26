@@ -350,7 +350,7 @@ def queue_track():
     parser.add_argument('--playpause', action='store_true', help="Resume or pause playback")
     parser.add_argument('-v', '--volume', nargs='?', const=0, type=int, help="Set volume level")
 
-    parser.add_argument('-x', '--source', nargs="?", const="LIBRARY", help="Queue source (LIBRARY, BACKLOG)")
+    parser.add_argument('-x', '--source', choices=["LIBRARY", "BACKLOG"], nargs="?", type=lambda s: s.upper(), const="LIBRARY", help="Queue from source")
     parser.add_argument('-#', '--offset', nargs="+", type=int, help="Queue offset within source")
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int, help="Times to repeat request action")
@@ -365,11 +365,11 @@ def queue_track():
     parser.add_argument('--list_rules', action='store_true', help="List all created custom rules for queue behavior")
     parser.add_argument('--amnesia', action='store_true', help="Queue ignoring custom rules")
 
-    parser.add_argument('-s', '--save', nargs="*", help="Save queue set to playlist specified in preferences")
-    parser.add_argument('-p', '--playlist', nargs="?", const="PRIMARY", help="Move playback to a playlist specified in preferences")
+    parser.add_argument('-s', '--save', nargs="*", type=lambda s: s.upper(), help="Save queue set to playlist specified in preferences")
+    parser.add_argument('-p', '--playlist', nargs="?", const="PRIMARY", type=lambda s: s.upper(), help="Move playback to a playlist specified in preferences")
     parser.add_argument('-l', '--like', action='store_true', help="Add queue set to Liked Songs")
 
-    parser.add_argument('--share', nargs="?", const="SPOTIFY", help="Copy queued link to share (SPOTIFY, APPLE)")
+    parser.add_argument('--share', choices=["SPOTIFY", "APPLE"], nargs="?", type=lambda s: s.upper(), const="SPOTIFY", help="Copy queued link to share")
 
     parser.add_argument('--make_group', action='store_true', help="Create custom named group of items to queue together")
     parser.add_argument('--delete_group', help="Delete custom named group")
@@ -381,8 +381,7 @@ def queue_track():
     
     # if --save, args.save == [], else it will be None
     if not args.save: args.save = ["DEFAULT"] if isinstance(args.save, list) else []
-    if args.playlist: args.playlist = args.playlist.upper()
-    save_to = {p.upper(): playlist_uri(p) for p in args.save}
+    save_to = {p: playlist_uri(p) for p in args.save}
 
     if args.pause or args.playpause:
         player = spotify.get("https://api.spotify.com/v1/me/player")
@@ -462,7 +461,6 @@ def queue_track():
         exit(0)
 
     if args.source:
-        source = args.source.upper()
         if source not in ["LIBRARY", "BACKLOG"]: 
             print("Source must be one of: LIBRARY, BACKLOG")
             exit(1)
