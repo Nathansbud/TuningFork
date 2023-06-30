@@ -73,7 +73,7 @@ def get_track(uri, formatted=True):
         idx = uri.split("/")[-1].split("?")[0]
     else:
         idx = uri if ':' not in uri else uri[uri.rindex(':')+1:]
-    
+
     if 'album' in uri:
         album_data = spotify.get(f'https://api.spotify.com/v1/albums/{idx}').json()
         album_tracks = spotify.get(f'https://api.spotify.com/v1/albums/{idx}/tracks?limit=50').json()
@@ -661,9 +661,9 @@ def queue_track():
                 print("Cannot create a shortcut without any arguments!")
             else:
                 print(
-                    f"Creating shortcut for {mode[:-1]} {tracks[0].get('name' if mode == 'tracks' else 'album')} by {tracks[0].get('artist')}: ", 
-                    f"'{args.remember[0]}'", 
-                    f"'{args.remember[1]}'" if len(args.remember) > 1 else ''
+                    f"Creating shortcut for {mode[:-1]} {track_format(tracks[0]) if mode == 'tracks' else album_format(tracks[1])}: ", 
+                    f"'{magenta(args.remember[0])}'", 
+                    f"'{magenta(args.remember[1])}'" if len(args.remember) > 1 else ''
                 )
                 
                 remember_track(
