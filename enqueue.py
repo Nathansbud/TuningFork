@@ -356,9 +356,9 @@ def queue_track():
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int, help="Times to repeat request action")
     parser.add_argument('--previous', nargs='?', const=1, type=int, help="Queue previous n tracks")
     
-    parser.add_argument('-@', '--user', nargs='?', const=prefs.get("LASTFM_USER"), type=str, help="Queue random top track from provided last.fm user (default: LASTFM_USER preference)"), 
-    parser.add_argument('-o', '--open', nargs='?', const=prefs.get("LASTFM_USER"), help="Open the artist/album in library page of provided last.fm user (default: LASTFM_USER preference)")
-    parser.add_argument('-z', '--watch', nargs='?', const=prefs.get("LASTFM_WATCH_USER"), help="Queue most recent track from provided last.fm user (default: LASTFM_WATCH_USER preference)")
+    parser.add_argument('-@', '--user', nargs='?', const=prefs.get("LASTFM_USER", ""), type=str, help="Queue random top track from provided last.fm user (default: LASTFM_USER preference)"), 
+    parser.add_argument('-o', '--open', nargs='?', const=prefs.get("LASTFM_USER", ""), type=str, help="Open the artist/album in library page of provided last.fm user (default: LASTFM_USER preference)")
+    parser.add_argument('-z', '--watch', nargs='?', const=prefs.get("LASTFM_WATCH_USER", ""), type=str, help="Queue most recent track from provided last.fm user (default: LASTFM_WATCH_USER preference)")
     
     parser.add_argument('-r', '--remember', nargs='*', default=None, help="Create custom rule for queue behavior")
     parser.add_argument('-f', '--forget', nargs='*', default=None, help="Delete custom rule for queue behavior")
@@ -377,7 +377,7 @@ def queue_track():
     parser.add_argument('-i', '--ignore', action='store_true', help="Ignore the request to queue (e.g. if trying to save a rule)")      
     
     args = parser.parse_args()
-    if args.spaced_track: args.title = " ".join(args.spaced_track)
+    if args.spaced_track: args.title = " ".join(args.spaced_track)  
     
     # if --save, args.save == [], else it will be None
     if not args.save: args.save = ["DEFAULT"] if isinstance(args.save, list) else []
@@ -637,7 +637,7 @@ def queue_track():
             group=args.group,
             user=args.user,
             uri=uri,
-            ignore=any((args.ignore, args.open, args.save, args.like, args.share)),
+            ignore=any((args.ignore, args.open is not None, args.save, args.like, args.share)),
             mode=mode,
             limit=args.album
         )
@@ -733,9 +733,9 @@ def queue_track():
             else:
                 for t in track_artists:
                     webbrowser.open(f"https://www.last.fm/user/{args.open}/library/music/{t}")
-        else:
-            print("Could not find a valid Last.fm username!")
-
+        elif args.open is not None:
+            print("Could not find a valid last.fm user!")
+            
 if __name__ == '__main__':
     try:
         queue_track()
