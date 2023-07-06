@@ -484,7 +484,11 @@ def queue_track():
             
             chosen = spotify.get(f"https://api.spotify.com/v1/playlists/{backlog_uri}/tracks?limit={ran}&offset={idx - ran + 1}").json()
             if ran > 1:
-                opts = {album_format(c.get("track"), use_color=False): c.get("track", {}).get('album', {}).get('uri') for c in reversed(chosen.get("items"))}
+                opts = {album_format(c.get("track"), use_color=False): c.get("track", {}).get('album', {}).get('uri') for c in reversed(chosen.get("items", []))}
+                if len(opts) == 0:
+                    print(f"Unfortunately, {bold(ran)} is more tracks than can be requested from {green('Spotify')} at once!")
+                    exit(1)
+
                 z, offset = dropdown(opts)
                 if not z: exit(0) 
                 # flip to account for non-reversed chosen
@@ -507,7 +511,11 @@ def queue_track():
 
             chosen = spotify.get(f"https://api.spotify.com/v1/me/albums?limit={ran}&offset={idx}").json()
             if ran > 1:
-                opts = {album_format(c, use_color=False): c.get('album', {}).get('uri') for c in reversed(chosen.get("items"))}
+                opts = {album_format(c, use_color=False): c.get('album', {}).get('uri') for c in reversed(chosen.get("items", []))}
+                if len(opts) == 0:
+                    print(f"Unfortunately, {bold(ran)} is more albums than can be requested from {green('Spotify')} at once!")
+                    exit(1)
+
                 z, offset = dropdown(opts)
                 if not z: exit(0) 
                 # flip to account for non-reversed chosen
