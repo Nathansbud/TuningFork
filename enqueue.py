@@ -461,7 +461,7 @@ def queue_track():
         exit(0)
 
     if args.source:
-        if source not in ["LIBRARY", "BACKLOG"]: 
+        if args.source not in ["LIBRARY", "BACKLOG"]: 
             print("Source must be one of: LIBRARY, BACKLOG")
             exit(1)
         
@@ -470,7 +470,7 @@ def queue_track():
         offset = 0
 
         backlog_uri = playlist_uri("BACKLOG")
-        if source == "BACKLOG" and backlog_uri:
+        if args.source == "BACKLOG" and backlog_uri:
             count = spotify.get(f"https://api.spotify.com/v1/playlists/{backlog_uri}/tracks").json().get('total')
             if not count > idx > -1:
                 idx = random.randint(0, count - 1)
@@ -496,7 +496,7 @@ def queue_track():
                 print(f"Can't queue album {idx}; {found_album.get('name')} is hosted locally, and can't be queued via API!")
                 exit(0)
 
-        elif source == "LIBRARY":
+        elif args.source == "LIBRARY":
             count = spotify.get("https://api.spotify.com/v1/me/albums?limit=1&offset=0").json().get('total')
             if not count > idx > -1:
                 idx = random.randint(0, count - 1)
