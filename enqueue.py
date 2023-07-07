@@ -373,8 +373,8 @@ def queue_track():
     parser.add_argument('--list_rules', action='store_true', help="List all created custom rules for queue behavior")
     parser.add_argument('--amnesia', action='store_true', help="Queue ignoring custom rules")
 
-    parser.add_argument('-s', '--save', nargs="*", help="Save queue set to playlist specified in preferences")
-    parser.add_argument('-p', '--playlist', nargs="?", const="PRIMARY", help="Move playback to a playlist specified in preferences")
+    parser.add_argument('-s', '--save', nargs="*", type=lambda s: s.upper(), help="Save queue set to playlist specified in preferences")
+    parser.add_argument('-p', '--playlist', nargs="?", const="PRIMARY", type=lambda s: s.upper(), help="Move playback to a playlist specified in preferences")
     parser.add_argument('-l', '--like', action='store_true', help="Add queue set to Liked Songs")
 
     parser.add_argument('--share', choices=["SPOTIFY", "APPLE"], nargs="?", type=lambda s: s.upper(), const="SPOTIFY", help="Copy queued link to share")
@@ -532,7 +532,7 @@ def queue_track():
             
             args.uri = chosen.get("items")[offset].get("album").get("uri")
         else:
-            print("Could not locate an album backlog playlist; try adding a BACKLOG to PLAYLISTS in preferences.json?")
+            print(f"Could not locate an album backlog playlist; try adding a {magenta('BACKLOG')} to PLAYLISTS in preferences.json?")
             exit(1) 
 
     if args.forget: 
@@ -711,7 +711,7 @@ def queue_track():
                         print("No tracks found!")
                         break
             else: 
-                print("No valid playlists were provided; try adding a DEFAULT to PLAYLISTS in preferences.json")
+                print("No valid playlists were provided; try adding one to PLAYLISTS in preferences.json")
         
         if args.like:
             if mode == 'tracks':
