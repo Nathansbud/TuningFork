@@ -56,7 +56,6 @@ def load_prefs():
 spotify = get_token()
 groups, prefs = load_prefs()
 
-def playlist_uri(name): return prefs.get("PLAYLISTS", {}).get(name.upper())
 def playlist_name(pid):
     playlist_data = spotify.get(f"https://api.spotify.com/v1/playlists/{pid}")
     if playlist_data.status_code == 200: 
@@ -64,6 +63,15 @@ def playlist_name(pid):
     else:
         return None 
 
+def playlist_uri(identifier):
+    if identifier.startswith('http'):
+        return identifier.split("/")[-1].split("?")[0]
+    elif identifier.startswith("spotify:playlist:"):
+        return identifier.split(":")[-1]
+    else:
+        return prefs.get("PLAYLISTS", {}).get(identifier.upper())
+
+        
 def get_track(uri, formatted=True):
     if not uri: return [{}]
     uri = uri.strip()
@@ -365,8 +373,8 @@ def queue_track():
     parser.add_argument('--list_rules', action='store_true', help="List all created custom rules for queue behavior")
     parser.add_argument('--amnesia', action='store_true', help="Queue ignoring custom rules")
 
-    parser.add_argument('-s', '--save', nargs="*", type=lambda s: s.upper(), help="Save queue set to playlist specified in preferences")
-    parser.add_argument('-p', '--playlist', nargs="?", const="PRIMARY", type=lambda s: s.upper(), help="Move playback to a playlist specified in preferences")
+    parser.add_argument('-s', '--save', nargs="*", help="Save queue set to playlist specified in preferences")
+    parser.add_argument('-p', '--playlist', nargs="?", const="PRIMARY", help="Move playback to a playlist specified in preferences")
     parser.add_argument('-l', '--like', action='store_true', help="Add queue set to Liked Songs")
 
     parser.add_argument('--share', choices=["SPOTIFY", "APPLE"], nargs="?", type=lambda s: s.upper(), const="SPOTIFY", help="Copy queued link to share")
@@ -381,6 +389,7 @@ def queue_track():
     
     # if --save, args.save == [], else it will be None
     if not args.save: args.save = ["DEFAULT"] if isinstance(args.save, list) else []
+    
     save_to = {p: playlist_uri(p) for p in args.save}
 
     if args.pause or args.playpause:
