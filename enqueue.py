@@ -364,10 +364,10 @@ def queue_track():
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int, help="Times to repeat request action")
     parser.add_argument('--previous', nargs='?', const=1, type=int, help="Queue previous n tracks")
     
-    parser.add_argument('-@', '--user', nargs='?', const=prefs.get("LASTFM_USER", ""), type=str, help="Queue random top track from provided last.fm user (default: LASTFM_USER preference)"), 
-    parser.add_argument('-o', '--open', nargs='?', const=prefs.get("LASTFM_USER", ""), type=str, help="Open the artist/album in library page of provided last.fm user (default: LASTFM_USER preference)")
     parser.add_argument('-z', '--watch', nargs='?', const=prefs.get("LASTFM_WATCH_USER", ""), type=str, help="Queue most recent track from provided last.fm user (default: LASTFM_WATCH_USER preference)")
-    parser.add_argument('--spotify', action="store_true", help="Handle open actions in Spotify rather than last.fm")
+    parser.add_argument('-@', '--user', nargs='?', const=prefs.get("LASTFM_USER", ""), type=str, help="Queue random top track from provided last.fm user (default: LASTFM_USER preference)"), 
+    parser.add_argument('-m', '--lastfm', nargs='?', const=prefs.get("LASTFM_USER", ""), type=str, help="Open the artist/album in library page of provided last.fm user (default: LASTFM_USER preference)")
+    parser.add_argument('-o', '--spotify', action="store_true", help="Open current album in Spotify")
     
     parser.add_argument('-r', '--remember', nargs='*', default=None, help="Create custom rule for queue behavior")
     parser.add_argument('-f', '--forget', nargs='*', default=None, help="Delete custom rule for queue behavior")
@@ -655,7 +655,7 @@ def queue_track():
             group=args.group,
             user=args.user,
             uri=uri,
-            ignore=any((args.ignore, args.open is not None, args.save, args.like, args.share)),
+            ignore=any((args.ignore, args.lastfm is not None, args.spotify, args.save, args.like, args.share)),
             mode=mode,
             limit=args.album
         )
@@ -735,27 +735,29 @@ def queue_track():
                 else:
                     print(f"Something went wrong while adding to {magenta('Library')} (status code: {liked.status_code})")
 
-        if args.open or args.spotify:
+        if args.lastfm:
             artist_fmt = lambda t: t.get("artist").replace(" ", "+").split(",")[0]
             track_artists = set(artist_fmt(t) for t in tracks)
             track_albums = set((artist_fmt(t), t.get("album", "").replace(" ", "+")) for t in tracks)
             track_songs = set((artist_fmt(t), t.get("name", "").replace(" ", "+")) for t in tracks)
             
-            if not args.spotify:
-                if args.song:
-                    for art, s in track_songs:
-                        webbrowser.open(f"https://www.last.fm/user/{args.open}/library/music/{art}/_/{s}")
-                elif mode == 'albums':
-                    for art, alb in track_albums:
-                        webbrowser.open(f"https://www.last.fm/user/{args.open}/library/music/{art}/{alb}")
-                else:
-                    for t in track_artists:
-                        webbrowser.open(f"https://www.last.fm/user/{args.open}/library/music/{t}")
-            elif tracks:
-                webbrowser.open(f"spotify://{tracks[-1].get('uri')}")
-        elif not args.spotify and args.open is not None:
+            if args.song:
+                for art, s in track_songs:
+                    webbrowser.open(f"https://www.last.fm/user/{args.lastfm}/library/music/{art}/_/{s}")
+            elif mode == 'albums':
+                for art, alb in track_albums:
+                    webbrowser.open(f"https://www.last.fm/user/{args.lastfm}/library/music/{art}/{alb}")
+            else:
+                for t in track_artists:
+                    webbrowser.open(f"https://www.last.fm/user/{args.lastfm}/library/music/{t}")
+        elif args.lastfm is not None:
             print("Could not find a valid last.fm user!")
-            
+        
+        if args.spotify and tracks:
+            webbrowser.open(f"spotify://{tracks[-1].get('uri')}")
+        elif not tracks:
+            print("Could not get context to open!")
+
 if __name__ == '__main__':
     try:
         queue_track()
