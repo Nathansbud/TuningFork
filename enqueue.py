@@ -367,6 +367,7 @@ def queue_track():
     parser.add_argument('-@', '--user', nargs='?', const=prefs.get("LASTFM_USER", ""), type=str, help="Queue random top track from provided last.fm user (default: LASTFM_USER preference)"), 
     parser.add_argument('-o', '--open', nargs='?', const=prefs.get("LASTFM_USER", ""), type=str, help="Open the artist/album in library page of provided last.fm user (default: LASTFM_USER preference)")
     parser.add_argument('-z', '--watch', nargs='?', const=prefs.get("LASTFM_WATCH_USER", ""), type=str, help="Queue most recent track from provided last.fm user (default: LASTFM_WATCH_USER preference)")
+    parser.add_argument('--spotify', action="store_true", help="Handle open actions in Spotify rather than last.fm")
     
     parser.add_argument('-r', '--remember', nargs='*', default=None, help="Create custom rule for queue behavior")
     parser.add_argument('-f', '--forget', nargs='*', default=None, help="Delete custom rule for queue behavior")
@@ -734,23 +735,25 @@ def queue_track():
                 else:
                     print(f"Something went wrong while adding to {magenta('Library')} (status code: {liked.status_code})")
 
-        if args.open:
+        if args.open or args.spotify:
             artist_fmt = lambda t: t.get("artist").replace(" ", "+").split(",")[0]
-
             track_artists = set(artist_fmt(t) for t in tracks)
             track_albums = set((artist_fmt(t), t.get("album", "").replace(" ", "+")) for t in tracks)
             track_songs = set((artist_fmt(t), t.get("name", "").replace(" ", "+")) for t in tracks)
-
-            if args.song:
-                for art, s in track_songs:
-                    webbrowser.open(f"https://www.last.fm/user/{args.open}/library/music/{art}/_/{s}")
-            elif mode == 'albums':
-                for art, alb in track_albums:
-                    webbrowser.open(f"https://www.last.fm/user/{args.open}/library/music/{art}/{alb}")
-            else:
-                for t in track_artists:
-                    webbrowser.open(f"https://www.last.fm/user/{args.open}/library/music/{t}")
-        elif args.open is not None:
+            
+            if not args.spotify:
+                if args.song:
+                    for art, s in track_songs:
+                        webbrowser.open(f"https://www.last.fm/user/{args.open}/library/music/{art}/_/{s}")
+                elif mode == 'albums':
+                    for art, alb in track_albums:
+                        webbrowser.open(f"https://www.last.fm/user/{args.open}/library/music/{art}/{alb}")
+                else:
+                    for t in track_artists:
+                        webbrowser.open(f"https://www.last.fm/user/{args.open}/library/music/{t}")
+            elif tracks:
+                webbrowser.open(f"spotify://{tracks[-1].get('uri')}")
+        elif not args.spotify and args.open is not None:
             print("Could not find a valid last.fm user!")
             
 if __name__ == '__main__':
