@@ -738,7 +738,10 @@ def queue_track():
         if args.lastfm:
             artist_fmt = lambda t: t.get("artist").replace(" ", "+").split(",")[0]
             track_artists = set(artist_fmt(t) for t in tracks)
-            track_albums = set((artist_fmt(t), t.get("album", "").replace(" ", "+")) for t in tracks)
+            track_albums = set((
+                artist_fmt(t), 
+                (t.get("album", "") if isinstance(t.get("album", ""), str) else t.get("album", {}).get("name", "")).replace(" ", "+")
+            ) for t in tracks)
             track_songs = set((artist_fmt(t), t.get("name", "").replace(" ", "+")) for t in tracks)
             
             if args.song:
