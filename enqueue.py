@@ -121,6 +121,8 @@ def current_lyrics():
         return
 
     album_artists = [artist.get('name') for artist in curr.get('album', {}).get('artists', [])]
+    if not album_artists: return
+    
     lyrics = get_lyrics(album_artists[0], curr.get('name'))
     if lyrics: 
         return {
