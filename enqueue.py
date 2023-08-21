@@ -288,13 +288,22 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
     if ignore: return tracks
     elif tracks:
         og = len(tracks)
-        tracks = tracks[:limit] if limit is not None and limit > 0 else tracks
+        
+        limiter = slice(
+            max(0, limit[0] - 1) if len(limit) > 0 else 0, 
+            max(1, limit[1]) if len(limit) > 1 else len(tracks)
+        )
+
+        tracks = tracks[limiter]
+
         if last:
             print(f"""Adding {bold(last)} last played item(s) ({', '.join([track_format(t) for t in tracks])}) to queue {bold(f'{times}x')}!""")
         elif mode == 'tracks':
             print(f"Adding {', '.join([track_format(t) for t in tracks])} to queue {bold(f'{times}x')}!")
         elif mode == 'albums':
-            nt = f'{len(tracks)} tracks' if og == len(tracks) else f'{len(tracks)} / {og} tracks'
+            lr = f"track {limiter.stop}" if limiter.start + 1 == limiter.stop else f"tracks {limiter.start + 1} through {limiter.stop}"
+            nt = f'{len(tracks)} tracks' if og == len(tracks) else f'{lr}'
+            
             print(f"Adding album {album_format(tracks[0])} ({bold(nt)}) to queue {times}x!")
             # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
             sleep(2)
@@ -348,7 +357,7 @@ def queue_track():
     parser.add_argument('artist', nargs='?', default=None)
     parser.add_argument('-u', '--uri', default=None, help="Queue Spotify URI")
     parser.add_argument('-c', '--song', action="store_true", help="Queue current song")
-    parser.add_argument('-a', '--album', nargs='?', type=int, const=-1, help="Queue album by title rather than song")
+    parser.add_argument('-a', '--album', nargs='*', type=int, const=None, help="Queue album by title rather than song")
     parser.add_argument('-g', '--group', type=str, help="Queue group name")
     parser.add_argument('-st', '--spaced_track', nargs='*', default=None, help="Treat positional arguments as song title")
 
@@ -387,6 +396,8 @@ def queue_track():
     
     parser.add_argument('-i', '--ignore', action='store_true', help="Ignore the request to queue (e.g. if trying to save a rule)")      
     
+
+
     args = parser.parse_args()
     if args.spaced_track: args.title = " ".join(args.spaced_track)  
     
@@ -424,7 +435,7 @@ def queue_track():
         
         exit(0)
 
-    mode = "tracks" if (not args.album and not args.source) else "albums"
+    mode = "tracks" if (args.album is None and not args.source) else "albums"
     
     if args.queue:
         # Finally, a queue endpoint exists...it doesn't differentiate between Queue vs Up Next, but we will mf take it
