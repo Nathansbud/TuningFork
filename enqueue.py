@@ -202,8 +202,6 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
     group_data = []   
     tracks = []
     
-    playing = True
-    
     if group:
         with open(group_file) as gf:
             try:
@@ -297,7 +295,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
         tracks = tracks[limiter]
 
         if last:
-            print(f"""Adding {bold(last)} last played item(s) ({', '.join([track_format(t) for t in tracks])}) to queue {bold(f'{times}x')}!""")
+            print(f"Adding {bold(last)} last played item(s) ({', '.join([track_format(t) for t in tracks])}) to queue {bold(f'{times}x')}!")
         elif mode == 'tracks':
             print(f"Adding {', '.join([track_format(t) for t in tracks])} to queue {bold(f'{times}x')}!")
         elif mode == 'albums':
@@ -318,7 +316,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
     else:
         print("Could not find track(s)!")
 
-def remember_track(title, artist, track, mode, delete=False):
+def remember_track(title, artist, track, mode, limit=None, delete=False):
     memory = {"albums": {}, "tracks": {}}
     if os.path.isfile(short_file):
         with open(short_file, "r") as cf:
@@ -340,8 +338,9 @@ def remember_track(title, artist, track, mode, delete=False):
         memory[mode][mem_key] = {
             'name': track.get('name'), 
             'artist': track.get('artist'),
-            'album': track.get('album') if (type(track.get('album')) == str) else track.get('album', {}).get('name', ""), 
-            'relevant_uri': track.get('uri') if mode == 'tracks' else track.get('album_uri')
+            'album': track.get('album') if (type(track.get('album')) == str) else track.get('album', {}).get('name', ""),
+            'relevant_uri': track.get('uri') if mode == 'tracks' else track.get('album_uri'),
+            'limit': limit or []
         }
     else:
         print("New shortcuts must have a track or album!")
@@ -658,6 +657,7 @@ def queue_track():
         
         artist = mobject.get('artist', args.artist) if not args.amnesia else args.artist
         title = mobject.get('name', args.title) if not args.amnesia else args.title
+        limit = mobject.get('limit', []) if not (args.amnesia or args.album) else args.album
 
         uri = args.uri or mobject.get('uri') or mobject.get('relevant_uri')
         tracks = enqueue(
@@ -670,7 +670,7 @@ def queue_track():
             uri=uri,
             ignore=any((args.ignore, args.lastfm is not None, args.spotify, args.save, args.like, args.share)),
             mode=mode,
-            limit=args.album
+            limit=limit
         )
 
         if args.share and tracks:
@@ -687,21 +687,26 @@ def queue_track():
                     print(f"{red('Failed to copy to clipboard')}! This track may be named differently between platforms, or the required shortcut ({bold('https://tinyurl.com/yxwxw4ua')}) is not installed and named {bold('spotify-to-apple-music-link')}")
                 elif res['code'] != 0:
                     print(f"{red('Failed to copy to clipboard')}!")
+
         if args.remember and tracks: 
             if len(args.remember) == 0:
                 print("Cannot create a shortcut without any arguments!")
             else:
-                print(
-                    f"Creating shortcut for {mode[:-1]} {track_format(tracks[0]) if mode == 'tracks' else album_format(tracks[1])}: ", 
+                lb, ub = (max(0, limit[0] - 1) if len(limit) > 0 else 0), (max(1, limit[1]) if len(limit) > 1 else len(tracks))
+
+                print("".join([
+                    f"Creating shortcut for {mode[:-1]} {track_format(tracks[0]) if mode == 'tracks' else album_format(tracks[0])} ", 
+                    ((bold(f"(track {lb})") if lb + 1 == ub else bold(f"(tracks {lb + 1} through {ub})")) if mode == 'albums' else '') + ": ",
                     f"'{magenta(args.remember[0])}'", 
                     f"'{magenta(args.remember[1])}'" if len(args.remember) > 1 else ''
-                )
+                ]))
                 
                 remember_track(
                     args.remember[0], 
                     args.remember[1] if len(args.remember) > 1 else None, 
                     tracks[0],
-                    mode
+                    mode,
+                    args.album
                 )
 
         if args.save:
