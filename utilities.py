@@ -117,7 +117,7 @@ def get_token(scope=default_spotify_scopes):
 def call_applescript(script):
     p = Popen(['osascript'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
     stdout, stderr = p.communicate(script)
-    return {"output": stdout, "error": stderr,"code": p.returncode}
+    return {"output": stdout, "error": stderr, "code": p.returncode}
 
 def get_share_link(track, apple=False):
     # this depends on the shortcut used here https://www.icloud.com/shortcuts/54fcecba0c614f97ab2d664b6ea21450,
@@ -126,14 +126,14 @@ def get_share_link(track, apple=False):
     
     # copy the passed in track URI to a URL
     process = Popen(['pbcopy'], env={'LANG': 'en_US.UTF-8'}, stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    procout, procerr = process.communicate(bytes(track.encode('UTF-8')))
+    _, procerr = process.communicate(bytes(track.encode('UTF-8')))
 
     if apple:
         p = Popen(['shortcuts', 'run', 'spotify-to-apple-music-link'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
         stdout, stderr = p.communicate()
-        return {"output": stdout, "error": stderr,"code": p.returncode}
+        return {"link": stdout, "error": stderr,"code": p.returncode}
 
-    return {"output": procout, "error": procerr,"code": process.returncode}
+    return {"link": track, "error": procerr, "code": process.returncode}
 
 def get_vocal_paths():
     get_tracks = """
@@ -160,6 +160,17 @@ def get_current_track():
     
     current_track = call_applescript(get_current).get('output').strip().split(split_on)
     return {"title": current_track[0], "artist": current_track[1], "album": current_track[2]} if len(current_track) == 3 else None
+
+def send_message_to_user(contact, msg):
+    send_to_user = f"""
+        tell application "Messages"
+	        set targetService to 1st account whose service type = iMessage
+	        set targetCell to participant "{contact}" of targetService
+	        send "{msg}" to targetCell
+        end tell
+    """
+
+    return call_applescript(send_to_user)
 
 def search(title, artist=None, spotify=None):
     if not (spotify or title): return

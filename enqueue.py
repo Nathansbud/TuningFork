@@ -14,12 +14,12 @@ try:
     from utilities import (
         search, get_token, 
         album_format, track_format,
-        get_share_link,
+        get_share_link, send_message_to_user,
         dropdown,
         SongParser, SongException,
         black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
         rgb, cc, 
-        timestamp, time_progress
+        time_progress
     )
 except KeyboardInterrupt:
     # this is terrible form and i have never seen any code do it but
@@ -45,6 +45,7 @@ def load_prefs():
                     "BACKLOG": "",
                     "SHARED": ""
                 },
+                "ALIASES": {},
                 "LASTFM_USER": "",
                 "LASTFM_WATCH_USER": "Nathansbud"
             })
@@ -71,6 +72,8 @@ def playlist_uri(identifier):
     else:
         return prefs.get("PLAYLISTS", {}).get(identifier.upper())
 
+def text_recipient(alias):
+    return prefs.get("ALIASES", {}).get(alias.upper())
         
 def get_track(uri, formatted=True):
     if not uri: return [{}]
@@ -389,13 +392,12 @@ def queue_track():
     parser.add_argument('-l', '--like', action='store_true', help="Add queue set to Liked Songs")
 
     parser.add_argument('--share', choices=["SPOTIFY", "APPLE"], nargs="?", type=lambda s: s.upper(), const="SPOTIFY", help="Copy queued link to share")
+    parser.add_argument('--text', nargs="*", help="Recipients to send share text")
 
     parser.add_argument('--make_group', action='store_true', help="Create custom named group of items to queue together")
     parser.add_argument('--delete_group', help="Delete custom named group")
     
     parser.add_argument('-i', '--ignore', action='store_true', help="Ignore the request to queue (e.g. if trying to save a rule)")      
-    
-
 
     args = parser.parse_args()
     if args.spaced_track: args.title = " ".join(args.spaced_track)  
@@ -404,6 +406,7 @@ def queue_track():
     if not args.save: args.save = ["DEFAULT"] if isinstance(args.save, list) else []
     
     save_to = {p: playlist_uri(p) for p in args.save}
+    recipients = [(t, text_recipient(t)) for t in (args.text or []) if t]
 
     if args.pause or args.playpause:
         player = spotify.get("https://api.spotify.com/v1/me/player")
@@ -679,9 +682,15 @@ def queue_track():
             else:
                 item = spotify.get(f"https://api.spotify.com/v1/tracks/{tracks[0]['uri'].split(':')[-1]}").json()
             
+            print(item['external_urls'])
             res = get_share_link(item['external_urls']['spotify'], args.share != 'SPOTIFY')
-            if res['code'] == 0 and (len(res['output']) > 0 or args.share != "APPLE"):
-                print(f"{bold('Copying')} {magenta('Apple Music' if args.share != 'SPOTIFY' else 'Spotify')} share link for {album_format(item) if mode == 'albums' else track_format(item)} to clipboard!")
+            if res['code'] == 0 and len(res['link']) > 0:
+                platform_render = magenta('Apple Music' if args.share != 'SPOTIFY' else 'Spotify')
+                print(f"{bold('Copying')} {platform_render} share link for {album_format(item) if mode == 'albums' else track_format(item)} to clipboard!")
+                for (r, number) in recipients:
+                    print(f"{bold('Texting')} {platform_render} share link to {green(r)} ({number})")
+                    if send_message_to_user(number, res['link']).get("code") != 0:
+                        print(f"{red('Failed to send')}!")
             else:
                 if args.share == "APPLE":
                     print(f"{red('Failed to copy to clipboard')}! This track may be named differently between platforms, or the required shortcut ({bold('https://tinyurl.com/yxwxw4ua')}) is not installed and named {bold('spotify-to-apple-music-link')}")
@@ -774,10 +783,11 @@ def queue_track():
         elif args.lastfm is not None:
             print("Could not find a valid last.fm user!")
         
-        if args.spotify and tracks:
-            webbrowser.open(f"spotify://{tracks[-1].get('uri')}")
-        elif not tracks:
-            print("Could not get context to open!")
+        if args.spotify:
+            if tracks:
+                webbrowser.open(f"spotify://{tracks[-1].get('uri')}")
+            else:
+                print("Could not get context to open!")
 
 if __name__ == '__main__':
     try:
