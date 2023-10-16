@@ -682,7 +682,6 @@ def queue_track():
             else:
                 item = spotify.get(f"https://api.spotify.com/v1/tracks/{tracks[0]['uri'].split(':')[-1]}").json()
             
-            print(item['external_urls'])
             res = get_share_link(item['external_urls']['spotify'], args.share != 'SPOTIFY')
             if res['code'] == 0 and len(res['link']) > 0:
                 platform_render = magenta('Apple Music' if args.share != 'SPOTIFY' else 'Spotify')
