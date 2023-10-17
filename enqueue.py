@@ -703,7 +703,7 @@ def queue_track():
                 lb, ub = (max(0, limit[0] - 1) if len(limit) > 0 else 0), (max(1, limit[1]) if len(limit) > 1 else len(tracks))
 
                 print("".join([
-                    f"Creating shortcut for {mode[:-1]} {track_format(tracks[0]) if mode == 'tracks' else album_format(tracks[0])} ", 
+                    f"Creating shortcut for {mode[:-1]} {track_format(tracks[0]) if mode == 'tracks' else album_format(tracks[0])}", 
                     ((bold(f"(track {lb})") if lb + 1 == ub else bold(f"(tracks {lb + 1} through {ub})")) if mode == 'albums' else '') + ": ",
                     f"'{magenta(args.remember[0])}'", 
                     f"'{magenta(args.remember[1])}'" if len(args.remember) > 1 else ''
