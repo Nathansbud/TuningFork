@@ -676,7 +676,9 @@ def queue_track():
             limit=limit
         )
 
-        if args.share and tracks:
+        if (args.share or args.text) and tracks:
+            if not args.share: args.share = "SPOTIFY"
+            
             if mode == "albums":
                 item = spotify.get(f"https://api.spotify.com/v1/albums/{tracks[0]['album_uri'].split(':')[-1]}").json()
             else:
