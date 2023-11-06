@@ -688,6 +688,10 @@ def queue_track():
             if res['code'] == 0 and len(res['link']) > 0:
                 platform_render = magenta('Apple Music' if args.share != 'SPOTIFY' else 'Spotify')
                 print(f"{bold('Copying')} {platform_render} share link for {album_format(item) if mode == 'albums' else track_format(item)} to clipboard!")
+
+                # if we are about to text, build in a lil wait
+                if recipients: sleep(2)
+
                 for (r, number) in recipients:
                     print(f"{bold('Texting')} {platform_render} share link to {green(r)} ({number})")
                     if send_message_to_user(number, res['link']).get("code") != 0:
