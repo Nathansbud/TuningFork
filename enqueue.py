@@ -424,7 +424,7 @@ def queue_track():
         exit(0)    
     elif args.volume is not None:
         if 0 <= args.volume <= 100:
-            vol = spotify.put("https://api.spotify.com/v1/me/player/volume?volume_percent=0", data=json.dumps({
+            vol = spotify.put(f"https://api.spotify.com/v1/me/player/volume?volume_percent={args.volume}", data=json.dumps({
                 "volume_percent": args.volume
             }))
 
