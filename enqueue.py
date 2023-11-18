@@ -17,6 +17,7 @@ try:
         get_share_link, send_message_to_user,
         dropdown,
         SongParser, SongException,
+        remove_remaster,
         black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
         rgb, cc, 
         time_progress
@@ -75,7 +76,7 @@ def playlist_uri(identifier):
 def text_recipient(alias):
     return prefs.get("ALIASES", {}).get(alias.upper())
         
-def get_track(uri, formatted=True):
+def get_tracks(uri, formatted=True):
     if not uri: return [{}]
     uri = uri.strip()
     
@@ -94,7 +95,7 @@ def get_track(uri, formatted=True):
             'uri': t.get('uri'), 
             'album': album_data.get('name'),
             'album_uri': album_data.get('uri')
-        } for t in album_tracks.get('items', [])]
+        } if formatted else t for t in album_tracks.get('items', [])]
     else:
         r = spotify.get(f'https://api.spotify.com/v1/tracks/{idx}')
         if r.status_code == 404: return []
@@ -108,6 +109,8 @@ def get_track(uri, formatted=True):
                     'album': resp.get("album", {}).get('name'),
                     'album_uri': resp.get("album", {}).get('uri')
                 }]
+            elif not resp.get('error'):
+                return resp
         
         return []
 
@@ -117,16 +120,18 @@ def current():
     
 def current_track(): return current().get('item', {})
 def current_uri(): return current_track().get('uri')
-def current_lyrics():
-    try:
-        curr = current_track()
-    except json.decoder.JSONDecodeError:
-        return
+def current_album(): return current_track().get('album', {})
+def current_lyrics(): 
+    return track_lyrics(current_track())
+
+def track_lyrics(curr, album_context=None, clean=True):
+    # bootstrap in album context if needed
+    if album_context: curr['album'] = album_context
 
     album_artists = [artist.get('name') for artist in curr.get('album', {}).get('artists', [])]
     if not album_artists: return
     
-    lyrics = get_lyrics(album_artists[0], curr.get('name'))
+    lyrics = get_lyrics(album_artists[0], remove_remaster(curr.get('name')) if clean else curr.get('name'))
     if lyrics: 
         return {
             "artist": album_artists[0],
@@ -136,7 +141,7 @@ def current_lyrics():
         }
     else:
         for p in permutations(album_artists):
-            lyrics = get_lyrics(" and ".join(p), curr.get('name'))
+            lyrics = get_lyrics(" and ".join(p), remove_remaster(curr.get('name')) if clean else curr.get('name'))
             if lyrics:
                 return {
                     "artist": " and ".join(p),
@@ -151,7 +156,7 @@ def current_lyrics():
             "title": curr.get("name"), 
             "lyrics": None
         }
-    
+
 def make_group():
     tracks = []
     name = input("Queue Group Name: ")
@@ -185,9 +190,9 @@ def make_group():
             try:
                 track = {}           
                 args = parser.parse_args(shlex.split(candidate_track))
-                if args.title: track = get_track(search(args.title, args.artist, spotify))[0]
-                elif args.uri: track = get_track(args.uri)[0]
-                elif args.current: track = get_track(current_uri())[0]
+                if args.title: track = get_tracks(search(args.title, args.artist, spotify))[0]
+                elif args.uri: track = get_tracks(args.uri)[0]
+                elif args.current: track = get_tracks(current_uri())[0]
                 else:
                     raise SongException("Invalid track specifier! Provide artist (and track), else specify current (-c) or uri (-u)!")
 
@@ -221,7 +226,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
         if times > 0: 
             times = 1
     elif title or uri: 
-        if uri: tracks = get_track(uri, True)
+        if uri: tracks = get_tracks(uri, True)
         else:
             if artist:
                 st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}%20artist:{artist}&type={mode[:-1]}&limit=1&offset=0").json()

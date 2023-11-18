@@ -10,6 +10,7 @@ import urllib
 from time import sleep 
 import argparse
 from enum import Enum
+import re
 
 from requests_oauthlib import OAuth2Session
 from simple_term_menu import TerminalMenu
@@ -172,15 +173,47 @@ def send_message_to_user(contact, msg):
 
     return call_applescript(send_to_user)
 
-def search(title, artist=None, spotify=None):
+def search(title, artist=None, spotify=None, mode='track'):
     if not (spotify or title): return
 
     if title and artist:
-        resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}%20artist:{artist.strip()}&type=track&limit=1&offset=0").json()
+        resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}%20artist:{artist.strip()}&type={mode}&limit=1&offset=0").json()
     elif title:
-        resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}&type=track&limit=1&offset=0").json()
+        resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}&type={mode}&limit=1&offset=0").json()
     
     return (resp.get('tracks', {}).get('items') or [{}])[0].get('uri')
+
+def remove_after(inp, endings=None, regex_endings=None):
+    if regex_endings:
+        for r in regex_endings: 
+            inp = re.split(r, inp)[0]
+
+    if endings:
+        for ending in endings:
+            if ending in inp: inp = inp.split(ending)[0].strip()
+
+    return inp
+
+def remove_remaster(inp):
+    return remove_after(
+        inp, 
+        endings=[
+            ' (Expanded', 
+            ' (Deluxe', 
+            ' (Original Mono', 
+            ' (Remastered', 
+            ' (Bonus', 
+            ' (Legacy Edition', 
+            ' (Super Deluxe Edition',
+            ' (Special Edition',
+            ' ['
+        ], 
+        regex_endings=[
+            r'\s\(\d{4} Remaster',
+            r'Remastered\s\d{4}',
+            r'\(\d+(.*?) Anniversary(.*?)Edition'
+        ]
+    )
 
 def dropdown(options: dict):
     # options contains k-v pairs
