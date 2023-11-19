@@ -12,8 +12,6 @@ charset-normalizer==3.3.2
     # via requests
 idna==3.4
     # via requests
-mutagen==1.47.0
-    # via -r requirements.in
 oauthlib==3.2.2
     # via requests-oauthlib
 pillow==10.1.0
