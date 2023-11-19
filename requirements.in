@@ -1,8 +1,8 @@
-pytz
-requests
-Pillow
-requests-oauthlib
-simple-term-menu
 beautifulsoup4
 mutagen
+Pillow
+pytz
+requests
+requests-oauthlib
+simple-term-menu
 unidecode

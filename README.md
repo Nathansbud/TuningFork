@@ -14,7 +14,7 @@ The actively maintained projects in this repo are those that interface with Spot
 
 # Setup
 
-Everything in this repository was built to serve my personal needs, which primarily center around Spotify and Last.fm. Both platforms require various API keys to be added to `credentials/`, detailed below.  Otherwise, setup is as it would be for any Python project (install dependencies from `requirements.txt`).
+Everything in this repository was built to serve my personal needs, presently interfacing with Spotify and Last.fm (see `archived/` for unmaintained utilities). Both platforms require various API keys to be added to `credentials/`, as detailed below. Python dependencies can be installable from `requirements.txt` (i.e. `pip install -r requirements.txt`). Note that this project's dependency management uses `requirements.in` with `pip-compile` to generate transient depencies in `requirements.txt` (though this should not impact users).
 
 ## Spotify API
 
@@ -38,14 +38,14 @@ Many projects have fallen by the wayside in the time that this repo has housed m
 
 Tools reliant upon `iTunes Library.xml` won't be able to work with `Music.app` (which deprecated the XML interface), nor likely work with the `reader/TuneSwiftly` provided to query tracks in a users iTunes library via the Swift API. Further, scripts with web scraping components (e.g. `Lyrical`, which interfaces with Genius) were fragile to begin with, and have almost certainly been broken by site redesigns.
 
-Unmaintained projects housed under the TuningFork are housed under `archived`, and include; they will likely not work out-the-box due to breaking changes (i.e. directory restructuring) to other local modules they depend on:
+Unmaintained projects housed under the TuningFork are housed under `archived/`, and almost certainly not work out-the-box due to breaking changes (i.e. directory restructuring) to local modules they may have depended on:
 
 - **Turntable**: Create and manage custom track start/stop point and queue rules for Spotify
-- **Lyricbot**: Create Twitter bots which post lyrics (using Genius, GDocs, or GSheets as a source)
-- **Plogger**: Local song listening tracker
+- **Plogger**: Local song listening tracker (supplanted personally by Last.fm)
     - **Logger + Plotter**: Monitor and visualize changes to `iTunes Library.xml`
     - **Spotterfy**: Monitor Spotify track changes     
 - **Playpen**: Utilities for iTunes playlist/track management
     - **Migrator**: Spotify playlist creator from iTunes or tracks by name/artist
     - **Profane**: Tool to check if track lyrics contain profanity and build classroom-friendly playlists
     - **Cleanser**: CLI tool to remove unwanted ID3 tags from MP3 files
+- **Lyricbot**: Create Twitter bots which post lyrics (using Genius, GDocs, or GSheets as a source)
