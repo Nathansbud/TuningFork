@@ -8,6 +8,8 @@ import re
 from sparser import get_tracks
 from unidecode import unidecode
 
+from utilities import get_token
+
 
 feat_split = [" ft\. ", " feat\. ", " featuring\. ", " \(with "]
 

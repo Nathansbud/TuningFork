@@ -3,12 +3,11 @@ import json
 import os
 import pytz
 
-from datetime import datetime, timedelta, tzinfo
+from datetime import datetime, timedelta
 from io import BytesIO
 from time import sleep
 
 import requests
-import pylast
 from PIL import Image
 
 from utilities import search, get_token
@@ -23,12 +22,6 @@ atom_dir = os.path.join(os.path.dirname(__file__), "resources", "atoms")
 
 with open(lastfm_file, "r") as cf: lastfm_creds = json.load(cf)
 with open(prefs_file, "r") as pf: prefs = json.load(pf)
-
-lastfm = pylast.LastFMNetwork(
-    api_key=lastfm_creds["api_key"],
-    api_secret=lastfm_creds["api_secret"],
-    username=prefs.get("LASTFM_USER"),
-)
 
 def get_current_track(user): 
     k = get_recent_tracks(user, 1)

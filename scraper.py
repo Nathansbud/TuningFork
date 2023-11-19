@@ -12,7 +12,6 @@ from urllib import parse
 from sparser import parse_itunes_xml, get_tracks
 import unidecode
 import re
-import argparse
 
 from tkinter.filedialog import askopenfilename, Tk, askopenfilenames
 

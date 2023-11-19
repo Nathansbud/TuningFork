@@ -10,6 +10,7 @@ The actively maintained projects in this repo are those that interface with Spot
 
 - **Enqueue**: Add tracks (or groups of tracks) to Spotify queue
 - **Lastly**: Create playlists from Last.fm data
+- **Lyrics**: Pull lyrics for currently playing tracks/albums
 
 # Setup
 
@@ -37,24 +38,14 @@ Many projects have fallen by the wayside in the time that this repo has housed m
 
 Tools reliant upon `iTunes Library.xml` won't be able to work with `Music.app` (which deprecated the XML interface), nor likely work with the `reader/TuneSwiftly` provided to query tracks in a users iTunes library via the Swift API. Further, scripts with web scraping components (e.g. `Lyrical`, which interfaces with Genius) were fragile to begin with, and have almost certainly been broken by site redesigns.
 
-Unmaintained projects housed under the TuningFork umbrella include:
+Unmaintained projects housed under the TuningFork are housed under `archived`, and include; they will likely not work out-the-box due to breaking changes (i.e. directory restructuring) to other local modules they depend on:
 
-**iTunes**:
-- **Logger**: Local iTunes listening tracker by monitoring changes to `iTunes Library.xml`
-    - **Plotter**: Fun scripts to graph `Logger` data
-- **Parser**: Load local music library from `iTunes Library.xml` or `Music.app` using a Swift exectuable
-
-**Spotify**:
-
-- **Migrator**: Spotify playlist creator from iTunes or tracks by name/artist
-- **Profane**: Tool to check if track lyrics contain profanity and build classroom-friendly playlists
-- **Turntable**: Custom track start/stop point and queue rules for Spotify
-    - **Jockey**: CLI tool to create Turntable rules (stored in `resources/rules.json`)
-
-**Other**: 
-
-- **Cleanser**: CLI tool to remove unwanted ID3 tags from MP3 files
-- **Scraper**: Tool to add lyrics to local files using Genius data
-    - **Lyrical**: Lyric grabber using Genius for random/specified songs 
-    - **LyricBot**: Create Twitter bots which post lyrics (using Genius, GDocs, or GSheets as a source)
-
+- **Turntable**: Create and manage custom track start/stop point and queue rules for Spotify
+- **Lyricbot**: Create Twitter bots which post lyrics (using Genius, GDocs, or GSheets as a source)
+- **Plogger**: Local song listening tracker
+    - **Logger + Plotter**: Monitor and visualize changes to `iTunes Library.xml`
+    - **Spotterfy**: Monitor Spotify track changes     
+- **Playpen**: Utilities for iTunes playlist/track management
+    - **Migrator**: Spotify playlist creator from iTunes or tracks by name/artist
+    - **Profane**: Tool to check if track lyrics contain profanity and build classroom-friendly playlists
+    - **Cleanser**: CLI tool to remove unwanted ID3 tags from MP3 files

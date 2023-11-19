@@ -9,7 +9,7 @@ import json
 
 
 with open(os.path.join(os.path.dirname(__file__), "data", "profanity.json")) as pf:
-    language.get= json.load(pf)
+    language = json.load(pf)
 
 #limited scunthorpe checking
 def check_lyrics(file=None, url=None, artist="", title="", lyrics="", strict=False, prints=True, alt_url=None):
