@@ -25,12 +25,6 @@ def is_good_response(resp):
     return resp.status_code == 200 and content_type is not None and content_type.find('html') > -1
 ###ENDS HERE—THANK YOU TO https://realpython.com/python-web-scraping-practical-introduction/
 
-def has_lyrics(file):
-    if file.endswith(".mp3"):
-        return "USLT::eng" in ID3(file).keys()
-    else:
-        return "\xa9lyr" in MP4(file).keys()
-
 def genius_clean(field):
     #unidecode turns • into *...annoying.
     field = unidecode.unidecode(field.lower().split("(feat. ")[0].split( " ft. ")[0].split( " feat. ")[0].split(" featuring. ")[0].split("  feat. ")[0].split(" (with ")[0].replace("&", "and").replace("•", "").replace("æ", "").replace("œ", "").replace("’", "")) #split off featuring, replace & with and
