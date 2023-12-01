@@ -35,7 +35,6 @@ def load_cache():
                 },
             }, cf, indent=2)
     
-    exit(0)
     with open(CACHE_FILE, "r+") as cf:
         return json.load(cf)
     
@@ -126,7 +125,6 @@ def update_liked_playlist(playlist_id, last_update=None):
 
     cache["LIKED_METADATA"]["LAST_UPDATE"] = time_now
     save_cache()
-
 
 if __name__ == "__main__":
     if internet():
