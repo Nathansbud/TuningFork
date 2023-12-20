@@ -5,7 +5,7 @@ from datetime import datetime
 
 import requests
 
-from utilities import get_token, get_library_albums, get_library_tracks
+from utilities import get_token, get_library_album_tracks, get_library_tracks
 
 CACHE_FILE = os.path.join(os.path.dirname(__file__), "resources", "playlister.json")
 
@@ -47,7 +47,7 @@ def save_cache():
 
 def update_library_playlist(playlist_id, last_update=None):
     time_now = datetime.utcnow().isoformat()
-    additions = get_library_albums(last_update, client=spotify)
+    additions = get_library_album_tracks(last_update, client=spotify)
 
     BATCH_SIZE = 100
     batched = [

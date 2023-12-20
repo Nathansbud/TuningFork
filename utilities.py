@@ -12,6 +12,7 @@ from enum import Enum
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from subprocess import Popen, PIPE
 from time import sleep
+from typing import Union
 
 from requests_oauthlib import OAuth2Session
 from simple_term_menu import TerminalMenu
@@ -285,11 +286,19 @@ def timestamp(ms):
 def time_progress(curr, total, paren=False):
     return ('(' * paren) + f"{bold(timestamp(curr))} / {bold(timestamp(total))}" + (')' * paren)
 
-def get_library_albums(earliest=None, latest=None, client=None):
-    lb = datetime.fromisoformat(earliest) if earliest else datetime.min
-    ub = datetime.fromisoformat(latest) if latest else datetime.max
+def iso_or_datetime(iso_or_datetime: Union[str, datetime]):
+    if isinstance(iso_or_datetime, str): 
+        return datetime.fromisoformat(iso_or_datetime)
+    elif isinstance(iso_or_datetime, datetime):
+        return iso_or_datetime
+    
+    return None
 
-    albums = []
+def get_library_albums(earliest=None, latest=None, client=None):
+    lb = iso_or_datetime(earliest) or datetime.min
+    ub = iso_or_datetime(latest) or datetime.max
+
+    library = []
     request_url = f"https://api.spotify.com/v1/me/albums?limit=50&offset=0"
     
     should = True
@@ -309,18 +318,22 @@ def get_library_albums(earliest=None, latest=None, client=None):
             elif added > ub:
                 continue
             
-            track_uris = [t['uri'] for t in a['album']['tracks']['items']]
-            albums.extend(track_uris)
+            library.append((a['album'], added))
     
         request_url = resp.get('next')
         if not request_url:
             should = False
     
-    return albums
+    return library
 
+def get_library_album_tracks(earliest=None, latest=None, client=None):
+    albums = get_library_albums(earliest, latest, client)
+    items = [album[0]['tracks']['items'] for album in albums]
+    return [t['uri'] for tracks in items for t in tracks]    
+    
 def get_library_tracks(earliest=None, latest=None, client=None):
-    lb = datetime.fromisoformat(earliest) if earliest else datetime.min
-    ub = datetime.fromisoformat(latest) if latest else datetime.max
+    lb = iso_or_datetime(earliest) or datetime.min
+    ub = iso_or_datetime(latest) or datetime.max
     
     additions = []
     request_url = f"https://api.spotify.com/v1/me/tracks?limit=50&offset=0"
@@ -348,5 +361,4 @@ def get_library_tracks(earliest=None, latest=None, client=None):
     return additions
 
 if __name__ == '__main__':
-    start_server(6813)
     pass
