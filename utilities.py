@@ -1,17 +1,17 @@
-from subprocess import Popen, PIPE
-
-import os
-import datetime
-import itertools
-from http.server import HTTPServer, SimpleHTTPRequestHandler
-import ssl
-import json
-import webbrowser
-import urllib
-from time import sleep 
 import argparse
-from enum import Enum
+import itertools
+import json
+import os
 import re
+import ssl
+import urllib
+import webbrowser
+
+from datetime import datetime
+from enum import Enum
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+from subprocess import Popen, PIPE
+from time import sleep
 
 from requests_oauthlib import OAuth2Session
 from simple_term_menu import TerminalMenu
@@ -122,17 +122,14 @@ def get_token(scope=default_spotify_scopes):
 
 def get_cookies():
     if spotify_creds.get("cookies"):
-        expiry_date = datetime.datetime.fromisoformat(spotify_creds["cookies"]["expiration"][:-1])
-        if datetime.datetime.now() > expiry_date:
+        expiry_date = datetime.fromisoformat(spotify_creds["cookies"]["expiration"][:-1])
+        if datetime.now() > expiry_date:
             print(f'{red("Internal cookies have expired")}, make sure to update before attempting to use internal APIs!')
         else:
             return spotify_creds['cookies']['entries']
             
     return {}
         
-
-    
-
 def call_applescript(script):
     p = Popen(['osascript'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
     stdout, stderr = p.communicate(script)
@@ -287,6 +284,68 @@ def timestamp(ms):
 
 def time_progress(curr, total, paren=False):
     return ('(' * paren) + f"{bold(timestamp(curr))} / {bold(timestamp(total))}" + (')' * paren)
+
+def get_library_albums(earliest=None, latest=None, client=None):
+    lb = datetime.fromisoformat(earliest) if earliest else datetime.min
+    ub = datetime.fromisoformat(latest) if latest else datetime.max
+
+    albums = []
+    request_url = f"https://api.spotify.com/v1/me/albums?limit=50&offset=0"
+    
+    should = True
+    while should:
+        resp = client.get(request_url).json()
+        albums = resp['items']
+
+        for a in albums:
+            # drop trailing Z, which isn't valid ISO format
+            added = datetime.fromisoformat(a['added_at'][:-1])
+            
+            # if we have reached our lb, all future albums will be below and ignored; 
+            # if we are above our ub, these albums should be disregarded
+            if added <= lb:
+                should = False
+                break
+            elif added > ub:
+                continue
+            
+            track_uris = [t['uri'] for t in a['album']['tracks']['items']]
+            albums.extend(track_uris)
+    
+        request_url = resp.get('next')
+        if not request_url:
+            should = False
+    
+    return albums
+
+def get_library_tracks(earliest=None, latest=None, client=None):
+    lb = datetime.fromisoformat(earliest) if earliest else datetime.min
+    ub = datetime.fromisoformat(latest) if latest else datetime.max
+    
+    additions = []
+    request_url = f"https://api.spotify.com/v1/me/tracks?limit=50&offset=0"
+    
+    should = True
+    while should:
+        resp = client.get(request_url).json()
+        tracks = resp['items']
+        for t in tracks:
+            # drop trailing Z, which isn't valid ISO format
+            added = datetime.fromisoformat(t['added_at'][:-1])
+            if added <= lb:
+                should = False
+                break
+            elif added > ub:
+                continue
+            
+            
+            additions.append(t['track']['uri'])
+        
+        request_url = resp.get('next')
+        if not request_url:
+            should = False
+
+    return additions
 
 if __name__ == '__main__':
     start_server(6813)

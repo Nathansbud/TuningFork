@@ -5,7 +5,7 @@ from datetime import datetime
 
 import requests
 
-from utilities import get_token
+from utilities import get_token, get_library_albums, get_library_tracks
 
 CACHE_FILE = os.path.join(os.path.dirname(__file__), "resources", "playlister.json")
 
@@ -46,33 +46,9 @@ def save_cache():
         json.dump(cache, cf, indent=2)
 
 def update_library_playlist(playlist_id, last_update=None):
-    bound = datetime.fromisoformat(last_update) if last_update else datetime.min
-
     time_now = datetime.utcnow().isoformat()
-    
-    additions = []
-    request_url = f"https://api.spotify.com/v1/me/albums?limit=50&offset=0"
-    
-    should = True
-    while should:
-        resp = spotify.get(request_url).json()
-        albums = resp['items']
+    additions = get_library_albums(last_update, client=spotify)
 
-        for a in albums:
-            # drop trailing Z, which isn't valid ISO format
-            added = datetime.fromisoformat(a['added_at'][:-1])
-
-            if added <= bound:
-                should = False
-                break
-            
-            track_uris = [t['uri'] for t in a['album']['tracks']['items']]
-            additions.extend(track_uris)
-    
-        request_url = resp.get('next')
-        if not request_url:
-            should = False
-        
     BATCH_SIZE = 100
     batched = [
         additions[i:i+BATCH_SIZE] for i in range(0, len(additions), BATCH_SIZE)
@@ -88,29 +64,8 @@ def update_library_playlist(playlist_id, last_update=None):
     save_cache()
 
 def update_liked_playlist(playlist_id, last_update=None):
-    bound = datetime.fromisoformat(last_update) if last_update else datetime.min
-
     time_now = datetime.utcnow().isoformat()
-    
-    additions = []
-    request_url = f"https://api.spotify.com/v1/me/tracks?limit=50&offset=0"
-    
-    should = True
-    while should:
-        resp = spotify.get(request_url).json()
-        tracks = resp['items']
-        for t in tracks:
-            # drop trailing Z, which isn't valid ISO format
-            added = datetime.fromisoformat(t['added_at'][:-1])
-            if added <= bound:
-                should = False
-                break
-            
-            additions.append(t['track']['uri'])
-        
-        request_url = resp.get('next')
-        if not request_url:
-            should = False
+    additions = get_library_tracks(last_update, client=spotify)
 
     BATCH_SIZE = 100
     batched = [
