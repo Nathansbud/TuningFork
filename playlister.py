@@ -87,7 +87,7 @@ if __name__ == "__main__":
             cache["LIKED_METADATA"]["ACTIVE_PLAYLIST_URI"].split(":")[-1],
             cache["LIKED_METADATA"]["LAST_UPDATE"],
         )
-
+        
         update_library_playlist(
             cache["LIBRARY_METADATA"]["ACTIVE_PLAYLIST_URI"].split(":")[-1],
             cache["LIBRARY_METADATA"]["LAST_UPDATE"],

@@ -299,7 +299,7 @@ def get_library_albums(earliest=None, latest=None, client=None):
     ub = iso_or_datetime(latest) or datetime.max
 
     library = []
-    request_url = f"https://api.spotify.com/v1/me/albums?limit=50&offset=0"
+    request_url = "https://api.spotify.com/v1/me/albums?limit=50&offset=0"
     
     should = True
     while should:
@@ -310,21 +310,29 @@ def get_library_albums(earliest=None, latest=None, client=None):
             # drop trailing Z, which isn't valid ISO format
             added = datetime.fromisoformat(a['added_at'][:-1])
             
-            # if we have reached our lb, all future albums will be below and ignored; 
-            # if we are above our ub, these albums should be disregarded
-            if added <= lb:
-                should = False
-                break
-            elif added > ub:
-                continue
+            # this is deeply upsetting to me (as it makes this method incredibly slow), 
+            # but Spotify's Library API uses Recent sort (not Recently Added sort), with no option
+            # to specify sort option, meaning older albums that are played gate any "new" albums before 
+            # them from being added; this does not affect library tracks (which is just a playlist), which 
+            # can use the much more performant early-exit approach:
+            #
+            #   if added <= lb:
+            #       should = False
+            #       break
+            #   elif added > ub:
+            #       continue
+            #
+            # will investigate when looking @ internal API, since there ought to be a better way...
             
-            library.append((a['album'], added))
-    
+            if ub >= added >= lb:
+                library.append((a['album'], added))
+
         request_url = resp.get('next')
         if not request_url:
             should = False
     
-    return library
+    # return in sorted order based on date
+    return sorted(library, key=lambda v: v[1])[::-1] 
 
 def get_library_album_tracks(earliest=None, latest=None, client=None):
     albums = get_library_albums(earliest, latest, client)
@@ -336,7 +344,7 @@ def get_library_tracks(earliest=None, latest=None, client=None):
     ub = iso_or_datetime(latest) or datetime.max
     
     additions = []
-    request_url = f"https://api.spotify.com/v1/me/tracks?limit=50&offset=0"
+    request_url = "https://api.spotify.com/v1/me/tracks?limit=50&offset=0"
     
     should = True
     while should:
