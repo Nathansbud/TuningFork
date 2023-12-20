@@ -471,7 +471,7 @@ def queue_track():
         # Spotify API takes a second to catch up, so we need to sleep before hitting current track endpoint, 
         # since next doesn't return track info
         sleep(1)
-        print(f"Now playing: {track_format(current_track())}!")
+        print(f"Now playing: {track_format(current_track(), album=True)}!")
         exit(0)
     elif args.playlist:
         puri = playlist_uri(args.playlist)
