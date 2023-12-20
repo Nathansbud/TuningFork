@@ -1,6 +1,7 @@
 from subprocess import Popen, PIPE
 
 import os
+import datetime
 import itertools
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import ssl
@@ -105,15 +106,32 @@ def save_token(token):
     with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
 
 def get_token(scope=default_spotify_scopes):
+    CLIENT = None
+
     if not os.path.isfile(os.path.join(cred_path, "spotify_token.json")):
-        return authorize_spotify(default_spotify_scopes)
+        CLIENT = authorize_spotify(default_spotify_scopes)
     else:
         with open(os.path.join(cred_path, "spotify_token.json"), 'r+') as t:
             token = json.load(t)
-        return OAuth2Session(spotify_creds['client_id'], token=token,
+        
+        CLIENT = OAuth2Session(spotify_creds['client_id'], token=token,
                                 auto_refresh_url=token_url,
                                 auto_refresh_kwargs={'client_id': spotify_creds['client_id'], 'client_secret': spotify_creds['client_secret']},
-                                token_updater=save_token)
+                                token_updater=save_token)    
+    return CLIENT
+
+def get_cookies():
+    if spotify_creds.get("cookies"):
+        expiry_date = datetime.datetime.fromisoformat(spotify_creds["cookies"]["expiration"][:-1])
+        if datetime.datetime.now() > expiry_date:
+            print(f'{red("Internal cookies have expired")}, make sure to update before attempting to use internal APIs!')
+        else:
+            return spotify_creds['cookies']['entries']
+            
+    return {}
+        
+
+    
 
 def call_applescript(script):
     p = Popen(['osascript'], stdin=PIPE, stdout=PIPE, stderr=PIPE, universal_newlines=True)
