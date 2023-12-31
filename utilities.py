@@ -67,6 +67,8 @@ default_spotify_scopes = [
     "user-modify-playback-state",
     "user-read-currently-playing",
     "user-read-playback-state",
+    "user-library-modify",
+    "user-library-read"
 ]
 
 with open(os.path.join(cred_path, "spotify.json"), "r") as jf: 

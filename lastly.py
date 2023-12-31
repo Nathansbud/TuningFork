@@ -1,4 +1,6 @@
+import argparse
 import base64
+import code
 import json
 import os
 import pytz
@@ -91,13 +93,11 @@ def build_playlist_image(dt: datetime):
         return base64.b64encode(buff.getvalue())
 
 # annoying limitation: Spotify API doesn't really expose playlist folders through the API, so can't set
-def make_date_playlist(name, start_date, end_date, limit=25, description="", public=True):
+def make_date_playlist(name, start_date, end_date, limit=25, description="", public=True, image=True):
     top_tracks = [
         search(t["name"], t["artist"], spotify)
         for t in get_top_tracks(start_date, end_date, limit)
     ]
-        
-    playlist_image = build_playlist_image(start_date)
 
     print(f"Building playlist {name}...")
     created_playlist = spotify.post(
@@ -109,15 +109,26 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
         })
     ).json()
 
-    spotify.post(f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/tracks?uris={','.join((turi for turi in top_tracks if turi))}")
-    
+    BATCH_SIZE = 100
+    batched = [
+        top_tracks[i:i+BATCH_SIZE] for i in range(0, len(top_tracks), BATCH_SIZE)
+    ][::-1]
+
+    for b in batched:
+        spotify.post(
+            f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/tracks",
+            data=json.dumps({"uris": b, "position": 0})
+        )
+
     # for some reason, the playlist takes a bit before a playlist cover can be updated; wait a few seconds first
-    sleep(5)
-    img = spotify.put(
-        f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/images", 
-        headers={'Content-Type': 'image/jpeg'},
-        data=playlist_image
-    )
+    if image:
+        sleep(5)
+        playlist_image = build_playlist_image(start_date)
+        img = spotify.put(
+            f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/images", 
+            headers={'Content-Type': 'image/jpeg'},
+            data=playlist_image
+        )
     
     print(f"Created playlist {name}!")
 
@@ -133,10 +144,12 @@ def generate_last_month_playlist(dt):
     ) 
         
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser("Lastly")
+    parser.add_argument("mode", default="auto")
+    args = parser.parse_args()
+
     TZ = pytz.timezone("US/Eastern")
-    if MODE == "auto":
+    if args.mode == "auto":
         generate_last_month_playlist(datetime.now(tz=TZ))
-    else:
-        for i in range(2, 13):
-            generate_last_month_playlist(datetime(2022, i, 1, 0, 0, 1, tzinfo=TZ))
-        generate_last_month_playlist(datetime(2023, 1, 1, 0, 0, 1, tzinfo=TZ))
+
+
