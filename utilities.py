@@ -342,16 +342,25 @@ def get_library_album_tracks(earliest=None, latest=None, client=None):
     return [t['uri'] for tracks in items for t in tracks]    
     
 def get_library_tracks(earliest=None, latest=None, client=None):
+    return [t[0] for t in get_playlist_tracks(earliest, latest, playlist_id=None, client=client)]
+
+def get_playlist_tracks(
+    earliest=None, 
+    latest=None,
+    playlist_id=None, 
+    client=None
+):
     lb = iso_or_datetime(earliest) or datetime.min
     ub = iso_or_datetime(latest) or datetime.max
     
     additions = []
-    request_url = "https://api.spotify.com/v1/me/tracks?limit=50&offset=0"
+    
+    request_url = "https://api.spotify.com/v1/me/tracks?limit=50&offset=0" if not playlist_id else f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?limit=50&offset=0"
     
     should = True
     while should:
-        resp = client.get(request_url).json()
-        tracks = resp['items']
+        resp = client.get(request_url).json()        
+        tracks = resp['items'] if 'items' in resp else resp['tracks']['items']
         for t in tracks:
             # drop trailing Z, which isn't valid ISO format
             added = datetime.fromisoformat(t['added_at'][:-1])
@@ -361,14 +370,30 @@ def get_library_tracks(earliest=None, latest=None, client=None):
             elif added > ub:
                 continue
             
-            
-            additions.append(t['track']['uri'])
+            additions.append((t['track']['uri'], t))
         
         request_url = resp.get('next')
         if not request_url:
             should = False
 
     return additions
+
+def get_album_tracks(album_id, client=None):
+    request_url = f"https://api.spotify.com/v1/albums/{album_id}/tracks"
+    items = []
+
+    should = True
+    while should:
+        resp = client.get(request_url).json()        
+        tracks = resp['items']
+        for t in tracks:
+            items.append(t)
+
+        request_url = resp.get('next')
+        if not request_url:
+            should = False
+    
+    return items
 
 if __name__ == '__main__':
     pass

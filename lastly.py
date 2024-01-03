@@ -1,6 +1,5 @@
 import argparse
 import base64
-import code
 import json
 import os
 import pytz
@@ -151,5 +150,3 @@ if __name__ == "__main__":
     TZ = pytz.timezone("US/Eastern")
     if args.mode == "auto":
         generate_last_month_playlist(datetime.now(tz=TZ))
-
-

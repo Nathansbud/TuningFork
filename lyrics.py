@@ -2,7 +2,7 @@ import argparse
 import tempfile
 import webbrowser
 
-from scraper import get_lyrics, get_song_url, get_album_tracks, get_album_url
+from scraper import get_lyrics, get_song_url, get_album_tracklist, get_album_url
 from enqueue import current_lyrics, current_album, track_lyrics, get_tracks
 from utilities import (
     remove_remaster, remove_after,
@@ -62,9 +62,9 @@ if __name__ == "__main__":
         if not args.noremove:
             album = remove_remaster(album)
         
-        tracks = get_album_tracks(artist, album) 
+        tracks = get_album_tracklist(artist, album) 
         if not tracks: 
-            tracks, fellback = get_album_tracks(album, artist), True
+            tracks, fellback = get_album_tracklist(album, artist), True
         
         if tracks: 
             if not args.open: 

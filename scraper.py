@@ -43,7 +43,7 @@ def get_album_url(artist, name):
 
     return f"https://genius.com/albums/{artist}/{album}"
 
-def get_album_tracks(artist, name):
+def get_album_tracklist(artist, name):
     url = get_album_url(artist, name)
     resp = requests.get(url)
 
