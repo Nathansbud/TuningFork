@@ -10,6 +10,7 @@ import webbrowser
 from datetime import datetime
 from enum import Enum
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+from math import inf
 from subprocess import Popen, PIPE
 from time import sleep
 from typing import Union
@@ -296,7 +297,7 @@ def iso_or_datetime(iso_or_datetime: Union[str, datetime]):
     
     return None
 
-def get_library_albums(earliest=None, latest=None, client=None):
+def get_library_albums(earliest=None, latest=None, limit=inf, client=None):
     lb = iso_or_datetime(earliest) or datetime.min
     ub = iso_or_datetime(latest) or datetime.max
 
@@ -304,10 +305,11 @@ def get_library_albums(earliest=None, latest=None, client=None):
     request_url = "https://api.spotify.com/v1/me/albums?limit=50&offset=0"
     
     should = True
+    seen = 0
     while should:
         resp = client.get(request_url).json()
         albums = resp['items']
-
+        
         for a in albums:
             # drop trailing Z, which isn't valid ISO format
             added = datetime.fromisoformat(a['added_at'][:-1])
@@ -328,16 +330,21 @@ def get_library_albums(earliest=None, latest=None, client=None):
             
             if ub >= added >= lb:
                 library.append((a['album'], added))
-
-        request_url = resp.get('next')
-        if not request_url:
+            
+            seen += 1
+        
+        if seen >= limit: 
             should = False
+        else:
+            request_url = resp.get('next')
+            if not request_url:
+                should = False
     
     # return in sorted order based on date
     return sorted(library, key=lambda v: v[1])[::-1] 
 
-def get_library_album_tracks(earliest=None, latest=None, client=None):
-    albums = get_library_albums(earliest, latest, client)
+def get_library_album_tracks(earliest=None, latest=None, limit=inf, client=None):
+    albums = get_library_albums(earliest, latest, limit, client)
     items = [album[0]['tracks']['items'] for album in albums]
     return [t['uri'] for tracks in items for t in tracks]    
     

@@ -144,7 +144,7 @@ def generate_last_month_playlist(dt):
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Lastly")
-    parser.add_argument("mode", default="auto")
+    parser.add_argument("--mode", default="auto")
     args = parser.parse_args()
 
     TZ = pytz.timezone("US/Eastern")
