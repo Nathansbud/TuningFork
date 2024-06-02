@@ -11,7 +11,7 @@ from time import sleep
 import requests
 from PIL import Image
 
-from utilities import search, get_token
+from utilities import search, get_token, magenta
 
 MODE = "auto"
 MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -60,6 +60,10 @@ def get_top_tracks(start_date, end_date, limit=25, user=prefs.get("LASTFM_USER")
             "format": "json"
         }
     ).json()
+
+    if 'error' in resp:
+        print(f"Received last.fm error while fetching tracks: {resp['message']}")
+        return [] 
     
     unlimited = [{
         "artist": t["artist"]["#text"],
@@ -93,12 +97,19 @@ def build_playlist_image(dt: datetime):
 
 # annoying limitation: Spotify API doesn't really expose playlist folders through the API, so can't set
 def make_date_playlist(name, start_date, end_date, limit=25, description="", public=True, image=True):
+    if not prefs.get("SPOTIFY_USER"): 
+        print(f"Could not find preference {magenta('SPOTIFY_USER')}, exiting...")
+        return
+    
     top_tracks = [
         search(t["name"], t["artist"], spotify)
         for t in get_top_tracks(start_date, end_date, limit)
     ]
 
-    print(f"Building playlist {name}...")
+    if not top_tracks: 
+        print("Found no tracks in provided range; exiting...")
+        return
+
     created_playlist = spotify.post(
         f"https://api.spotify.com/v1/users/{prefs.get('SPOTIFY_USER')}/playlists",
         data=json.dumps({
