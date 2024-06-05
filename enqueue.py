@@ -20,8 +20,10 @@ try:
         remove_remaster,
         black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
         rgb, cc, 
-        time_progress
+        time_progress,
+        get_playlist_tracks, remove_playlist_tracks
     )
+    
 except KeyboardInterrupt:
     # this is terrible form and i have never seen any code do it but
     # i am doing it anyways because these imports take a hot minute and
@@ -65,7 +67,7 @@ def playlist_name(pid):
     else:
         return None 
 
-def playlist_uri(identifier):
+def playlist_id(identifier):
     if identifier.startswith('http'):
         return identifier.split("/")[-1].split("?")[0]
     elif identifier.startswith("spotify:playlist:"):
@@ -207,6 +209,8 @@ def make_group():
             
             
 def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, uri=None, ignore=False, mode="tracks", limit=None):
+    if not limit: limit = []
+
     group_data = []   
     tracks = []
     
@@ -291,7 +295,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
                     'album_uri': data.get('album', {}).get("uri"),
                 }]
 
-    if ignore: return tracks
+    if ignore: return tracks, 200
     elif tracks:
         og = len(tracks)
         
@@ -314,13 +318,15 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
             # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
             sleep(2)
 
+        status = 200
         for _ in range(times):  
             for t in tracks:
                 response = spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
                 if response.status_code >= 300: 
                     print(f"Failed to add {track_format(t)} to queue (status code: {response.status_code})")
-
-        return tracks
+                    status = response.status_code
+                    
+        return tracks, status
     else:
         print("Could not find track(s)!")
 
@@ -356,6 +362,16 @@ def remember_track(title, artist, track, mode, limit=None, delete=False):
     with open(short_file, "w+") as wf:
         json.dump(memory, wf)
 
+def progress_playlist(playlist_id):
+    track_uri, metadata = get_playlist_tracks(
+        playlist_id=playlist_id,
+        limit=1,
+        client=spotify
+    )[0]
+    
+    _, status = enqueue(uri=metadata['track']['album']['uri'], mode="albums")
+    if status == 200:
+        remove_playlist_tracks(playlist_id, track_uris=[track_uri], client=spotify)
 
 def queue_track():
     parser = argparse.ArgumentParser(description=f"{magenta('Enqueue')}: {green('Spotify')} {bold('Queue Manager')}!")
@@ -378,6 +394,8 @@ def queue_track():
 
     parser.add_argument('-x', '--source', choices=["LIBRARY", "BACKLOG"], nargs="?", type=lambda s: s.upper(), const="LIBRARY", help="Queue from source")
     parser.add_argument('-#', '--offset', nargs="+", type=int, help="Queue offset within source")
+
+    parser.add_argument('-y', '--progress', action="store_true")
 
     parser.add_argument('-t', '--times', nargs='?', default=1, const=1, type=int, help="Times to repeat request action")
     parser.add_argument('--previous', nargs='?', const=1, type=int, help="Queue previous n tracks")
@@ -410,7 +428,7 @@ def queue_track():
     # if --save, args.save == [], else it will be None
     if not args.save: args.save = ["DEFAULT"] if isinstance(args.save, list) else []
     
-    save_to = {p: playlist_uri(p) for p in args.save}
+    save_to = {p: playlist_id(p) for p in args.save}
     recipients = [(t, text_recipient(t)) for t in (args.text or []) if t]
 
     if args.pause or args.playpause:
@@ -443,7 +461,6 @@ def queue_track():
         exit(0)
 
     mode = "tracks" if (args.album is None and not args.source) else "albums"
-    
     if args.queue:
         # Finally, a queue endpoint exists...it doesn't differentiate between Queue vs Up Next, but we will mf take it
         q = spotify.get("https://api.spotify.com/v1/me/player/queue").json()
@@ -474,7 +491,7 @@ def queue_track():
         print(f"Now playing: {track_format(current_track(), album=True)}!")
         exit(0)
     elif args.playlist:
-        puri = playlist_uri(args.playlist)
+        puri = playlist_id(args.playlist)
         if puri:
             play_name = playlist_name(puri)
             req_p = spotify.put(f"https://api.spotify.com/v1/me/player/play", data=json.dumps({
@@ -490,6 +507,14 @@ def queue_track():
         
         exit(0)
 
+    if args.progress:
+        if playlist_id("QUEUE"):
+            progress_playlist(playlist_id("QUEUE"))
+        else:
+            print(f"Found no playlist {magenta('QUEUE')} to pop from; try adding one to your {magenta('PLAYLISTS')} in preferences.json!")
+        
+        exit(0)
+
     if args.source:
         if args.source not in ["LIBRARY", "BACKLOG"]: 
             print("Source must be one of: LIBRARY, BACKLOG")
@@ -499,7 +524,7 @@ def queue_track():
         ran = args.offset[1] if args.offset and len(args.offset) > 1 else 1
         offset = 0
 
-        backlog_uri = playlist_uri("BACKLOG")
+        backlog_uri = playlist_id("BACKLOG")
         if args.source == "BACKLOG" and backlog_uri:
             count = spotify.get(f"https://api.spotify.com/v1/playlists/{backlog_uri}/tracks").json().get('total')
             if not count > idx > -1:
@@ -635,7 +660,7 @@ def queue_track():
     elif args.watch:
         track = get_current_track(args.watch)
         if track:
-            shared_playlist = playlist_uri("SHARED")
+            shared_playlist = playlist_id("SHARED")
             if args.save: 
                 if shared_playlist:
                     uri = search(track["name"], track["artist"], spotify)
@@ -668,7 +693,7 @@ def queue_track():
         limit = mobject.get('limit', []) if not (args.amnesia or args.album) else args.album
 
         uri = args.uri or mobject.get('uri') or mobject.get('relevant_uri')
-        tracks = enqueue(
+        tracks, _ = enqueue(
             title=title,
             artist=artist,
             times=args.times,

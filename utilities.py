@@ -355,7 +355,8 @@ def get_playlist_tracks(
     earliest=None, 
     latest=None,
     playlist_id=None, 
-    client=None
+    client=None, 
+    limit=inf
 ):
     lb = iso_or_datetime(earliest) or datetime.min
     ub = iso_or_datetime(latest) or datetime.max
@@ -371,7 +372,7 @@ def get_playlist_tracks(
         for t in tracks:
             # drop trailing Z, which isn't valid ISO format
             added = datetime.fromisoformat(t['added_at'][:-1])
-            if added <= lb:
+            if added <= lb or len(additions) >= limit:
                 should = False
                 break
             elif added > ub:
@@ -401,6 +402,18 @@ def get_album_tracks(album_id, client=None):
             should = False
     
     return items
+
+def remove_playlist_tracks(playlist_id, track_uris, client=None):
+    if not client: raise SystemError("No client specified")
+    elif len(track_uris) > 100: 
+        # TODO: Do this right
+        raise ValueError("Can only remove max 100 tracks at a time (Zack was lazy)")
+    
+    request_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+    client.delete(
+        request_url,
+        data=json.dumps({"tracks": [{"uri": t} for t in track_uris]})
+    )
 
 if __name__ == '__main__':
     pass
