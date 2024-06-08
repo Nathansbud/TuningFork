@@ -1,0 +1,10 @@
+exclude = [
+    "venv",
+    ".vscode",
+    "archived",
+    "resources"
+]
+
+[lint]
+select = []
+ignore = ["E741", "E731"]
