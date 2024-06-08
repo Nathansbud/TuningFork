@@ -3,10 +3,10 @@ import random
 from datetime import datetime
 from typing import List, Optional
 
-from utilities import get_token, get_library_albums
+from utilities import SpotifyClient
 from playlister import update_liked_playlist
 
-spotify = get_token()
+spotify = SpotifyClient()
 
 def save_album_history(
     year: int, 
@@ -15,7 +15,7 @@ def save_album_history(
     library_playlist_id: Optional[str]=None, 
     release_all: bool=False
 ):
-    albums = get_library_albums(datetime(year, 12, 21, 0, 0, 0), client=spotify)[::-1]
+    albums = spotify.get_library_albums(datetime(year, 12, 21, 0, 0, 0))[::-1]
     
     def name_fmt(alb, added, release=False):
         alb_name = alb['name']

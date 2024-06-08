@@ -5,18 +5,12 @@ from datetime import datetime
 
 import requests
 
-from enqueue import enqueue
-
-from utilities import (
-    get_token, 
-    get_library_album_tracks, get_library_tracks, get_playlist_tracks, get_album_tracks,
-    remove_playlist_tracks
-)
+from utilities import SpotifyClient
 
 CACHE_FILE = os.path.join(os.path.dirname(__file__), "resources", "playlister.json")
 DUMMY_PLAYLIST = "1ijioHJWs8eEhrG7UQSISo"
 
-spotify = get_token()
+spotify = SpotifyClient()
 
 def internet():
     connection = True
@@ -57,7 +51,7 @@ def update_library_playlist(playlist_id, last_update=None, limit=50):
     
     # in the interest of performance, only do last 50 played albums when updating; 
     # realistically, we won't have gotten backlogged past that point
-    additions = get_library_album_tracks(last_update, limit=limit, client=spotify)
+    additions = spotify.get_library_album_tracks(last_update, limit=limit)
 
     BATCH_SIZE = 100
     batched = [
@@ -75,7 +69,7 @@ def update_library_playlist(playlist_id, last_update=None, limit=50):
 
 def update_liked_playlist(playlist_id, last_update=None):
     time_now = datetime.utcnow().isoformat()
-    additions = get_library_tracks(last_update, client=spotify)
+    additions = spotify.get_library_tracks(last_update)
 
     BATCH_SIZE = 100
     batched = [
@@ -93,11 +87,11 @@ def update_liked_playlist(playlist_id, last_update=None):
 
 def update_backlog_playlist(playlist_id, backlog_id, last_update=None):
     time_now = datetime.utcnow().isoformat()
-    backlog = get_playlist_tracks(last_update, playlist_id=backlog_id, client=spotify)
+    backlog = spotify.get_playlist_tracks(last_update, playlist_id=backlog_id)
     
     additions = []
     for b in backlog:
-        additions.extend([t['uri'] for t in get_album_tracks(b[1]['track']['album']['id'], spotify)])
+        additions.extend([t['uri'] for t in spotify.get_album_tracks(b[1]['track']['album']['id'])])
     
     BATCH_SIZE = 100
     batched = [
@@ -114,10 +108,10 @@ def update_backlog_playlist(playlist_id, backlog_id, last_update=None):
     save_cache()
 
 def sort_backlog_by_album_length(output_id, backlog_id):
-    backlog = get_playlist_tracks(None, playlist_id=backlog_id, client=spotify)
+    backlog = spotify.get_playlist_tracks(None, playlist_id=backlog_id)
     
     sorted_albums = sorted([
-        (sum([t['duration_ms'] for t in get_album_tracks(b[1]['track']['album']['id'], spotify)]), b[0])
+        (sum([t['duration_ms'] for t in spotify.get_album_tracks(b[1]['track']['album']['id'])]), b[0])
         for b in backlog
     ])
 

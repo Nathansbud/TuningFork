@@ -12,16 +12,14 @@ try:
     from lastly import get_current_track, get_top_tracks
     from scraper import get_lyrics
     from utilities import (
-        search, get_token, 
+        SpotifyClient,
         album_format, track_format,
         get_share_link, send_message_to_user,
         dropdown,
         SongParser, SongException,
         remove_remaster,
-        black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
-        rgb, cc, 
+        red, green, yellow, magenta, cyan, white, bold, rainbow, 
         time_progress,
-        get_playlist_tracks, remove_playlist_tracks
     )
     
 except KeyboardInterrupt:
@@ -57,7 +55,7 @@ def load_prefs():
         return json.load(gf), json.load(pf)
 
 
-spotify = get_token()
+spotify = SpotifyClient()
 groups, prefs = load_prefs()
 
 def playlist_name(pid):
@@ -192,7 +190,7 @@ def make_group():
             try:
                 track = {}           
                 args = parser.parse_args(shlex.split(candidate_track))
-                if args.title: track = get_tracks(search(args.title, args.artist, spotify))[0]
+                if args.title: track = get_tracks(spotify.search(args.title, args.artist))[0]
                 elif args.uri: track = get_tracks(args.uri)[0]
                 elif args.current: track = get_tracks(current_uri())[0]
                 else:
@@ -225,7 +223,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
         tracks = group_data
     elif user:
         track_data = get_top_tracks(start_date=datetime.now() - timedelta(days=365), end_date=datetime.now(), user=user, limit=max(50, times))
-        tracks = [{"uri": search(td['name'], td['artist'], spotify), **td} for td in random.sample(track_data, times)]
+        tracks = [{"uri": spotify.search(td['name'], td['artist']), **td} for td in random.sample(track_data, times)]
         # we can't use times with this flag!
         if times > 0: 
             times = 1
@@ -363,15 +361,14 @@ def remember_track(title, artist, track, mode, limit=None, delete=False):
         json.dump(memory, wf)
 
 def progress_playlist(playlist_id):
-    track_uri, metadata = get_playlist_tracks(
+    track_uri, metadata = spotify.get_playlist_tracks(
         playlist_id=playlist_id,
-        limit=1,
-        client=spotify
+        limit=1
     )[0]
     
     _, status = enqueue(uri=metadata['track']['album']['uri'], mode="albums")
     if status == 200:
-        remove_playlist_tracks(playlist_id, track_uris=[track_uri], client=spotify)
+        spotify.remove_playlist_tracks(playlist_id, track_uris=[track_uri])
 
 def queue_track():
     parser = argparse.ArgumentParser(description=f"{magenta('Enqueue')}: {green('Spotify')} {bold('Queue Manager')}!")
@@ -663,7 +660,7 @@ def queue_track():
             shared_playlist = playlist_id("SHARED")
             if args.save: 
                 if shared_playlist:
-                    uri = search(track["name"], track["artist"], spotify)
+                    uri = spotify.search(track["name"], track["artist"])
                     resp = spotify.post(f"https://api.spotify.com/v1/playlists/{shared_playlist}/tracks?uris={uri}")
                     if 200 <= resp.status_code < 300:
                         print(f"Added {track_format(track)} to shared playlist!")

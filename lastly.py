@@ -11,12 +11,12 @@ from time import sleep
 import requests
 from PIL import Image
 
-from utilities import search, get_token, magenta
+from utilities import SpotifyClient, magenta
 
 MODE = "auto"
 MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-spotify = get_token()
+spotify = SpotifyClient()
 lastfm_file = os.path.join(os.path.dirname(__file__), "credentials", "lastfm.json")
 prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
 atom_dir = os.path.join(os.path.dirname(__file__), "resources", "atoms")
@@ -102,7 +102,7 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
         return
     
     top_tracks = [
-        search(t["name"], t["artist"], spotify)
+        spotify.search(t["name"], t["artist"])
         for t in get_top_tracks(start_date, end_date, limit)
     ]
 

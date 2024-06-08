@@ -3,14 +3,10 @@ import json
 import os
 import sys
 import math 
-from enum import Enum
-from utilities import (
-    search, get_token,
-    color, Colors
-)
+from utilities import SpotifyClient, color, Colors
 
 rule_file = rule_file = os.path.join(os.path.dirname(__file__), "resources", "turntable.json")
-spotify = get_token()
+spotify = SpotifyClient()
 
 def get_rules(user="6rcq1j21davq3yhbk1t0l5xnt"):
     if os.path.isfile(rule_file):
@@ -55,7 +51,7 @@ def update_rule(uri, rule, track=None, idx=None, user="6rcq1j21davq3yhbk1t0l5xnt
 def current():
     return spotify.get("https://api.spotify.com/v1/me/player/currently-playing").json().get('item', {}).get('uri')
 
-def get_track(uri, spotify=spotify):
+def get_track(uri):
     if not uri: return
     uri = uri.strip()
 
@@ -118,7 +114,7 @@ if __name__ == '__main__':
         else:
             track = None
             if args.current: track = get_track(current())
-            elif args.title: track = get_track(search(args.title, args.artist, spotify))
+            elif args.title: track = get_track(spotify.search(args.title, args.artist))
             elif args.uri: track = get_track(args.uri)
         
             if args.delete != 'UNDEFINED':
@@ -164,7 +160,7 @@ if __name__ == '__main__':
                     if args.queue.startswith('spotify:'): queue = get_track(args.queue)
                     elif args.queue.strip().lower() == '@c': queue = get_track(current())
                     else:
-                        queue = get_track(search(*(args.queue.lower().split('@by') if '@by' in args.queue.lower() else [args.queue, None]), spotify))
+                        queue = get_track(spotify.search(*(args.queue.lower().split('@by') if '@by' in args.queue.lower() else [args.queue, None])))
 
 
                 rule = {}
