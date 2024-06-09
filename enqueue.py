@@ -515,8 +515,8 @@ def queue_track():
     if args.forget: 
         print(
             f"Deleting shortcut:", 
-            f"'{args.forget[0]}'", 
-            f"'{args.forget[1]}'" if len(args.forget) > 1 else ''
+            f"'{magenta(args.forget[0])}'", 
+            f"'{magenta(args.forget[1])}'" if len(args.forget) > 1 else ''
         )
         
         remember_track(
