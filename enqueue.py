@@ -1,32 +1,25 @@
-try: 
-    import argparse
-    import json
-    import os
-    import random
-    import shlex
-    import webbrowser
-    from datetime import datetime, timedelta
-    from itertools import permutations
-    from time import sleep
+import argparse
+import json
+import os
+import random
+import shlex
+import webbrowser
+from datetime import datetime, timedelta
+from itertools import permutations
+from time import sleep
 
-    from lastly import get_current_track, get_top_tracks
-    from scraper import get_lyrics
-    from utilities import (
-        SpotifyClient,
-        album_format, track_format,
-        get_share_link, send_message_to_user,
-        dropdown,
-        SongParser, SongException,
-        remove_remaster,
-        red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
-        time_progress,
-    )
-    
-except KeyboardInterrupt:
-    # this is terrible form and i have never seen any code do it but
-    # i am doing it anyways because these imports take a hot minute and
-    # they give me very ugly error messages...also idk how else to do it
-    exit(0)
+from lastly import get_current_track, get_top_tracks
+from scraper import get_lyrics
+from utilities import (
+    SpotifyClient,
+    album_format, track_format,
+    get_share_link, send_message_to_user,
+    dropdown,
+    SongParser, SongException,
+    remove_remaster,
+    red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
+    time_progress,
+)
 
 group_file = os.path.join(os.path.dirname(__file__), "resources", "groups.json")
 short_file = os.path.join(os.path.dirname(__file__), "resources", "shortcuts.json")
