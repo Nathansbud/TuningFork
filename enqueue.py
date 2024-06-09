@@ -406,34 +406,25 @@ def queue_track():
     
     save_to = {p: playlist_id(p) for p in args.save}
     recipients = [(t, text_recipient(t)) for t in (args.text or []) if t]
-
+    
     if args.pause or args.playpause:
-        player = spotify.get("https://api.spotify.com/v1/me/player")
-        if not 200 <= player.status_code < 300 or player.status_code == 204:
+        success, paused = spotify.playpause(args.pause)
+        if not success:
             print("Could not communicate with an active device; try manually playing/pausing instead!")
-            exit(0)
         else:
-            if player.json().get("is_playing"):
-                spotify.put("https://api.spotify.com/v1/me/player/pause")
-                print(f'{yellow("Pausing")} {bold("playback...")}')
-            elif not args.pause:
-                spotify.put("https://api.spotify.com/v1/me/player/play")
-                print(f'{yellow("Resuming")} {bold("playback...")}')
-                
-        exit(0)    
-    elif args.volume is not None:
-        if 0 <= args.volume <= 100:
-            vol = spotify.put(f"https://api.spotify.com/v1/me/player/volume?volume_percent={args.volume}", data=json.dumps({
-                "volume_percent": args.volume
-            }))
+            print(f'{yellow("Pausing") if paused else yellow("Resuming")} {bold("playback...")}')
 
-            if "VOLUME_CONTROL_DISALLOW" in vol.text:
-                print(f"Unfortunately, the current device {red('does not allow')} programmatic volume changes!")
-            else:
-                print(f"Set device volume to {green(args.volume)}%!")
-        else:
-            print(f"{magenta('Volume level')} must be a value from {bold('0–100')}!")
+        exit(0)
         
+    elif args.volume is not None:
+        try: 
+            if spotify.set_volume(args.volume):
+                print(f"Successfully set {magenta('device volume level')} to " + bold(f"{args.volume}%") + "!")
+            else:
+                print(f"Unfortunately, the current device {red('does not allow')} programmatic volume changes!")     
+        except ValueError:
+            print(f"{magenta('Volume level')} must be a value from {bold('0–100')}!")
+
         exit(0)
 
     mode = "tracks" if (args.album is None and not args.source) else "albums"

@@ -17,7 +17,7 @@ from model import (
     create_album_object,
     create_active_track_object
 )
-from utilities import iso_or_datetime, red
+from utilities import iso_or_datetime, red, magenta
 
 
 
@@ -256,6 +256,48 @@ class SpotifyClient(OAuth2Session):
             if resp.status_code == 404:
                 return 404
         return 200
+
+    def playpause(self, pause=True):
+        base_url = "https://api.spotify.com/v1/me/player"
+        player = self.client.get(base_url)
+        if not 200 <= player.status_code < 300 or player.status_code == 204:
+            return False, False
+    
+        if player.json().get("is_playing"):
+            self.client.put(f"{base_url}/pause")
+            return True, True
+        elif not pause:
+            self.client.put(f"{base_url}/play")
+            return True, False
+
+        return True, pause
+
+    def set_volume(self, volume):
+        if 0 <= volume <= 100:
+            vol = self.client.put(f"https://api.spotify.com/v1/me/player/volume?volume_percent={volume}", data=json.dumps({
+                "volume_percent": volume
+            }))
+
+            return "VOLUME_CONTROL_DISALLOW" not in vol.text
+        
+        raise ValueError("Invalid volume level")
+    """
+       
+    elif args.volume is not None:
+        if 0 <= args.volume <= 100:
+            vol = spotify.put(f"https://api.spotify.com/v1/me/player/volume?volume_percent={args.volume}", data=json.dumps({
+                "volume_percent": args.volume
+            }))
+
+            if "VOLUME_CONTROL_DISALLOW" in vol.text:
+                print(f"Unfortunately, the current device {red('does not allow')} programmatic volume changes!")
+            else:
+                print(f"Set device volume to {green(args.volume)}%!")
+        else:
+            print(f"{magenta('Volume level')} must be a value from {bold('0–100')}!")
+        
+        exit(0)
+        """
 
 client = SpotifyClient()
 
