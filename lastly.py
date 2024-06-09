@@ -127,7 +127,7 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
     for b in batched:
         spotify.post(
             f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/tracks",
-            data=json.dumps({"uris": b, "position": 0})
+            data=json.dumps({"uris": [t.uri for t in b], "position": 0})
         )
 
     # for some reason, the playlist takes a bit before a playlist cover can be updated; wait a few seconds first
