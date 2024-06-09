@@ -12,16 +12,14 @@ try:
     from lastly import get_current_track, get_top_tracks
     from scraper import get_lyrics
     from utilities import (
-        search, get_token, 
+        SpotifyClient,
         album_format, track_format,
         get_share_link, send_message_to_user,
         dropdown,
         SongParser, SongException,
         remove_remaster,
-        black, red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
-        rgb, cc, 
+        red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
         time_progress,
-        get_playlist_tracks, remove_playlist_tracks
     )
     
 except KeyboardInterrupt:
@@ -57,7 +55,7 @@ def load_prefs():
         return json.load(gf), json.load(pf)
 
 
-spotify = get_token()
+spotify = SpotifyClient()
 groups, prefs = load_prefs()
 
 def playlist_name(pid):
@@ -161,7 +159,7 @@ def track_lyrics(curr, album_context=None, clean=True):
 
 def make_group():
     tracks = []
-    name = input("Queue Group Name: ")
+    name = input(blue("Group Name: "))
     
     parser = SongParser("Song Parser")
     parser.add_argument('title', nargs="?")
@@ -169,11 +167,12 @@ def make_group():
     parser.add_argument('-c', '--current', action='store_true')
     parser.add_argument('-u', '--uri')
 
-    print("Input track name + artist or URI; type SAVE when finished!")
+    print(f"Specify title + artist, currently playing (-c), or URI (-u). Type {magenta('SAVE')} when finished!")
+    sleep(0.5)
     adding = True
     
     while adding:
-        candidate_track = input(f"Item {len(tracks) + 1}: ")
+        candidate_track = input(magenta(f"Item {len(tracks) + 1}: "))
         if candidate_track.strip().upper() == 'SAVE':
             if len(tracks) > 0:
                 with open(group_file) as gf:
@@ -192,22 +191,21 @@ def make_group():
             try:
                 track = {}           
                 args = parser.parse_args(shlex.split(candidate_track))
-                if args.title: track = get_tracks(search(args.title, args.artist, spotify))[0]
+                if args.title: track = get_tracks(spotify.search(args.title, args.artist))[0]
                 elif args.uri: track = get_tracks(args.uri)[0]
                 elif args.current: track = get_tracks(current_uri())[0]
                 else:
                     raise SongException("Invalid track specifier! Provide artist (and track), else specify current (-c) or uri (-u)!")
 
                 if track:
-                    confirm = input(f"Found track: {track.get('name')} by {track.get('artist')}. Add to group {name} (y/n)? ").lower().strip()
+                    confirm = input(f"Found track: {track_format(track, album=True)}. Add to group {blue(name)} ({bold('y/n')})? ").lower().strip()
                     if confirm == 'y': tracks.append(track)
                 else: 
                     print("Could not find a matching track!")
 
             except SongException as e:
                 print(e)
-            
-            
+
 def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, uri=None, ignore=False, mode="tracks", limit=None):
     if not limit: limit = []
 
@@ -222,10 +220,14 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
                 groups = {}
         
         group_data = groups.get(group, [])
+        if not group_data:
+            print(f"Could not find group {blue(group)}; try creating via {magenta('--make_group')}!")
+            return [], 404
+
         tracks = group_data
     elif user:
         track_data = get_top_tracks(start_date=datetime.now() - timedelta(days=365), end_date=datetime.now(), user=user, limit=max(50, times))
-        tracks = [{"uri": search(td['name'], td['artist'], spotify), **td} for td in random.sample(track_data, times)]
+        tracks = [{"uri": spotify.search(td['name'], td['artist']), **td} for td in random.sample(track_data, times)]
         # we can't use times with this flag!
         if times > 0: 
             times = 1
@@ -295,40 +297,42 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
                     'album_uri': data.get('album', {}).get("uri"),
                 }]
 
-    if ignore: return tracks, 200
-    elif tracks:
-        og = len(tracks)
-        
-        limiter = slice(
-            max(0, limit[0] - 1) if len(limit) > 0 else 0, 
-            max(1, limit[1]) if len(limit) > 1 else len(tracks)
-        )
-
-        tracks = tracks[limiter]
-
-        if last:
-            print(f"Adding {bold(last)} last played item(s) ({', '.join([track_format(t) for t in tracks])}) to queue {bold(f'{times}x')}!")
-        elif mode == 'tracks':
-            print(f"Adding {', '.join([track_format(t) for t in tracks])} to queue {bold(f'{times}x')}!")
-        elif mode == 'albums':
-            lr = f"track {limiter.stop}" if limiter.start + 1 == limiter.stop else f"tracks {limiter.start + 1} through {limiter.stop}"
-            nt = f'{len(tracks)} tracks' if og == len(tracks) else f'{lr}'
-            
-            print(f"Adding album {album_format(tracks[0])} ({bold(nt)}) to queue {times}x!")
-            # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
-            sleep(2)
-
-        status = 200
-        for _ in range(times):  
-            for t in tracks:
-                response = spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
-                if response.status_code >= 300: 
-                    print(f"Failed to add {track_format(t)} to queue (status code: {response.status_code})")
-                    status = response.status_code
-                    
-        return tracks, status
-    else:
+    if not tracks:
         print("Could not find track(s)!")
+        return [], 404
+    elif ignore:
+        return tracks, 200
+
+    og = len(tracks)
+    
+    limiter = slice(
+        max(0, limit[0] - 1) if len(limit) > 0 else 0, 
+        max(1, limit[1]) if len(limit) > 1 else len(tracks)
+    )
+
+    tracks = tracks[limiter]
+
+    if last:
+        print(f"Adding {bold(last)} last played item(s) ({', '.join([track_format(t) for t in tracks])}) to queue {bold(f'{times}x')}!")
+    elif mode == 'tracks':
+        print(f"Adding {', '.join([track_format(t) for t in tracks])} to queue {bold(f'{times}x')}!")
+    elif mode == 'albums':
+        lr = f"track {limiter.stop}" if limiter.start + 1 == limiter.stop else f"tracks {limiter.start + 1} through {limiter.stop}"
+        nt = f'{len(tracks)} tracks' if og == len(tracks) else f'{lr}'
+        
+        print(f"Adding album {album_format(tracks[0])} ({bold(nt)}) to queue {times}x!")
+        # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
+        sleep(2)
+
+    status = 200
+    for _ in range(times):  
+        for t in tracks:
+            response = spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
+            if response.status_code >= 300: 
+                print(f"Failed to add {track_format(t)} to queue (status code: {response.status_code})")
+                status = response.status_code
+                
+    return tracks, status
 
 def remember_track(title, artist, track, mode, limit=None, delete=False):
     memory = {"albums": {}, "tracks": {}}
@@ -336,7 +340,7 @@ def remember_track(title, artist, track, mode, limit=None, delete=False):
         with open(short_file, "r") as cf:
             try: 
                 memory = json.load(cf)
-            except:
+            except Exception:
                 memory = {
                     "albums": {},
                     "tracks": {}
@@ -363,15 +367,14 @@ def remember_track(title, artist, track, mode, limit=None, delete=False):
         json.dump(memory, wf)
 
 def progress_playlist(playlist_id):
-    track_uri, metadata = get_playlist_tracks(
+    track_uri, metadata = spotify.get_playlist_tracks(
         playlist_id=playlist_id,
-        limit=1,
-        client=spotify
+        limit=1
     )[0]
     
     _, status = enqueue(uri=metadata['track']['album']['uri'], mode="albums")
     if status == 200:
-        remove_playlist_tracks(playlist_id, track_uris=[track_uri], client=spotify)
+        spotify.remove_playlist_tracks(playlist_id, track_uris=[track_uri])
 
 def queue_track():
     parser = argparse.ArgumentParser(description=f"{magenta('Enqueue')}: {green('Spotify')} {bold('Queue Manager')}!")
@@ -620,7 +623,6 @@ def queue_track():
         
         with open(group_file, 'w+') as gf:
             json.dump(groups, gf)
-
     elif args.list_rules: 
         with open(group_file, 'r') as gf:
             try:
@@ -663,7 +665,7 @@ def queue_track():
             shared_playlist = playlist_id("SHARED")
             if args.save: 
                 if shared_playlist:
-                    uri = search(track["name"], track["artist"], spotify)
+                    uri = spotify.search(track["name"], track["artist"])
                     resp = spotify.post(f"https://api.spotify.com/v1/playlists/{shared_playlist}/tracks?uris={uri}")
                     if 200 <= resp.status_code < 300:
                         print(f"Added {track_format(track)} to shared playlist!")
@@ -681,7 +683,7 @@ def queue_track():
         with open(short_file, 'r') as cf:
             try:
                 memory = json.load(cf)
-            except:
+            except Exception:
                 memory = {"tracks": {}, "albums": {}}
 
         memory_key = "" if not args.title else f"{args.title.lower()}{PART_SEPARATOR}{(args.artist or '').lower()}"

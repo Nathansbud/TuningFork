@@ -109,7 +109,7 @@ def authorize_spotify(scope):
 def save_token(token):
     with open(os.path.join(cred_path, "spotify_token.json"), 'w+') as t: json.dump(token, t)
 
-def get_token(scope=default_spotify_scopes):
+def get_token():
     CLIENT = None
 
     if not os.path.isfile(os.path.join(cred_path, "spotify_token.json")):
@@ -191,16 +191,6 @@ def send_message_to_user(contact, msg):
     """
 
     return call_applescript(send_to_user)
-
-def search(title, artist=None, spotify=None, mode='track'):
-    if not (spotify or title): return
-
-    if title and artist:
-        resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}%20artist:{artist.strip()}&type={mode}&limit=1&offset=0").json()
-    elif title:
-        resp = spotify.get(f"https://api.spotify.com/v1/search/?q={title.strip()}&type={mode}&limit=1&offset=0").json()
-    
-    return (resp.get('tracks', {}).get('items') or [{}])[0].get('uri')
 
 def remove_after(inp, endings=None, regex_endings=None):
     if regex_endings:
@@ -297,123 +287,139 @@ def iso_or_datetime(iso_or_datetime: Union[str, datetime]):
     
     return None
 
-def get_library_albums(earliest=None, latest=None, limit=inf, client=None):
-    lb = iso_or_datetime(earliest) or datetime.min
-    ub = iso_or_datetime(latest) or datetime.max
+class SpotifyClient(OAuth2Session):
+    def __init__(self): 
+        self.client = get_token()
 
-    library = []
-    request_url = "https://api.spotify.com/v1/me/albums?limit=50&offset=0"
+    def get(self, *args, **kwargs): return self.client.get(*args, **kwargs)
+    def post(self, *args, **kwargs): return self.client.post(*args, **kwargs)
+    def put(self, *args, **kwargs): return self.client.put(*args, **kwargs)
     
-    should = True
-    seen = 0
-    while should:
-        resp = client.get(request_url).json()
-        albums = resp['items']
+    def search(self, title, artist=None, mode='track'):
+        if title and artist:
+            resp = self.client.get(f"https://api.spotify.com/v1/search/?q={title.strip()}%20artist:{artist.strip()}&type={mode}&limit=1&offset=0").json()
+        elif title:
+            resp = self.client.get(f"https://api.spotify.com/v1/search/?q={title.strip()}&type={mode}&limit=1&offset=0").json()
         
-        for a in albums:
-            # drop trailing Z, which isn't valid ISO format
-            added = datetime.fromisoformat(a['added_at'][:-1])
-            
-            # this is deeply upsetting to me (as it makes this method incredibly slow), 
-            # but Spotify's Library API uses Recent sort (not Recently Added sort), with no option
-            # to specify sort option, meaning older albums that are played gate any "new" albums before 
-            # them from being added; this does not affect library tracks (which is just a playlist), which 
-            # can use the much more performant early-exit approach:
-            #
-            #   if added <= lb:
-            #       should = False
-            #       break
-            #   elif added > ub:
-            #       continue
-            #
-            # will investigate when looking @ internal API, since there ought to be a better way...
-            
-            if ub >= added >= lb:
-                library.append((a['album'], added))
-            
-            seen += 1
+        return (resp.get('tracks', {}).get('items') or [{}])[0].get('uri')
+
+    def get_library_albums(self, earliest=None, latest=None, limit=inf):
+        lb = iso_or_datetime(earliest) or datetime.min
+        ub = iso_or_datetime(latest) or datetime.max
+
+        library = []
+        request_url = "https://api.spotify.com/v1/me/albums?limit=50&offset=0"
         
-        if seen >= limit: 
-            should = False
-        else:
+        should = True
+        seen = 0
+        while should:
+            resp = self.client.get(request_url).json()
+            albums = resp['items']
+            
+            for a in albums:
+                # drop trailing Z, which isn't valid ISO format
+                added = datetime.fromisoformat(a['added_at'][:-1])
+                
+                # this is deeply upsetting to me (as it makes this method incredibly slow), 
+                # but Spotify's Library API uses Recent sort (not Recently Added sort), with no option
+                # to specify sort option, meaning older albums that are played gate any "new" albums before 
+                # them from being added; this does not affect library tracks (which is just a playlist), which 
+                # can use the much more performant early-exit approach:
+                #
+                #   if added <= lb:
+                #       should = False
+                #       break
+                #   elif added > ub:
+                #       continue
+                #
+                # will investigate when looking @ internal API, since there ought to be a better way...
+                
+                if ub >= added >= lb:
+                    library.append((a['album'], added))
+                
+                seen += 1
+            
+            if seen >= limit: 
+                should = False
+            else:
+                request_url = resp.get('next')
+                if not request_url:
+                    should = False
+        
+        # return in sorted order based on date
+        return sorted(library, key=lambda v: v[1])[::-1] 
+
+    def get_library_album_tracks(self, earliest=None, latest=None, limit=inf):
+        albums = self.get_library_albums(earliest, latest, limit)
+        items = [album[0]['tracks']['items'] for album in albums]
+        return [t['uri'] for tracks in items for t in tracks]    
+        
+    def get_library_tracks(self, earliest=None, latest=None):
+        return [t[0] for t in self.get_playlist_tracks(earliest, latest, playlist_id=None)]
+
+    def get_playlist_tracks(
+        self,
+        earliest=None, 
+        latest=None,
+        playlist_id=None, 
+        limit=inf
+    ):
+        lb = iso_or_datetime(earliest) or datetime.min
+        ub = iso_or_datetime(latest) or datetime.max
+        
+        additions = []
+        
+        request_url = "https://api.spotify.com/v1/me/tracks?limit=50&offset=0" if not playlist_id else f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?limit=50&offset=0"
+        
+        should = True
+        while should:
+            resp = self.client.get(request_url).json()        
+            tracks = resp['items'] if 'items' in resp else resp['tracks']['items']
+            for t in tracks:
+                # drop trailing Z, which isn't valid ISO format
+                added = datetime.fromisoformat(t['added_at'][:-1])
+                if added <= lb or len(additions) >= limit:
+                    should = False
+                    break
+                elif added > ub:
+                    continue
+                
+                additions.append((t['track']['uri'], t))
+            
             request_url = resp.get('next')
             if not request_url:
                 should = False
-    
-    # return in sorted order based on date
-    return sorted(library, key=lambda v: v[1])[::-1] 
 
-def get_library_album_tracks(earliest=None, latest=None, limit=inf, client=None):
-    albums = get_library_albums(earliest, latest, limit, client)
-    items = [album[0]['tracks']['items'] for album in albums]
-    return [t['uri'] for tracks in items for t in tracks]    
-    
-def get_library_tracks(earliest=None, latest=None, client=None):
-    return [t[0] for t in get_playlist_tracks(earliest, latest, playlist_id=None, client=client)]
+        return additions
 
-def get_playlist_tracks(
-    earliest=None, 
-    latest=None,
-    playlist_id=None, 
-    client=None, 
-    limit=inf
-):
-    lb = iso_or_datetime(earliest) or datetime.min
-    ub = iso_or_datetime(latest) or datetime.max
-    
-    additions = []
-    
-    request_url = "https://api.spotify.com/v1/me/tracks?limit=50&offset=0" if not playlist_id else f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?limit=50&offset=0"
-    
-    should = True
-    while should:
-        resp = client.get(request_url).json()        
-        tracks = resp['items'] if 'items' in resp else resp['tracks']['items']
-        for t in tracks:
-            # drop trailing Z, which isn't valid ISO format
-            added = datetime.fromisoformat(t['added_at'][:-1])
-            if added <= lb or len(additions) >= limit:
+    def get_album_tracks(self, album_id):
+        request_url = f"https://api.spotify.com/v1/albums/{album_id}/tracks"
+        items = []
+
+        should = True
+        while should:
+            resp = self.client.get(request_url).json()        
+            tracks = resp['items']
+            for t in tracks:
+                items.append(t)
+
+            request_url = resp.get('next')
+            if not request_url:
                 should = False
-                break
-            elif added > ub:
-                continue
-            
-            additions.append((t['track']['uri'], t))
         
-        request_url = resp.get('next')
-        if not request_url:
-            should = False
+        return items
 
-    return additions
-
-def get_album_tracks(album_id, client=None):
-    request_url = f"https://api.spotify.com/v1/albums/{album_id}/tracks"
-    items = []
-
-    should = True
-    while should:
-        resp = client.get(request_url).json()        
-        tracks = resp['items']
-        for t in tracks:
-            items.append(t)
-
-        request_url = resp.get('next')
-        if not request_url:
-            should = False
-    
-    return items
-
-def remove_playlist_tracks(playlist_id, track_uris, client=None):
-    if not client: raise SystemError("No client specified")
-    elif len(track_uris) > 100: 
-        # TODO: Do this right
-        raise ValueError("Can only remove max 100 tracks at a time (Zack was lazy)")
-    
-    request_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
-    client.delete(
-        request_url,
-        data=json.dumps({"tracks": [{"uri": t} for t in track_uris]})
-    )
+    def remove_playlist_tracks(self, playlist_id, track_uris):
+        if len(track_uris) > 100: 
+            # TODO: Do this right
+            raise ValueError("Can only remove max 100 tracks at a time (Zack was lazy)")
+        
+        request_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+        self.client.delete(
+            request_url,
+            data=json.dumps({"tracks": [{"uri": t} for t in track_uris]})
+        )
 
 if __name__ == '__main__':
+    client = SpotifyClient()
     pass

@@ -1,4 +1,5 @@
-from utilities import get_token
+from utilities import SpotifyClient
+
 import time
 import os
 import json
@@ -15,7 +16,7 @@ endpoints = {
 class RuleManager:
     rule_file = os.path.join(os.path.dirname(__file__), "resources", "turntable.json")
     def __init__(self, user=None, rule_file=rule_file):
-        self.spotify = get_token()
+        self.spotify = SpotifyClient()
         if not user:
             self.user = self.spotify.get(endpoints['user']).json().get('id')
         

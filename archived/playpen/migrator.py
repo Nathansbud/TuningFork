@@ -8,7 +8,7 @@ import re
 from sparser import get_tracks
 from unidecode import unidecode
 
-from utilities import get_token
+from utilities import SpotifyClient
 
 
 feat_split = [" ft\. ", " feat\. ", " featuring\. ", " \(with "]
@@ -29,7 +29,7 @@ def spotify_clean(field):
     return space_cleaned.lower()
 
 def migrate_library(pid=playlists['all'], from_playlist=None, clear=False, tracks=[]):
-    spotify = get_token()
+    spotify = SpotifyClient()
 
     if clear:
         spotify.put(f"https://api.spotify.com/v1/playlists/{pid}/tracks",
