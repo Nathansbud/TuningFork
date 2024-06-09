@@ -5,12 +5,10 @@ from datetime import datetime
 
 import requests
 
-from utilities import SpotifyClient
+from network import client as spotify
 
 CACHE_FILE = os.path.join(os.path.dirname(__file__), "resources", "playlister.json")
 DUMMY_PLAYLIST = "1ijioHJWs8eEhrG7UQSISo"
-
-spotify = SpotifyClient()
 
 def internet():
     connection = True

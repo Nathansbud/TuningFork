@@ -8,7 +8,7 @@ import re
 from sparser import get_tracks
 from unidecode import unidecode
 
-from utilities import SpotifyClient
+from network import SpotifyClient
 
 
 feat_split = [" ft\. ", " feat\. ", " featuring\. ", " \(with "]

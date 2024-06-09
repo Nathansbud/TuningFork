@@ -10,8 +10,8 @@ from time import sleep
 
 from lastly import get_current_track, get_top_tracks
 from scraper import get_lyrics
+from network import client as spotify
 from utilities import (
-    SpotifyClient,
     album_format, track_format,
     get_share_link, send_message_to_user,
     dropdown,
@@ -47,8 +47,6 @@ def load_prefs():
     with open(group_file, 'r') as gf, open(prefs_file, 'r') as pf: 
         return json.load(gf), json.load(pf)
 
-
-spotify = SpotifyClient()
 groups, prefs = load_prefs()
 
 def playlist_name(pid):
@@ -106,16 +104,6 @@ def get_tracks(uri, formatted=True):
                 return resp
         
         return []
-
-def current(): 
-    c = spotify.get("https://api.spotify.com/v1/me/player/currently-playing")
-    return {} if c.status_code == 204 else c.json()
-    
-def current_track(): return current().get('item', {})
-def current_uri(): return current_track().get('uri')
-def current_album(): return current_track().get('album', {})
-def current_lyrics(): 
-    return track_lyrics(current_track())
 
 def track_lyrics(curr, album_context=None, clean=True):
     # bootstrap in album context if needed
@@ -186,7 +174,7 @@ def make_group():
                 args = parser.parse_args(shlex.split(candidate_track))
                 if args.title: track = get_tracks(spotify.search(args.title, args.artist))[0]
                 elif args.uri: track = get_tracks(args.uri)[0]
-                elif args.current: track = get_tracks(current_uri())[0]
+                elif args.current: track = get_tracks(spotify.get_current_track().uri)[0]
                 else:
                     raise SongException("Invalid track specifier! Provide artist (and track), else specify current (-c) or uri (-u)!")
 
@@ -266,8 +254,8 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
                 'album_uri': data.get('uri'),
             } for data in responses]
     else:
-        data = current_track()
-        if not data:
+        current = spotify.get_current_track()
+        if not current:
             print("No track currently playing!")
             exit(1)
         else:
@@ -283,11 +271,11 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
                 } for t in track_data.get('items', [])]
             else:
                 tracks = [{
-                    'name': data.get('name'), 
-                    'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
-                    'uri': data.get('uri'),
-                    'album': data.get('album', {}).get("name"),
-                    'album_uri': data.get('album', {}).get("uri"),
+                    'name': current.name,
+                    'artist': current.artist,
+                    'uri': current.uri,
+                    'album': current.album.name,
+                    'album_uri': current.album.uri
                 }]
 
     if not tracks:
@@ -462,29 +450,26 @@ def queue_track():
         q = spotify.get("https://api.spotify.com/v1/me/player/queue").json()
         if len(q['queue']) == 0: print("No track currently playing!")
         else:
-            nt = current()
-            now = nt.get('item')
-            print(f"{magenta('C')}.\t{track_format(now)} {time_progress(nt.get('progress_ms'), now.get('duration_ms'), True)}")
+            current = spotify.get_current_track()
+            print(f"{magenta('C')}.\t{current.prettify()}")
             
             # if the current track in the queue is local, current won't equal queue's currently_playing; 
             # there is currently no good solution for local tracks in the queue, alas
-            for i, t in enumerate(([] if not now['is_local'] else [q['currently_playing']]) + q['queue'], start=1):
+            for i, t in enumerate(([] if not current.local else [q['currently_playing']]) + q['queue'], start=1):
                 print(f"{magenta(i)}.\t{track_format(t)}")
         
         exit(0)
     elif args.next and args.next > 0:
         print(f"Attempting to skip {bold(f'{args.next} track(s)')}...")
         # This is probably not the optimal way to do this...but if we get rate limited, so be it
-        for _ in range(args.next): 
-            resp = spotify.post("https://api.spotify.com/v1/me/player/next")
-            if resp.status_code == 404:
-                print("No track currently playing!")
-                exit(1)
-
+        if spotify.skip(times=args.next) == 404:
+            print("No track currently playing!")
+            exit(1)
+       
         # Spotify API takes a second to catch up, so we need to sleep before hitting current track endpoint, 
         # since next doesn't return track info
         sleep(1)
-        print(f"Now playing: {track_format(current_track(), album=True)}!")
+        print(f"Now playing: {spotify.get_current_track().prettify(album=True, timestamp=False)}!")
         exit(0)
     elif args.playlist:
         puri = playlist_id(args.playlist)

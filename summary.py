@@ -3,10 +3,8 @@ import random
 from datetime import datetime
 from typing import List, Optional
 
-from utilities import SpotifyClient
+from network import client as spotify
 from playlister import update_liked_playlist
-
-spotify = SpotifyClient()
 
 def save_album_history(
     year: int, 
