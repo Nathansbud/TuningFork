@@ -18,7 +18,7 @@ try:
         dropdown,
         SongParser, SongException,
         remove_remaster,
-        red, green, yellow, magenta, cyan, white, bold, rainbow, 
+        red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
         time_progress,
     )
     
@@ -159,7 +159,7 @@ def track_lyrics(curr, album_context=None, clean=True):
 
 def make_group():
     tracks = []
-    name = input("Queue Group Name: ")
+    name = input(blue("Group Name: "))
     
     parser = SongParser("Song Parser")
     parser.add_argument('title', nargs="?")
@@ -167,11 +167,12 @@ def make_group():
     parser.add_argument('-c', '--current', action='store_true')
     parser.add_argument('-u', '--uri')
 
-    print("Input track name + artist or URI; type SAVE when finished!")
+    print(f"Specify title + artist, currently playing (-c), or URI (-u). Type {magenta('SAVE')} when finished!")
+    sleep(0.5)
     adding = True
     
     while adding:
-        candidate_track = input(f"Item {len(tracks) + 1}: ")
+        candidate_track = input(magenta(f"Item {len(tracks) + 1}: "))
         if candidate_track.strip().upper() == 'SAVE':
             if len(tracks) > 0:
                 with open(group_file) as gf:
@@ -197,15 +198,14 @@ def make_group():
                     raise SongException("Invalid track specifier! Provide artist (and track), else specify current (-c) or uri (-u)!")
 
                 if track:
-                    confirm = input(f"Found track: {track.get('name')} by {track.get('artist')}. Add to group {name} (y/n)? ").lower().strip()
+                    confirm = input(f"Found track: {track_format(track, album=True)}. Add to group {blue(name)} ({bold('y/n')})? ").lower().strip()
                     if confirm == 'y': tracks.append(track)
                 else: 
                     print("Could not find a matching track!")
 
             except SongException as e:
                 print(e)
-            
-            
+
 def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, uri=None, ignore=False, mode="tracks", limit=None):
     if not limit: limit = []
 
@@ -220,6 +220,10 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
                 groups = {}
         
         group_data = groups.get(group, [])
+        if not group_data:
+            print(f"Could not find group {blue(group)}; try creating via {magenta('--make_group')}!")
+            return [], 404
+
         tracks = group_data
     elif user:
         track_data = get_top_tracks(start_date=datetime.now() - timedelta(days=365), end_date=datetime.now(), user=user, limit=max(50, times))
@@ -293,40 +297,42 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
                     'album_uri': data.get('album', {}).get("uri"),
                 }]
 
-    if ignore: return tracks, 200
-    elif tracks:
-        og = len(tracks)
-        
-        limiter = slice(
-            max(0, limit[0] - 1) if len(limit) > 0 else 0, 
-            max(1, limit[1]) if len(limit) > 1 else len(tracks)
-        )
-
-        tracks = tracks[limiter]
-
-        if last:
-            print(f"Adding {bold(last)} last played item(s) ({', '.join([track_format(t) for t in tracks])}) to queue {bold(f'{times}x')}!")
-        elif mode == 'tracks':
-            print(f"Adding {', '.join([track_format(t) for t in tracks])} to queue {bold(f'{times}x')}!")
-        elif mode == 'albums':
-            lr = f"track {limiter.stop}" if limiter.start + 1 == limiter.stop else f"tracks {limiter.start + 1} through {limiter.stop}"
-            nt = f'{len(tracks)} tracks' if og == len(tracks) else f'{lr}'
-            
-            print(f"Adding album {album_format(tracks[0])} ({bold(nt)}) to queue {times}x!")
-            # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
-            sleep(2)
-
-        status = 200
-        for _ in range(times):  
-            for t in tracks:
-                response = spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
-                if response.status_code >= 300: 
-                    print(f"Failed to add {track_format(t)} to queue (status code: {response.status_code})")
-                    status = response.status_code
-                    
-        return tracks, status
-    else:
+    if not tracks:
         print("Could not find track(s)!")
+        return [], 404
+    elif ignore:
+        return tracks, 200
+
+    og = len(tracks)
+    
+    limiter = slice(
+        max(0, limit[0] - 1) if len(limit) > 0 else 0, 
+        max(1, limit[1]) if len(limit) > 1 else len(tracks)
+    )
+
+    tracks = tracks[limiter]
+
+    if last:
+        print(f"Adding {bold(last)} last played item(s) ({', '.join([track_format(t) for t in tracks])}) to queue {bold(f'{times}x')}!")
+    elif mode == 'tracks':
+        print(f"Adding {', '.join([track_format(t) for t in tracks])} to queue {bold(f'{times}x')}!")
+    elif mode == 'albums':
+        lr = f"track {limiter.stop}" if limiter.start + 1 == limiter.stop else f"tracks {limiter.start + 1} through {limiter.stop}"
+        nt = f'{len(tracks)} tracks' if og == len(tracks) else f'{lr}'
+        
+        print(f"Adding album {album_format(tracks[0])} ({bold(nt)}) to queue {times}x!")
+        # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
+        sleep(2)
+
+    status = 200
+    for _ in range(times):  
+        for t in tracks:
+            response = spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
+            if response.status_code >= 300: 
+                print(f"Failed to add {track_format(t)} to queue (status code: {response.status_code})")
+                status = response.status_code
+                
+    return tracks, status
 
 def remember_track(title, artist, track, mode, limit=None, delete=False):
     memory = {"albums": {}, "tracks": {}}
@@ -617,7 +623,6 @@ def queue_track():
         
         with open(group_file, 'w+') as gf:
             json.dump(groups, gf)
-
     elif args.list_rules: 
         with open(group_file, 'r') as gf:
             try:
