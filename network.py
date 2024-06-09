@@ -281,23 +281,6 @@ class SpotifyClient(OAuth2Session):
             return "VOLUME_CONTROL_DISALLOW" not in vol.text
         
         raise ValueError("Invalid volume level")
-    """
-       
-    elif args.volume is not None:
-        if 0 <= args.volume <= 100:
-            vol = spotify.put(f"https://api.spotify.com/v1/me/player/volume?volume_percent={args.volume}", data=json.dumps({
-                "volume_percent": args.volume
-            }))
-
-            if "VOLUME_CONTROL_DISALLOW" in vol.text:
-                print(f"Unfortunately, the current device {red('does not allow')} programmatic volume changes!")
-            else:
-                print(f"Set device volume to {green(args.volume)}%!")
-        else:
-            print(f"{magenta('Volume level')} must be a value from {bold('0–100')}!")
-        
-        exit(0)
-        """
 
 client = SpotifyClient()
 
