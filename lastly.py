@@ -11,12 +11,12 @@ from time import sleep
 import requests
 from PIL import Image
 
-from utilities import SpotifyClient, magenta
+from network import client as spotify
+from utilities import magenta
 
 MODE = "auto"
 MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-spotify = SpotifyClient()
 lastfm_file = os.path.join(os.path.dirname(__file__), "credentials", "lastfm.json")
 prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
 atom_dir = os.path.join(os.path.dirname(__file__), "resources", "atoms")
