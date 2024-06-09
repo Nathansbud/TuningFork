@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 import json
 import ssl
+from typing import List, Tuple
 import urllib
 import webbrowser
 
@@ -12,12 +13,12 @@ from time import sleep
 from requests_oauthlib import OAuth2Session
 
 from model import (
-    TrackObject, AlbumObject,
+    ActiveTrackObject, TrackObject, AlbumObject,
     create_track_object, 
     create_album_object,
     create_active_track_object
 )
-from utilities import iso_or_datetime, red, magenta
+from utilities import iso_or_datetime, red, magenta, extract_id
 
 
 
@@ -205,6 +206,10 @@ class SpotifyClient:
 
         return additions
 
+    def get_album(self, album_id) -> AlbumObject:
+        response = self.client.get(f"https://api.spotify.com/v1/albums/{album_id}")
+        return create_album_object(response.json())
+        
     def get_album_tracks(self, *, album_id=None, album=None):
         if not (album_id or album): return []
         aid = album.id if album else album_id
@@ -235,15 +240,22 @@ class SpotifyClient:
             request_url,
             data=json.dumps({"tracks": [{"uri": t} for t in track_uris]})
         )
+
+    def get_track(self, track_id: str) -> TrackObject | AlbumObject:
+        response = self.client.get(f'https://api.spotify.com/v1/tracks/{track_id}')
+        if response.status_code != 200: 
+            return None
+        
+        return create_track_object(response.json())
     
-    def get_current_track(self):
+    def get_current_track(self) -> ActiveTrackObject:
         response = self.client.get("https://api.spotify.com/v1/me/player/currently-playing")
         if response.status_code == 204:
             return None
             
         return create_active_track_object(response.json())
     
-    def get_queue(self):
+    def get_queue(self) -> List[TrackObject]:
         response = self.client.get("https://api.spotify.com/v1/me/player/queue").json()
         current = response['currently_playing']
         if current: 
@@ -253,7 +265,7 @@ class SpotifyClient:
 
         return []
 
-    def get_recent_tracks(self, limit=1):
+    def get_recent_tracks(self, limit=1) -> List[TrackObject]:
         response = self.client.get(f"https://api.spotify.com/v1/me/player/recently-played?limit={limit}")
         if response.status_code != 200: 
             return []
@@ -264,14 +276,14 @@ class SpotifyClient:
             if 'track' in s
         ][::-1]
 
-    def skip(self, times=1):
+    def skip(self, times: int=1) -> int:
         for _ in range(times): 
             resp = self.client.post("https://api.spotify.com/v1/me/player/next")
             if resp.status_code == 404:
                 return 404
         return 200
 
-    def playpause(self, pause=True):
+    def playpause(self, pause=True) -> Tuple[bool]:
         base_url = "https://api.spotify.com/v1/me/player"
         player = self.client.get(base_url)
         if not 200 <= player.status_code < 300 or player.status_code == 204:
@@ -286,7 +298,7 @@ class SpotifyClient:
 
         return True, pause
 
-    def set_volume(self, volume):
+    def set_volume(self, volume: int):
         if 0 <= volume <= 100:
             vol = self.client.put(f"https://api.spotify.com/v1/me/player/volume?volume_percent={volume}", data=json.dumps({
                 "volume_percent": volume
@@ -303,4 +315,7 @@ class SpotifyClient:
 client = SpotifyClient()
 
 if __name__ == '__main__':
-    print(client.get_queue())
+    print(extract_id("https://open.spotify.com/album/5qXKfttLVPhSnTA0MK6F5p?si=MeitUR7pTD28rZnGwBFw3Q"))
+    print(client.get_album(
+        extract_id("https://open.spotify.com/album/5qXKfttLVPhSnTA0MK6F5p?si=MeitUR7pTD28rZnGwBFw3Q")[0]
+    ))

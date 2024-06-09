@@ -9,10 +9,11 @@ from itertools import permutations
 from time import sleep
 
 from lastly import get_current_track, get_top_tracks
+from model import AlbumObject, TrackObject
 from scraper import get_lyrics
 from network import client as spotify
 from utilities import (
-    album_format, track_format,
+    album_format, track_format, extract_id,
     get_share_link, send_message_to_user,
     dropdown,
     SongParser, SongException,
@@ -45,7 +46,17 @@ def load_prefs():
             })
 
     with open(group_file, 'r') as gf, open(prefs_file, 'r') as pf: 
-        return json.load(gf), json.load(pf)
+        try:
+            gs = json.load(gf)
+        except Exception: 
+            gs = {}
+        
+        try: 
+            ps = json.load(pf)
+        except Exception:
+            ps = {}
+        
+        return gs, ps
 
 groups, prefs = load_prefs()
 
@@ -67,44 +78,6 @@ def playlist_id(identifier):
 def text_recipient(alias):
     return prefs.get("ALIASES", {}).get(alias.upper())
         
-def get_tracks(uri, formatted=True):
-    if not uri: return [{}]
-    uri = uri.strip()
-    
-    # accidentally pasted in URL instead of URI
-    if uri.startswith('http'):
-        idx = uri.split("/")[-1].split("?")[0]
-    else:
-        idx = uri if ':' not in uri else uri[uri.rindex(':')+1:]
-
-    if 'album' in uri:
-        album_data = spotify.get(f'https://api.spotify.com/v1/albums/{idx}').json()
-        album_tracks = spotify.get(f'https://api.spotify.com/v1/albums/{idx}/tracks?limit=50').json()
-        return [{
-            'name': t.get('name'), 
-            'artist': ', '.join([artist.get('name') for artist in t.get('artists', [])]),
-            'uri': t.get('uri'), 
-            'album': album_data.get('name'),
-            'album_uri': album_data.get('uri')
-        } if formatted else t for t in album_tracks.get('items', [])]
-    else:
-        r = spotify.get(f'https://api.spotify.com/v1/tracks/{idx}')
-        if r.status_code == 404: return []
-        else:
-            resp = r.json()
-            if not resp.get('error') and formatted:
-                return [{
-                    'uri': resp.get('uri'),
-                    'name': resp.get('name'),
-                    'artist': ", ".join([artist.get('name') for artist in resp.get('artists')]),
-                    'album': resp.get("album", {}).get('name'),
-                    'album_uri': resp.get("album", {}).get('uri')
-                }]
-            elif not resp.get('error'):
-                return resp
-        
-        return []
-
 def track_lyrics(curr, album_context=None, clean=True):
     # bootstrap in album context if needed
     if album_context: curr['album'] = album_context
@@ -172,15 +145,15 @@ def make_group():
             try:
                 track = {}           
                 args = parser.parse_args(shlex.split(candidate_track))
-                if args.title: track = get_tracks(spotify.search(args.title, args.artist))[0]
-                elif args.uri: track = get_tracks(args.uri)[0]
-                elif args.current: track = get_tracks(spotify.get_current_track().uri)[0]
+                if args.title: track = spotify.search(args.title, args.artist)
+                elif args.uri: track = spotify.get_track(extract_id(args.uri))
+                elif args.current: track = spotify.get_current_track()
                 else:
                     raise SongException("Invalid track specifier! Provide artist (and track), else specify current (-c) or uri (-u)!")
 
                 if track:
-                    confirm = input(f"Found track: {track_format(track, album=True)}. Add to group {blue(name)} ({bold('y/n')})? ").lower().strip()
-                    if confirm == 'y': tracks.append(track)
+                    confirm = input(f"Found track: {track.prettify(album=True)}. Add to group {blue(name)} ({bold('y/n')})? ").lower().strip()
+                    if confirm == 'y': tracks.append(shortcut_serialize(track))
                 else: 
                     print("Could not find a matching track!")
 
@@ -216,7 +189,7 @@ def enqueue(
             print(f"Could not find group {blue(group)}; try creating via {magenta('--make_group')}!")
             return [], 404
 
-        tracks = group_data
+        tracks = [shortcut_deserialize(item) for item in group_data]
     elif user:
         track_data = get_top_tracks(start_date=datetime.now() - timedelta(days=365), end_date=datetime.now(), user=user, limit=max(50, times))
         tracks = [{"uri": spotify.search(td['name'], td['artist']), **td} for td in random.sample(track_data, times)]
@@ -224,11 +197,15 @@ def enqueue(
         if times > 0: 
             times = 1
     elif title or uri: 
-        if uri: tracks = get_tracks(uri, True)
+        if uri:
+            idx, is_album = extract_id(uri)
+            if is_album: mode = 'albums'
+
+            tracks = [spotify.get_track(idx)] if not is_album else spotify.get_album(idx).tracks
         else:
             result = spotify.search(title, artist, mode[:-1])
             if result:
-                tracks = [result] if mode == "tracks" else spotify.get_album_tracks(album=result)
+                tracks = [result] if mode == "tracks" else spotify.get_album(result.id).tracks
             
     elif last:
         if mode != "tracks": 
@@ -280,6 +257,26 @@ def enqueue(
                 
     return tracks, status
 
+def shortcut_serialize(obj: AlbumObject | TrackObject):
+    return {
+        'name': obj.name, 
+        'artist': obj.artist,
+        'album': obj.name if isinstance(obj, AlbumObject) else obj.album.name,
+        'uri': obj.uri
+    }
+
+def shortcut_deserialize(obj: dict, is_album=False):
+    shared = {
+        "name": obj.get('name'),
+        "artist": obj.get('artist'),
+        "uri": obj.get('uri'),
+        "id": extract_id(obj.get('uri'))
+    }
+
+    if is_album: return AlbumObject(**shared)
+    else:
+        return TrackObject(**shared)
+
 def remember_track(title, artist, track, mode, limit=None, delete=False):
     memory = {"albums": {}, "tracks": {}}
     if os.path.isfile(short_file):
@@ -300,10 +297,7 @@ def remember_track(title, artist, track, mode, limit=None, delete=False):
             print(f"Could not find any existing shortcuts for {title}{'by ' + artist if artist else ''}!")
     elif track:
         memory[mode][mem_key] = {
-            'name': track.get('name'), 
-            'artist': track.get('artist'),
-            'album': track.get('album') if (type(track.get('album')) == str) else track.get('album', {}).get('name', ""),
-            'relevant_uri': track.get('uri') if mode == 'tracks' else track.get('album_uri'),
+            **shortcut_serialize(track),
             'limit': limit or []
         }
     else:
@@ -407,7 +401,7 @@ def queue_track():
         if len(active_queue) == 0: print("No track currently playing!")
         else:
             current = spotify.get_current_track()
-            print(f"{magenta('C')}.\t{current.prettify()}")
+            print(f"{magenta('C')}.\t{current.prettify(timestamp=True)}")
             
             # if the current track in the queue is local, current won't equal queue's currently_playing; 
             # there is currently no good solution for local tracks in the queue, alas
@@ -628,7 +622,7 @@ def queue_track():
         title = mobject.get('name', args.title) if not args.amnesia else args.title
         limit = mobject.get('limit', []) if not (args.amnesia or args.album) else args.album
 
-        uri = args.uri or mobject.get('uri') or mobject.get('relevant_uri')
+        uri = args.uri or mobject.get('uri')
         tracks, _ = enqueue(
             title=title,
             artist=artist,
@@ -675,8 +669,8 @@ def queue_track():
                 lb, ub = (max(0, limit[0] - 1) if len(limit) > 0 else 0), (max(1, limit[1]) if len(limit) > 1 else len(tracks))
 
                 print("".join([
-                    f"Creating shortcut for {mode[:-1]} {track_format(tracks[0]) if mode == 'tracks' else album_format(tracks[0])}", 
-                    ((bold(f"(track {lb})") if lb + 1 == ub else bold(f"(tracks {lb + 1} through {ub})")) if mode == 'albums' else '') + ": ",
+                    f"Creating shortcut for {mode[:-1]} {tracks[0].prettify()}", 
+                    ((bold(f" (track {lb})") if lb + 1 == ub else bold(f" (tracks {lb + 1} through {ub})")) if mode == 'albums' else '') + ": ",
                     f"'{magenta(args.remember[0])}'", 
                     f"'{magenta(args.remember[1])}'" if len(args.remember) > 1 else ''
                 ]))
@@ -715,23 +709,22 @@ def queue_track():
         if args.like:
             if mode == 'tracks':
                 liked = spotify.put("https://api.spotify.com/v1/me/tracks/", data=json.dumps({
-                    "ids": [t.get("uri").split(":")[-1] for t in tracks if t.get("uri")]
+                    "ids": [t.id for t in tracks]
                 }))
 
                 if 200 <= liked.status_code < 300:
-                    print(f"Added {', '.join(track_format(t) for t in tracks)} to {magenta('Liked Songs')}!")
+                    print(f"Added {', '.join(t.prettify() for t in tracks)} to {magenta('Liked Songs')}!")
                 else:
                     print(f"Something went wrong while adding to {magenta('Liked Songs')} (status code: {liked.status_code})")
             else:
-                rep = tracks[0]
                 saved = spotify.put("https://api.spotify.com/v1/me/albums/", data=json.dumps({
-                    "ids": [rep.get("album_uri").split(":")[-1]]
+                    "ids": [tracks[0].album.id]
                 }))
 
                 if 200 <= saved.status_code < 300:
-                    print(f"Saved {album_format(rep)} to {magenta('Library')}!")
+                    print(f"Saved {tracks[0].album.prettify()} to {magenta('Library')}!")
                 else:
-                    print(f"Something went wrong while adding to {magenta('Library')} (status code: {liked.status_code})")
+                    print(f"Something went wrong while adding to {magenta('Library')} (status code: {saved.status_code})")
 
         if args.lastfm:
             artist_fmt = lambda t: t.get("artist").replace(" ", "+").split(",")[0]

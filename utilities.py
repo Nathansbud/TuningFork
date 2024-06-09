@@ -181,6 +181,15 @@ def track_format(track: dict, use_color=True, album=False):
         elif alb_name:
             return f"{track_name} by {track_artist} ({alb_name})"
 
+def extract_id(raw: str):
+    raw = raw.strip()
+    
+    if raw.startswith('http'):
+        idx = raw.split("/")[-1].split("?")[0]
+    else:
+        idx = raw if ':' not in raw else raw[raw.rindex(':')+1:]
+
+    return (idx, True) if 'album' in raw else (idx, False)
 
 class SongException(Exception): pass
 class SongParser(argparse.ArgumentParser):
