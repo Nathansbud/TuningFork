@@ -334,7 +334,7 @@ def remember_track(title, artist, track, mode, limit=None, delete=False):
         with open(short_file, "r") as cf:
             try: 
                 memory = json.load(cf)
-            except:
+            except Exception:
                 memory = {
                     "albums": {},
                     "tracks": {}
@@ -678,7 +678,7 @@ def queue_track():
         with open(short_file, 'r') as cf:
             try:
                 memory = json.load(cf)
-            except:
+            except Exception:
                 memory = {"tracks": {}, "albums": {}}
 
         memory_key = "" if not args.title else f"{args.title.lower()}{PART_SEPARATOR}{(args.artist or '').lower()}"

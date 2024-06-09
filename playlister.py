@@ -17,7 +17,7 @@ def internet():
     try:
         r = requests.get("https://google.com")
         r.raise_for_status()
-    except:
+    except Exception:
         connection = False
     finally:
         return connection

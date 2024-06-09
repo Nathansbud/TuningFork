@@ -293,6 +293,7 @@ class SpotifyClient(OAuth2Session):
 
     def get(self, *args, **kwargs): return self.client.get(*args, **kwargs)
     def post(self, *args, **kwargs): return self.client.post(*args, **kwargs)
+    def put(self, *args, **kwargs): return self.client.put(*args, **kwargs)
     
     def search(self, title, artist=None, mode='track'):
         if title and artist:
@@ -349,7 +350,7 @@ class SpotifyClient(OAuth2Session):
         return sorted(library, key=lambda v: v[1])[::-1] 
 
     def get_library_album_tracks(self, earliest=None, latest=None, limit=inf):
-        albums = self.get_library_albums(earliest, latest, limit, client)
+        albums = self.get_library_albums(earliest, latest, limit)
         items = [album[0]['tracks']['items'] for album in albums]
         return [t['uri'] for tracks in items for t in tracks]    
         
