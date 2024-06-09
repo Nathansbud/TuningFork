@@ -140,9 +140,3 @@ if __name__ == "__main__":
             cache["LIBRARY_METADATA"]["ACTIVE_PLAYLIST_ID"],
             cache["LIBRARY_METADATA"]["LAST_UPDATE"],
         )
-
-        update_backlog_playlist(
-            cache["BACKLOG_METADATA"]["ACTIVE_PLAYLIST_ID"],
-            cache["BACKLOG_METADATA"]["BACKLOG_PLAYLIST_ID"],
-            cache["BACKLOG_METADATA"]["LAST_UPDATE"],
-        )
