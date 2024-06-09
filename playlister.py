@@ -89,7 +89,7 @@ def update_backlog_playlist(playlist_id, backlog_id, last_update=None):
     
     additions = []
     for b in backlog:
-        additions.extend([t['uri'] for t in spotify.get_album_tracks(b[1]['track']['album']['id'])])
+        additions.extend([t['uri'] for t in spotify.get_album_tracks(album_id=b[1]['track']['album']['id'])])
     
     BATCH_SIZE = 100
     batched = [
@@ -109,7 +109,7 @@ def sort_backlog_by_album_length(output_id, backlog_id):
     backlog = spotify.get_playlist_tracks(None, playlist_id=backlog_id)
     
     sorted_albums = sorted([
-        (sum([t['duration_ms'] for t in spotify.get_album_tracks(b[1]['track']['album']['id'])]), b[0])
+        (sum([t['duration_ms'] for t in spotify.get_album_tracks(album_id=b[1]['track']['album']['id'])]), b[0])
         for b in backlog
     ])
 

@@ -1,5 +1,3 @@
-from typing import List
-
 from utilities import green, time_progress, yellow, cyan
 
 class AlbumObject:
@@ -21,7 +19,7 @@ class AlbumObject:
         self.id = id
 
     def prettify(self): 
-        return 
+        return f"{cyan(self.name)} by {yellow(self.artist)}"
 
     def __str__(self):
         return f"[A]: {self.name} by {self.artist}"
@@ -62,7 +60,7 @@ class TrackObject:
             return f"{green(self.name)} by {yellow(self.artist)} ({cyan(self.album.name)})"
     
     def __str__(self):
-        return f"[T]: {self.name} by {self.artist} "
+        return f"[T]: {self.name} by {self.artist}"
 
 class ActiveTrackObject(TrackObject):
     progress: int
@@ -71,19 +69,24 @@ class ActiveTrackObject(TrackObject):
         super().__init__(**kwargs)
         self.progress = progress
     
-    def prettify(self, album=False, timestamp=True):
+    def prettify(self, album=False, timestamp=True) -> str:
         base = f"{super().prettify(album=album)}"
         return base if not timestamp else f"{base} {time_progress(self.progress, self.duration, True)}"
 
     def __str__(self):
         return f"[@T]: {self.name} by {self.artist} (@ {self.progress})"
 
-def create_track_object(track_json: dict) -> TrackObject:
+def create_track_object(track_json: dict, album=None) -> TrackObject:
+    track_album = album if album else (
+        create_album_object(track_json.get('album')) 
+        if track_json.get('album') else None
+    ) 
+
     return TrackObject(
         name=track_json.get('name'),
         artist=', '.join(artist.get('name') for artist in track_json.get('artists', [])),
         uri=track_json.get('uri'),
-        album=create_album_object(track_json.get('album')) if track_json.get('album') else None,
+        album=track_album,
         local=track_json.get('is_local', False),
         duration=track_json.get('duration_ms')
     )
@@ -101,9 +104,4 @@ def create_album_object(album_json: dict) -> AlbumObject:
         artist=', '.join(artist.get('name') for artist in album_json.get('artists', [])),
         uri=album_json.get("uri"),
         id=album_json.get('id')
-    )
-
-if __name__ == "__main__":
-    create_active_track_object(
-        
     )

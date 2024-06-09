@@ -95,7 +95,7 @@ def get_cookies():
             return spotify_creds['cookies']['entries']
             
     return {}
-class SpotifyClient(OAuth2Session):
+class SpotifyClient:
     def __init__(self): 
         self.client = get_token()
 
@@ -205,16 +205,19 @@ class SpotifyClient(OAuth2Session):
 
         return additions
 
-    def get_album_tracks(self, album_id):
-        request_url = f"https://api.spotify.com/v1/albums/{album_id}/tracks"
+    def get_album_tracks(self, *, album_id=None, album=None):
+        if not (album_id or album): return []
+        aid = album.id if album else album_id
+
+        request_url = f"https://api.spotify.com/v1/albums/{aid}/tracks"
         items = []
 
         should = True
         while should:
-            resp = self.client.get(request_url).json()        
+            resp = self.client.get(request_url).json()      
             tracks = resp['items']
             for t in tracks:
-                items.append(create_track_object(t))
+                items.append(create_track_object(t, album=album))
 
             request_url = resp.get('next')
             if not request_url:
@@ -250,6 +253,17 @@ class SpotifyClient(OAuth2Session):
 
         return []
 
+    def get_recent_tracks(self, limit=1):
+        response = self.client.get(f"https://api.spotify.com/v1/me/player/recently-played?limit={limit}")
+        if response.status_code != 200: 
+            return []
+        
+        return [
+            create_track_object(s.get('track')) 
+            for s in response.json().get('items', [])
+            if 'track' in s
+        ][::-1]
+
     def skip(self, times=1):
         for _ in range(times): 
             resp = self.client.post("https://api.spotify.com/v1/me/player/next")
@@ -281,6 +295,10 @@ class SpotifyClient(OAuth2Session):
             return "VOLUME_CONTROL_DISALLOW" not in vol.text
         
         raise ValueError("Invalid volume level")
+
+    def queue(self, uri):
+        response = self.client.post(f"https://api.spotify.com/v1/me/player/queue?uri={uri}")
+        return response.status_code < 300
 
 client = SpotifyClient()
 

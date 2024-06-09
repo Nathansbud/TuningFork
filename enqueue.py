@@ -187,7 +187,18 @@ def make_group():
             except SongException as e:
                 print(e)
 
-def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, uri=None, ignore=False, mode="tracks", limit=None):
+def enqueue(
+    title=None, 
+    artist=None, 
+    times=1,
+    last=None, 
+    group=None, 
+    user=None, 
+    uri=None,
+    ignore=False, 
+    mode="tracks", 
+    limit=None
+):
     if not limit: limit = []
 
     group_data = []   
@@ -216,36 +227,15 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
         if uri: tracks = get_tracks(uri, True)
         else:
             result = spotify.search(title, artist, mode[:-1])
-            if mode == "albums" and result:
-                track_data = spotify.get_album_tracks(result.id)
-                tracks = [{
-                    'name': t.name, 
-                    'artist': t.artist,
-                    'uri': t.uri,
-                    'album': result.name,
-                    'album_uri': result.uri,
-                } for t in track_data]
-            else:
-                tracks = [{
-                    'name': result.name,
-                    'artist': result.artist,
-                    'album': result.album.name,
-                    'uri': result.uri
-                }] if result else []
+            if result:
+                tracks = [result] if mode == "tracks" else spotify.get_album_tracks(album=result)
+            
     elif last:
-        previous = spotify.get(f"https://api.spotify.com/v1/me/player/recently-played?limit={last}").json()
-        responses = [s.get('track', {}) for s in previous.get('items', [])][::-1]
         if mode != "tracks": 
             print("Can only re-queue tracks, not albums!")
             exit(0)
-        else:
-            tracks = [{
-                'name': data.get('name'),
-                'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
-                'uri': data.get('uri'),
-                'album': data.get('album'),
-                'album_uri': data.get('uri'),
-            } for data in responses]
+
+        tracks = spotify.get_recent_tracks(last)
     else:
         current = spotify.get_current_track()
         
@@ -253,22 +243,7 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
             print("No track currently playing!")
             exit(1)
         else:
-            if mode == 'albums':
-                tracks = [{
-                    'name': t.name,
-                    'artist': t.artist,
-                    'uri': t.uri,
-                    'album': current.album.name,
-                    'album_uri': current.album.uri
-                } for t in spotify.get_album_tracks(current.album.id)]
-            else:
-                tracks = [{
-                    'name': current.name,
-                    'artist': current.artist,
-                    'uri': current.uri,
-                    'album': current.album.name,
-                    'album_uri': current.album.uri
-                }]
+            tracks = [current] if mode == 'tracks' else spotify.get_album_tracks(album=current.album)
 
     if not tracks:
         print("Could not find track(s)!")
@@ -286,24 +261,22 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
     tracks = tracks[limiter]
 
     if last:
-        print(f"Adding {bold(last)} last played item(s) ({', '.join([track_format(t) for t in tracks])}) to queue {bold(f'{times}x')}!")
+        print(f"Adding {bold(last)} last played item(s) ({', '.join([t.prettify() for t in tracks])}) to queue {bold(f'{times}x')}!")
     elif mode == 'tracks':
-        print(f"Adding {', '.join([track_format(t) for t in tracks])} to queue {bold(f'{times}x')}!")
+        print(f"Adding {', '.join([t.prettify() for t in tracks])} to queue {bold(f'{times}x')}!")
     elif mode == 'albums':
         lr = f"track {limiter.stop}" if limiter.start + 1 == limiter.stop else f"tracks {limiter.start + 1} through {limiter.stop}"
         nt = f'{len(tracks)} tracks' if og == len(tracks) else f'{lr}'
         
-        print(f"Adding album {album_format(tracks[0])} ({bold(nt)}) to queue {times}x!")
+        print(f"Adding album {tracks[0].album.prettify()} ({bold(nt)}) to queue {bold(f'{times}x')}!")
         # build in a bit of time to cancel, because adding the wrong album is a pain in the butt
         sleep(2)
 
     status = 200
     for _ in range(times):  
         for t in tracks:
-            response = spotify.post(f"https://api.spotify.com/v1/me/player/queue?uri={t.get('uri')}")
-            if response.status_code >= 300: 
-                print(f"Failed to add {track_format(t)} to queue (status code: {response.status_code})")
-                status = response.status_code
+            if not spotify.queue(t.uri):
+                print(f"Failed to add {t.prettify()} to queue!")
                 
     return tracks, status
 
