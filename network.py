@@ -12,6 +12,7 @@ from time import sleep
 from requests_oauthlib import OAuth2Session
 
 from model import (
+    TrackObject, AlbumObject,
     create_track_object, 
     create_album_object,
     create_active_track_object
@@ -102,14 +103,19 @@ class SpotifyClient(OAuth2Session):
     def post(self, *args, **kwargs): return self.client.post(*args, **kwargs)
     def put(self, *args, **kwargs): return self.client.put(*args, **kwargs)
     
-    def search(self, title, artist=None, mode='track'):
+    def search(self, title, artist=None, mode='track') -> TrackObject | AlbumObject:
         if title and artist:
             resp = self.client.get(f"https://api.spotify.com/v1/search/?q={title.strip()}%20artist:{artist.strip()}&type={mode}&limit=1&offset=0").json()
         elif title:
             resp = self.client.get(f"https://api.spotify.com/v1/search/?q={title.strip()}&type={mode}&limit=1&offset=0").json()
-        
-        return (resp.get('tracks', {}).get('items') or [{}])[0].get('uri')
 
+        if mode == 'track':
+            result = resp.get('tracks', {}).get('items')        
+            return create_track_object(result[0])
+        else:
+            result = resp.get('albums', {}).get('items')
+            return create_album_object(result[0])
+        
     def get_library_albums(self, earliest=None, latest=None, limit=inf):
         lb = iso_or_datetime(earliest) or datetime.min
         ub = iso_or_datetime(latest) or datetime.max
@@ -208,7 +214,7 @@ class SpotifyClient(OAuth2Session):
             resp = self.client.get(request_url).json()        
             tracks = resp['items']
             for t in tracks:
-                items.append(t)
+                items.append(create_track_object(t))
 
             request_url = resp.get('next')
             if not request_url:
@@ -233,6 +239,16 @@ class SpotifyClient(OAuth2Session):
             return None
             
         return create_active_track_object(response.json())
+    
+    def get_queue(self):
+        response = self.client.get("https://api.spotify.com/v1/me/player/queue").json()
+        current = response['currently_playing']
+        if current: 
+            return [
+                create_track_object(response['currently_playing'])
+            ] + [create_track_object(t) for t in response['queue']]
+
+        return []
 
     def skip(self, times=1):
         for _ in range(times): 
@@ -244,9 +260,4 @@ class SpotifyClient(OAuth2Session):
 client = SpotifyClient()
 
 if __name__ == '__main__':
-    track = client.get_current_track()
-    print(
-        track.artist, 
-        track.name, 
-        track.progress
-    )
+    print(client.get_queue())

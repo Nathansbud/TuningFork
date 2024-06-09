@@ -215,30 +215,23 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
     elif title or uri: 
         if uri: tracks = get_tracks(uri, True)
         else:
-            if artist:
-                st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}%20artist:{artist}&type={mode[:-1]}&limit=1&offset=0").json()
-            else: 
-                st = spotify.get(f"https://api.spotify.com/v1/search/?q={title}&type={mode[:-1]}&limit=1&offset=0").json()
-            
-            data = st[mode]['items'][0] if st[mode]['items'] else {}
-            
-            if mode == "albums" and data:
-                # album_data = spotify.get(f'https://api.spotify.com/v1/albums/{data.get("uri").split(":")[-1]}').json()
-                track_data = spotify.get(f'https://api.spotify.com/v1/albums/{data.get("uri").split(":")[-1]}/tracks?limit={data.get("total_tracks")}').json()
+            result = spotify.search(title, artist, mode[:-1])
+            if mode == "albums" and result:
+                track_data = spotify.get_album_tracks(result.id)
                 tracks = [{
-                    'name': t.get('name'), 
-                    'artist': ', '.join([artist.get('name') for artist in t.get('artists', [])]),
-                    'uri': t.get('uri'),
-                    'album': data.get('name'),
-                    'album_uri': data.get('uri'),
-                } for t in track_data.get('items', [])]
+                    'name': t.name, 
+                    'artist': t.artist,
+                    'uri': t.uri,
+                    'album': result.name,
+                    'album_uri': result.uri,
+                } for t in track_data]
             else:
                 tracks = [{
-                    'name': data.get('name'), 
-                    'artist': ', '.join([artist.get('name') for artist in data.get('artists', [])]),
-                    'album': data.get('album'),
-                    'uri': data.get('uri')
-                }] if data else []
+                    'name': result.name,
+                    'artist': result.artist,
+                    'album': result.album.name,
+                    'uri': result.uri
+                }] if result else []
     elif last:
         previous = spotify.get(f"https://api.spotify.com/v1/me/player/recently-played?limit={last}").json()
         responses = [s.get('track', {}) for s in previous.get('items', [])][::-1]
@@ -255,20 +248,19 @@ def enqueue(title=None, artist=None, times=1, last=None, group=None, user=None, 
             } for data in responses]
     else:
         current = spotify.get_current_track()
+        
         if not current:
             print("No track currently playing!")
             exit(1)
         else:
             if mode == 'albums':
-                album = data.get("album")
-                track_data = spotify.get(f'https://api.spotify.com/v1/albums/{album.get("uri").split(":")[-1]}/tracks?limit={album.get("total_tracks")}').json()
                 tracks = [{
-                    'name': t.get('name'), 
-                    'artist': ', '.join([artist.get('name') for artist in t.get('artists', [])]),
-                    'uri': t.get('uri'),
-                    'album': album.get('name'),
-                    'album_uri': album.get("uri")
-                } for t in track_data.get('items', [])]
+                    'name': t.name,
+                    'artist': t.artist,
+                    'uri': t.uri,
+                    'album': current.album.name,
+                    'album_uri': current.album.uri
+                } for t in spotify.get_album_tracks(current.album.id)]
             else:
                 tracks = [{
                     'name': current.name,
@@ -447,16 +439,16 @@ def queue_track():
     mode = "tracks" if (args.album is None and not args.source) else "albums"
     if args.queue:
         # Finally, a queue endpoint exists...it doesn't differentiate between Queue vs Up Next, but we will mf take it
-        q = spotify.get("https://api.spotify.com/v1/me/player/queue").json()
-        if len(q['queue']) == 0: print("No track currently playing!")
+        active_queue = spotify.get_queue()
+        if len(active_queue) == 0: print("No track currently playing!")
         else:
             current = spotify.get_current_track()
             print(f"{magenta('C')}.\t{current.prettify()}")
             
             # if the current track in the queue is local, current won't equal queue's currently_playing; 
             # there is currently no good solution for local tracks in the queue, alas
-            for i, t in enumerate(([] if not current.local else [q['currently_playing']]) + q['queue'], start=1):
-                print(f"{magenta(i)}.\t{track_format(t)}")
+            for i, t in enumerate(active_queue[0 if current.local else 1:], start=1):
+                print(f"{magenta(i)}.\t{t.prettify()}")
         
         exit(0)
     elif args.next and args.next > 0:
