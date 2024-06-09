@@ -215,7 +215,6 @@ def enqueue(
         tracks = spotify.get_recent_tracks(last)
     else:
         current = spotify.get_current_track()
-        
         if not current:
             print("No track currently playing!")
             exit(1)
@@ -527,13 +526,12 @@ def queue_track():
             delete=True
         )
     elif args.which:
-        cs = spotify.get("https://api.spotify.com/v1/me/player/currently-playing")
-        if cs.status_code == 204: 
+        current = spotify.get_current_track()
+        if not current:
             print("No track currently playing!")
+            exit(0)
         else:
-            curr = cs.json()
-            citem = curr.get('item')
-            print(f"{bold('Now playing')}: {track_format(citem, album=True)} {time_progress(curr.get('progress_ms'), citem.get('duration_ms'), True)}")
+            print(f"{bold('Now playing')}: {current.prettify(album=True, timestamp=True)}")
     elif args.make_group: make_group()
     elif args.delete_group: 
         with open(group_file, 'r+') as gf:
