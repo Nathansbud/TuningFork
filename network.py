@@ -266,9 +266,9 @@ class SpotifyClient:
                 })
             )
             
-            flag_failure = flag_failure or response.status_code != 201
+            flag_failure = flag_failure or response.status_code >= 300
 
-        return flag_failure
+        return not flag_failure
 
     def remove_playlist_tracks(self, playlist_id, track_uris):
         if len(track_uris) > 100: 

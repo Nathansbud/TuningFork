@@ -5,7 +5,6 @@ import random
 import shlex
 import webbrowser
 from datetime import datetime, timedelta
-from itertools import permutations
 from time import sleep
 
 from lastly import get_current_track, get_top_tracks
@@ -17,9 +16,7 @@ from utilities import (
     get_share_link, send_message_to_user,
     dropdown,
     SongParser, SongException,
-    remove_remaster,
     red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
-    time_progress,
 )
 
 group_file = os.path.join(os.path.dirname(__file__), "resources", "groups.json")
@@ -77,39 +74,6 @@ def playlist_id(identifier):
 
 def text_recipient(alias):
     return prefs.get("ALIASES", {}).get(alias.upper())
-        
-def track_lyrics(curr, album_context=None, clean=True):
-    # bootstrap in album context if needed
-    if album_context: curr['album'] = album_context
-
-    album_artists = [artist.get('name') for artist in curr.get('album', {}).get('artists', [])]
-    if not album_artists: return
-    
-    lyrics = get_lyrics(album_artists[0], remove_remaster(curr.get('name')) if clean else curr.get('name'))
-    if lyrics: 
-        return {
-            "artist": album_artists[0],
-            "album": curr.get("album").get("name"),
-            "title": curr.get("name"), 
-            "lyrics": lyrics
-        }
-    else:
-        for p in permutations(album_artists):
-            lyrics = get_lyrics(" and ".join(p), remove_remaster(curr.get('name')) if clean else curr.get('name'))
-            if lyrics:
-                return {
-                    "artist": " and ".join(p),
-                    "album": curr.get("album").get("name"),
-                    "title": curr.get("name"), 
-                    "lyrics": lyrics
-                }
-
-        return {
-            "artist": album_artists[0],
-            "album": curr.get("album").get("name"),
-            "title": curr.get("name"), 
-            "lyrics": None
-        }
 
 def make_group():
     tracks = []
@@ -684,20 +648,17 @@ def queue_track():
         if args.save:
             save_uris = set(save_to.values())
             if not (len(save_uris) == 1 and None in save_uris):
-                track_uris = [t.get("uri") for t in tracks if t.get("uri")]
-
                 for p, puri in save_to.items():
                     play_name = playlist_name(puri)
                     if not playlist_name:
                         print(f"Could not find playlist {p} from provided ID; make sure your preferences file has the correct ID ({bold('spotify:playlist:[id]')})!")
                         continue 
                     
-                    if len(track_uris) > 0:
-                        resp = spotify.post(f"https://api.spotify.com/v1/playlists/{puri}/tracks?uris={','.join(track_uris)}")
-                        if 200 <= resp.status_code < 300:
-                            print(f"Added {', '.join(track_format(t) for t in tracks)} to {magenta(play_name)} ({magenta(p)})!")
+                    if len(tracks) > 0:
+                        if spotify.add_playlist_tracks(puri, tracks):
+                            print(f"Added {', '.join(t.prettify() for t in tracks)} to {magenta(play_name)} ({magenta(p)})!")
                         else:
-                            print(f"Something went wrong while adding to playlist {p} (status code {resp.status_code})")
+                            print(f"Something went wrong while adding to playlist {p}!")
                     else:
                         print("No tracks found!")
                         break

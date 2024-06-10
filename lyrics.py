@@ -2,17 +2,46 @@ import argparse
 import tempfile
 import webbrowser
 
+from itertools import permutations
+
 from scraper import get_lyrics, get_song_url, get_album_tracklist, get_album_url
-from enqueue import current_lyrics, current_album, track_lyrics, get_tracks
 from utilities import (
-    remove_remaster, remove_after,
+    remove_remaster,
     bold, magenta, cyan, yellow, green
 )
 
+from network import client as spotify
+
+def track_lyrics(track, clean=True):    
+    lyrics = get_lyrics(track.artist, remove_remaster(track.name) if clean else track.name)
+    if lyrics: 
+        return {
+            "artist": track.artist,
+            "album": track.album.name,
+            "title": track.name,
+            "lyrics": lyrics
+        }
+    else:
+        for p in permutations(track.artist.split(", ")):
+            lyrics = get_lyrics(" and ".join(p), remove_remaster(curr.get('name')) if clean else curr.get('name'))
+            if lyrics:
+                return {
+                    "artist": " and ".join(p),
+                    "album": track.album.name,
+                    "title": track.name, 
+                    "lyrics": lyrics
+                }
+
+        return {
+            "artist": track.artist,
+            "album": track.album.name,
+            "title": track.name, 
+            "lyrics": None
+        }
+
 def get_album_lyrics():
-    album = current_album()
-    tracks = get_tracks(album.get('uri'), False)
-    lyric_tracks = [track_lyrics(t, album) for t in tracks]
+    tracks = spotify.get_album(spotify.get_current_track().album.id).tracks
+    lyric_tracks = [track_lyrics(t) for t in tracks]
     
     joined = [
         f"[{green(t['artist'])} - {yellow(t['title'])}]\n" + 
@@ -46,7 +75,7 @@ if __name__ == "__main__":
     artist, title, tracklist = args.artist, args.title, args.tracklist
     existing_lyrics = None
     if not (artist and title):
-        curr = current_lyrics()
+        curr = track_lyrics(spotify.get_current_track())
         if not curr: 
             print("No song playing!") 
             exit(-1)
