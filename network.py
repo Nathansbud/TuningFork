@@ -13,7 +13,7 @@ from time import sleep
 from requests_oauthlib import OAuth2Session
 
 from model import (
-    ActiveTrackObject, TrackObject, AlbumObject,
+    ActiveTrackObject, TrackObject, AlbumObject, create_saved_album_object,
     create_track_object, 
     create_album_object,
     create_active_track_object
@@ -116,7 +116,7 @@ class SpotifyClient:
         else:
             result = resp.get('albums', {}).get('items')
             return create_album_object(result[0])
-        
+    
     def get_library_albums(self, earliest=None, latest=None, limit=inf):
         lb = iso_or_datetime(earliest) or datetime.min
         ub = iso_or_datetime(latest) or datetime.max
@@ -131,6 +131,8 @@ class SpotifyClient:
             albums = resp['items']
             
             for a in albums:
+                if seen >= limit: break
+                
                 # drop trailing Z, which isn't valid ISO format
                 added = datetime.fromisoformat(a['added_at'][:-1])
                 
@@ -149,7 +151,7 @@ class SpotifyClient:
                 # will investigate when looking @ internal API, since there ought to be a better way...
                 
                 if ub >= added >= lb:
-                    library.append((a['album'], added))
+                    library.append(create_saved_album_object(a))
                 
                 seen += 1
             
@@ -161,16 +163,16 @@ class SpotifyClient:
                     should = False
         
         # return in sorted order based on date
-        return sorted(library, key=lambda v: v[1])[::-1] 
-
-    def get_library_album_tracks(self, earliest=None, latest=None, limit=inf):
-        albums = self.get_library_albums(earliest, latest, limit)
-        items = [album[0]['tracks']['items'] for album in albums]
-        return [t['uri'] for tracks in items for t in tracks]    
+        return sorted(library, key=lambda v: v.added)[::-1] 
         
-    def get_library_tracks(self, earliest=None, latest=None):
-        return [t[0] for t in self.get_playlist_tracks(earliest, latest, playlist_id=None)]
-
+    def get_library_tracks(self, earliest=None, latest=None, limit=inf):
+        return self.get_playlist_tracks(
+            earliest=earliest, 
+            latest=latest,
+            limit=inf,
+            playlist_id=None
+        )
+    
     def get_playlist_tracks(
         self,
         earliest=None, 
@@ -182,7 +184,6 @@ class SpotifyClient:
         ub = iso_or_datetime(latest) or datetime.max
         
         additions = []
-        
         request_url = "https://api.spotify.com/v1/me/tracks?limit=50&offset=0" if not playlist_id else f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks?limit=50&offset=0"
         
         should = True
@@ -197,8 +198,8 @@ class SpotifyClient:
                     break
                 elif added > ub:
                     continue
-                
-                additions.append((t['track']['uri'], t))
+
+                additions.append(create_track_object(t.get('track')))
             
             request_url = resp.get('next')
             if not request_url:
@@ -229,6 +230,25 @@ class SpotifyClient:
                 should = False
         
         return items
+
+    def add_playlist_tracks(self, playlist_id, tracks):
+        flag_failure = False
+
+        BATCH_SIZE = 100
+        for batch in [
+            tracks[i:i+BATCH_SIZE] for i in range(0, len(tracks), BATCH_SIZE)
+        ]:
+            response = self.client.post(
+                f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",
+                data=json.dumps({
+                    "uris": [track.uri for track in batch], 
+                    "position": 0
+                })
+            )
+            
+            flag_failure = flag_failure or response.status_code != 201
+
+        return flag_failure
 
     def remove_playlist_tracks(self, playlist_id, track_uris):
         if len(track_uris) > 100: 
@@ -315,7 +335,4 @@ class SpotifyClient:
 client = SpotifyClient()
 
 if __name__ == '__main__':
-    print(extract_id("https://open.spotify.com/album/5qXKfttLVPhSnTA0MK6F5p?si=MeitUR7pTD28rZnGwBFw3Q"))
-    print(client.get_album(
-        extract_id("https://open.spotify.com/album/5qXKfttLVPhSnTA0MK6F5p?si=MeitUR7pTD28rZnGwBFw3Q")[0]
-    ))
+    pass

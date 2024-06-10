@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 from enum import Enum
 from subprocess import Popen, PIPE
-from typing import Union
+from typing import List, Union
 
 from simple_term_menu import TerminalMenu
 
@@ -211,3 +211,6 @@ def iso_or_datetime(iso_or_datetime: Union[str, datetime]):
         return iso_or_datetime
     
     return None
+
+def flatten[T](nested: List[List[T]]) -> T:
+    return [item for sublist in nested for item in sublist]

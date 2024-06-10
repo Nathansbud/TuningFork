@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Optional
 from utilities import green, time_progress, yellow, cyan
 
@@ -8,24 +9,48 @@ class AlbumObject:
     id: str
 
     tracks: Optional[List['TrackObject']]
+    duration: Optional[int]
     
     def __init__(
         self,
         name=None, 
         artist=None, 
         uri=None, 
-        id=None, 
+        id=None,
+        tracks=None, 
+        duration=None
     ):
         self.name = name
         self.artist = artist
         self.uri = uri
         self.id = id
 
+        self.set_tracks(tracks, duration)
+
+    def set_tracks(self, tracks, duration=None):
+        self.tracks = tracks
+        self.duration = duration if duration else (
+            sum(t.duration for t in tracks) if tracks else 0
+        )
+
     def prettify(self): 
         return f"{cyan(self.name)} by {yellow(self.artist)}"
 
     def __str__(self):
         return f"[A]: {self.name} by {self.artist}"
+
+class SavedAlbumObject(AlbumObject):
+    added: datetime
+
+    def __init__(self, added=None, **kwargs):
+        super().__init__(**kwargs)
+        self.added = added
+    
+    def prettify(self) -> str:
+        return super().prettify()
+
+    def __str__(self):
+        return f"[@A]: {self.name} by {self.artist}"
 
 class TrackObject:
     name: str
@@ -116,6 +141,13 @@ def create_album_object(album_json: dict) -> AlbumObject:
             for t in album_json['tracks']['items']
         ]
 
-        alb.tracks = album_tracks
+        alb.set_tracks(album_tracks)
     
     return alb
+
+def create_saved_album_object(saved_album_json: dict) -> SavedAlbumObject:
+    album_object = create_album_object(saved_album_json.get("album"))
+    return SavedAlbumObject(
+        added=datetime.fromisoformat(saved_album_json['added_at'][:-1]),
+        **album_object.__dict__
+    )
