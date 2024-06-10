@@ -20,8 +20,6 @@ from model import (
 )
 from utilities import iso_or_datetime, red, magenta, extract_id
 
-
-
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"        
 default_spotify_scopes = [
@@ -40,6 +38,10 @@ with open(os.path.join(cred_path, "spotify.json"), "r") as jf:
         spotify_creds = json.load(jf)
     except json.JSONDecodeError: 
         spotify_creds = {}
+
+prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
+with open(prefs_file, "r") as pf: 
+    prefs = json.load(pf)
 
 def start_server(port):    
     #Certificate files can be generated using: 
@@ -230,6 +232,24 @@ class SpotifyClient:
                 should = False
         
         return items
+
+    def create_playlist(self, name, public=True, description=""):
+        if not prefs.get("SPOTIFY_USER"): return
+        
+        return self.client.post(
+            f"https://api.spotify.com/v1/users/{prefs.get('SPOTIFY_USER')}/playlists",
+            data=json.dumps({
+                "name": name,
+                "public": public,
+                **({} if not description else {"description": description})
+        })).json().get('id')
+
+    def set_playlist_image(self, playlist_id: str, image: bytes):
+        return self.client.put(
+            f"https://api.spotify.com/v1/playlists/{playlist_id}/images", 
+            headers={'Content-Type': 'image/jpeg'},
+            data=image
+        )
 
     def add_playlist_tracks(self, playlist_id, tracks):
         flag_failure = False

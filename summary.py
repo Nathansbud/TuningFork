@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import List, Optional
 
 from network import client as spotify
-from playlister import update_liked_playlist
 
 def save_album_history(
     year: int, 

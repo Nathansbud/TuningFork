@@ -110,36 +110,22 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
         print("Found no tracks in provided range; exiting...")
         return
 
-    created_playlist = spotify.post(
-        f"https://api.spotify.com/v1/users/{prefs.get('SPOTIFY_USER')}/playlists",
-        data=json.dumps({
-            "name": name,
-            "public": public,
-            **({} if not description else {"description": description})
-        })
-    ).json()
+    playlist_id = spotify.create_playlist(
+        name,
+        public=public,
+        description=description
+    )
 
-    BATCH_SIZE = 100
-    batched = [
-        top_tracks[i:i+BATCH_SIZE] for i in range(0, len(top_tracks), BATCH_SIZE)
-    ][::-1]
-
-    for b in batched:
-        spotify.post(
-            f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/tracks",
-            data=json.dumps({"uris": [t.uri for t in b], "position": 0})
-        )
+    spotify.add_playlist_tracks(playlist_id, top_tracks)
 
     # for some reason, the playlist takes a bit before a playlist cover can be updated; wait a few seconds first
     if image:
         sleep(5)
-        playlist_image = build_playlist_image(start_date)
-        img = spotify.put(
-            f"https://api.spotify.com/v1/playlists/{created_playlist.get('id')}/images", 
-            headers={'Content-Type': 'image/jpeg'},
-            data=playlist_image
+        spotify.set_playlist_cover(
+            playlist_id, 
+            build_playlist_image(start_date)
         )
-    
+        
     print(f"Created playlist {name}!")
 
 def generate_last_month_playlist(dt):
