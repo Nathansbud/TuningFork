@@ -9,7 +9,6 @@ from time import sleep
 
 from lastly import get_current_track, get_top_tracks
 from model import AlbumObject, TrackObject
-from scraper import get_lyrics
 from network import client as spotify
 from utilities import (
     album_format, track_format, extract_id,
