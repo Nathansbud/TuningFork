@@ -12,17 +12,16 @@ import requests
 from PIL import Image
 
 from network import client as spotify
+from preferences import prefs
 from utilities import magenta
 
 MODE = "auto"
 MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 lastfm_file = os.path.join(os.path.dirname(__file__), "credentials", "lastfm.json")
-prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
 atom_dir = os.path.join(os.path.dirname(__file__), "resources", "atoms")
 
 with open(lastfm_file, "r") as cf: lastfm_creds = json.load(cf)
-with open(prefs_file, "r") as pf: prefs = json.load(pf)
 
 def get_current_track(user): 
     k = get_recent_tracks(user, 1)

@@ -12,13 +12,17 @@ from time import sleep
 
 from requests_oauthlib import OAuth2Session
 
+from utilities import iso_or_datetime, red
 from model import (
     ActiveTrackObject, TrackObject, AlbumObject, create_saved_album_object,
     create_track_object, 
     create_album_object,
     create_active_track_object
 )
-from utilities import iso_or_datetime, red, magenta, extract_id
+from preferences import prefs
+
+
+
 
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"        
@@ -38,10 +42,6 @@ with open(os.path.join(cred_path, "spotify.json"), "r") as jf:
         spotify_creds = json.load(jf)
     except json.JSONDecodeError: 
         spotify_creds = {}
-
-prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
-with open(prefs_file, "r") as pf: 
-    prefs = json.load(pf)
 
 def start_server(port):    
     #Certificate files can be generated using: 

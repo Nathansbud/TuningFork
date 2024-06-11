@@ -18,43 +18,12 @@ from utilities import (
     red, green, yellow, blue, magenta, cyan, white, bold, rainbow, 
 )
 
-group_file = os.path.join(os.path.dirname(__file__), "resources", "groups.json")
-short_file = os.path.join(os.path.dirname(__file__), "resources", "shortcuts.json")
-prefs_file = os.path.join(os.path.dirname(__file__), "resources", "preferences.json")
+from preferences import (
+    prefs, groups, shortcuts, 
+    dump_groups, dump_shortcuts
+)
 
 PART_SEPARATOR = '<--|-->'
-
-def load_prefs():
-    if not os.path.isfile(group_file):
-        with open(group_file, 'w+') as gf: json.dump({}, gf)
-
-    if not os.path.isfile(prefs_file):              
-        with open(prefs_file, 'w+') as gf: json.dump({
-                "PLAYLISTS": {
-                    "DEFAULT": "",
-                    "PRIMARY": "",
-                    "BACKLOG": "",
-                    "SHARED": ""
-                },
-                "ALIASES": {},
-                "LASTFM_USER": "",
-                "LASTFM_WATCH_USER": "Nathansbud"
-            })
-
-    with open(group_file, 'r') as gf, open(prefs_file, 'r') as pf: 
-        try:
-            gs = json.load(gf)
-        except Exception: 
-            gs = {}
-        
-        try: 
-            ps = json.load(pf)
-        except Exception:
-            ps = {}
-        
-        return gs, ps
-
-groups, prefs = load_prefs()
 
 def playlist_name(pid):
     playlist_data = spotify.get(f"https://api.spotify.com/v1/playlists/{pid}")
@@ -91,13 +60,7 @@ def make_group():
     while adding:
         candidate_track = input(magenta(f"Item {len(tracks) + 1}: "))
         if candidate_track.strip().upper() == 'SAVE':
-            if len(tracks) > 0:
-                with open(group_file) as gf:
-                    try: 
-                        groups = json.load(gf) 
-                    except json.JSONDecodeError: 
-                        groups = {}
-                
+            if len(tracks) > 0:                
                 groups[name] = tracks
                 with open(group_file, 'w+') as gf:
                     json.dump(groups, gf)
@@ -140,13 +103,7 @@ def enqueue(
     group_data = []   
     tracks = []
     
-    if group:
-        with open(group_file) as gf:
-            try:
-                groups = json.load(gf)
-            except json.JSONDecodeError:
-                groups = {}
-        
+    if group:        
         group_data = groups.get(group, [])
         if not group_data:
             print(f"Could not find group {blue(group)}; try creating via {magenta('--make_group')}!")
@@ -224,7 +181,7 @@ def shortcut_serialize(obj: AlbumObject | TrackObject):
         'name': obj.name, 
         'artist': obj.artist,
         'album': obj.name if isinstance(obj, AlbumObject) else obj.album.name,
-        'uri': obj.uri
+        'uri': obj.uri if isinstance(obj, AlbumObject) else obj.album.uri,
     }
 
 def shortcut_deserialize(obj: dict, is_album=False):
@@ -239,34 +196,22 @@ def shortcut_deserialize(obj: dict, is_album=False):
     else:
         return TrackObject(**shared)
 
-def remember_track(title, artist, track, mode, limit=None, delete=False):
-    memory = {"albums": {}, "tracks": {}}
-    if os.path.isfile(short_file):
-        with open(short_file, "r") as cf:
-            try: 
-                memory = json.load(cf)
-            except Exception:
-                memory = {
-                    "albums": {},
-                    "tracks": {}
-                }
-    
+def remember_track(title, artist, track, mode, limit=None, delete=False):    
     mem_key = f"{(title or '').lower()}{PART_SEPARATOR}{(artist or '').lower()}"
 
     if delete: 
-        if mem_key in memory[mode]: del memory[mode][mem_key]
+        if mem_key in shortcuts[mode]: del shortcuts[mode][mem_key]
         else: 
             print(f"Could not find any existing shortcuts for {title}{'by ' + artist if artist else ''}!")
     elif track:
-        memory[mode][mem_key] = {
+        shortcuts[mode][mem_key] = {
             **shortcut_serialize(track),
             'limit': limit or []
         }
     else:
         print("New shortcuts must have a track or album!")
-
-    with open(short_file, "w+") as wf:
-        json.dump(memory, wf)
+    
+    dump_shortcuts()
 
 def progress_playlist(playlist_id):
     track_uri, metadata = spotify.get_playlist_tracks(
@@ -497,57 +442,36 @@ def queue_track():
             print(f"{bold('Now playing')}: {current.prettify(album=True, timestamp=True)}")
     elif args.make_group: make_group()
     elif args.delete_group: 
-        with open(group_file, 'r+') as gf:
-            try:
-                groups = json.load(gf)
-                if args.delete_group in groups: 
-                    del groups[args.delete_group]
-                    print(f"Deleting group {args.delete_group}...")
-                    sleep(2)
-                    
-                else: print(f"Group {args.delete_group} not found!")
-            except json.JSONDecodeError:
-                print("No groups found!")
-                groups = {}
-        
-        with open(group_file, 'w+') as gf:
-            json.dump(groups, gf)
+        if args.delete_group in groups: 
+            print(f"Deleting group {args.delete_group}...")
+            sleep(2)
+
+            del groups[args.delete_group]
+            dump_groups()
     elif args.list_rules: 
-        with open(group_file, 'r') as gf:
-            try:
-                groups = json.load(gf)
-                if groups:
-                    print(f"[{bold('Saved Groups')}]\n")
-                    for name, data in groups.items():
-                        tracks = "\n".join([
-                            f"\t{i}. {track_format(d)} [{magenta(d.get('uri'))}]" 
-                            for i, d in enumerate(data, start=1)
-                        ])
-                        print(f"{album_format(name)}: {tracks}\n")
-                        
-                    print()
-            except json.JSONDecodeError:
-                pass
+        if len(groups):
+            print(f"[{bold('Saved Groups')}]\n")
+            for name, data in groups.items():
+                tracks = "\n".join([
+                    f"\t{i}. {track_format(d)} [{magenta(d.get('uri'))}]" 
+                    for i, d in enumerate(data, start=1)
+                ])
 
-        if os.path.isfile(short_file): 
-            with open(short_file, 'r') as cf:
-                try: 
-                    shortcuts = json.load(cf)
-                    tracks, albums = shortcuts.get('tracks'), shortcuts.get('albums')
-                    for i, (title, ss) in enumerate([(green("Track Shortcuts"), tracks), (cyan("Album Shortcuts"), albums)]):
-                        if ss:
-                            print(f"[{title}]\n")
-                            for r in sorted([[
-                                magenta(", ".join(key.split(PART_SEPARATOR))),
-                                "->",
-                                track_format(track) if mode == 'tracks' else album_format(track),
-                                f"[{magenta(track.get('relevant_uri', track.get('uri')))}]"
-                            ] for key, track in ss.items()], key=lambda l: l[2].lower()):
-                                print(*r)
-                        print()
+                print(f"{blue(name)}: {tracks}\n")
 
-                except json.JSONDecodeError:
-                    pass
+            tracks, albums = shortcuts.get('tracks'), shortcuts.get('albums')
+            for i, (title, ss) in enumerate([(green("Track Shortcuts"), tracks), (cyan("Album Shortcuts"), albums)]):
+                if ss:
+                    print(f"[{title}]\n")
+                    for r in sorted([[
+                        magenta(", ".join(key.split(PART_SEPARATOR))),
+                        "->",
+                        track_format(track) if i == 0 else album_format(track),
+                        f"[{magenta(track.get('album_uri', track.get('uri')))}]"
+                    ] for key, track in ss.items()], key=lambda l: l[2].lower()):
+                        print(*r)
+                print()
+
     elif args.watch:
         track = get_current_track(args.watch)
         if track:
@@ -569,15 +493,8 @@ def queue_track():
         
         exit(0)
     else:
-        with open(short_file, 'r') as cf:
-            try:
-                memory = json.load(cf)
-            except Exception:
-                memory = {"tracks": {}, "albums": {}}
-
         memory_key = "" if not args.title else f"{args.title.lower()}{PART_SEPARATOR}{(args.artist or '').lower()}"
-        
-        mobject = memory.get(mode, {}).get(memory_key, {})
+        mobject = shortcuts.get(mode, {}).get(memory_key, {})
         
         artist = mobject.get('artist', args.artist) if not args.amnesia else args.artist
         title = mobject.get('name', args.title) if not args.amnesia else args.title

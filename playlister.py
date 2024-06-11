@@ -80,18 +80,6 @@ def update_backlog_playlist(playlist_id, backlog_id, last_update=None):
     spotify.add_playlist_tracks(playlist_id, tracks)
     cache["BACKLOG_METADATA"]["LAST_UPDATE"] = time_now
     save_cache()
-
-def sort_backlog_by_album_length(playlist_id, backlog_id):
-    backlog = spotify.get_playlist_tracks(playlist_id=backlog_id)
-    ordered = sorted([
-        (item, spotify.get_album(album_id=item.album.id).duration) 
-        for item in backlog
-    ], key=lambda v: v[1])
-
-    spotify.add_playlist_tracks(
-        playlist_id,
-        [pair[0] for pair in ordered]
-    )
     
 if __name__ == "__main__":
     if internet():
