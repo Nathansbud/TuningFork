@@ -9,7 +9,7 @@ def save_album_history(
     year: int, 
     allpath: Optional[str]=None, 
     yearpath: Optional[str]=None, 
-    library_playlist_id: Optional[str]=None, 
+    library_playlist_id: Optional[str]=None,
     release_all: bool=False
 ):
     albums = spotify.get_library_albums(datetime(year, 12, 21, 0, 0, 0))[::-1]

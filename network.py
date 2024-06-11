@@ -2,7 +2,7 @@ from datetime import datetime
 import os
 import json
 import ssl
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 import urllib
 import webbrowser
 
@@ -14,10 +14,12 @@ from requests_oauthlib import OAuth2Session
 
 from utilities import iso_or_datetime, red
 from model import (
-    ActiveTrackObject, TrackObject, AlbumObject, create_saved_album_object,
+    TrackObject, ActiveTrackObject, AlbumObject, SavedAlbumObject, PlaylistObject,
+    create_saved_album_object,
     create_track_object, 
     create_album_object,
-    create_active_track_object
+    create_active_track_object,
+    create_playlist_object
 )
 from preferences import prefs
 
@@ -119,7 +121,7 @@ class SpotifyClient:
             result = resp.get('albums', {}).get('items')
             return create_album_object(result[0])
     
-    def get_library_albums(self, earliest=None, latest=None, limit=inf):
+    def get_library_albums(self, earliest=None, latest=None, limit=inf) -> List[SavedAlbumObject]:
         lb = iso_or_datetime(earliest) or datetime.min
         ub = iso_or_datetime(latest) or datetime.max
 
@@ -175,13 +177,21 @@ class SpotifyClient:
             playlist_id=None
         )
     
+    def get_playlist(self, playlist_id, include_tracks=False) -> Optional[PlaylistObject]:
+        response = self.client.get(f"https://api.spotify.com/v1/playlists/{playlist_id}")
+        if response.status_code != 200: 
+            return None
+        
+        tracks = self.get_playlist_tracks(playlist_id=playlist_id) if include_tracks else None
+        return create_playlist_object(response.json(), tracks)
+
     def get_playlist_tracks(
         self,
         earliest=None, 
         latest=None,
         playlist_id=None, 
         limit=inf
-    ):
+    ) -> List[TrackObject]:
         lb = iso_or_datetime(earliest) or datetime.min
         ub = iso_or_datetime(latest) or datetime.max
         
@@ -254,9 +264,19 @@ class SpotifyClient:
     def add_playlist_tracks(self, playlist_id, tracks):
         flag_failure = False
 
+        # Both track order AND batch order need to be reversed such that
+        # the output has the expected ordering:
+        # Input, Batched [X]:               
+        #   ABC|DEF|GHI -> GHIDEFABC 
+        # Reversed Input, Batched [X]:      
+        #   IHG|FED|CBA -> CBAFEDIHG
+        # Reversed Input, Reversed Batched: 
+        #   IHG|FED|CBA -> ABCDEFGHI
+        
+        insert_order = tracks[::-1]
         BATCH_SIZE = 100
         for batch in [
-            tracks[i:i+BATCH_SIZE] for i in range(0, len(tracks), BATCH_SIZE)
+            insert_order[i:i+BATCH_SIZE][::-1] for i in range(0, len(tracks), BATCH_SIZE)
         ]:
             response = self.client.post(
                 f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",
@@ -270,17 +290,31 @@ class SpotifyClient:
 
         return not flag_failure
 
-    def remove_playlist_tracks(self, playlist_id, track_uris):
-        if len(track_uris) > 100: 
-            # TODO: Do this right
-            raise ValueError("Can only remove max 100 tracks at a time (Zack was lazy)")
-        
-        request_url = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
-        self.client.delete(
-            request_url,
-            data=json.dumps({"tracks": [{"uri": t} for t in track_uris]})
-        )
+    def remove_playlist_tracks(self, playlist_id, tracks):
+        flag_failure = False
 
+        BATCH_SIZE = 100
+        for batch in [
+            tracks[i:i+BATCH_SIZE] for i in range(0, len(tracks), BATCH_SIZE)
+        ]:
+            response = self.client.delete(
+                f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",
+                data=json.dumps({
+                    "tracks": [{"uri": track.uri} for track in batch]                
+                })
+            )
+            
+            flag_failure = flag_failure or response.status_code >= 300
+
+        return not flag_failure
+
+    def replace_all_playlist_tracks(self, playlist_id, tracks):
+        # Clear existing tracks
+        existing = self.get_playlist_tracks(playlist_id=playlist_id)
+        self.remove_playlist_tracks(playlist_id, existing)
+        
+        self.add_playlist_tracks(playlist_id, tracks)
+        
     def get_track(self, track_id: str) -> TrackObject | AlbumObject:
         response = self.client.get(f'https://api.spotify.com/v1/tracks/{track_id}')
         if response.status_code != 200: 

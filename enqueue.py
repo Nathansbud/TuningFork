@@ -19,26 +19,12 @@ from utilities import (
 )
 
 from preferences import (
-    prefs, groups, shortcuts, 
-    dump_groups, dump_shortcuts
+    prefs, groups, shortcuts,
+    dump_groups, dump_shortcuts,
+    playlist_preference
 )
 
 PART_SEPARATOR = '<--|-->'
-
-def playlist_name(pid):
-    playlist_data = spotify.get(f"https://api.spotify.com/v1/playlists/{pid}")
-    if playlist_data.status_code == 200: 
-        return playlist_data.json().get('name')
-    else:
-        return None 
-
-def playlist_id(identifier):
-    if identifier.startswith('http'):
-        return identifier.split("/")[-1].split("?")[0]
-    elif identifier.startswith("spotify:playlist:"):
-        return identifier.split(":")[-1]
-    else:
-        return prefs.get("PLAYLISTS", {}).get(identifier.upper())
 
 def text_recipient(alias):
     return prefs.get("ALIASES", {}).get(alias.upper())
@@ -278,7 +264,7 @@ def queue_track():
     # if --save, args.save == [], else it will be None
     if not args.save: args.save = ["DEFAULT"] if isinstance(args.save, list) else []
     
-    save_to = {p: playlist_id(p) for p in args.save}
+    save_to = {p: playlist_preference(p) for p in args.save}
     recipients = [(t, text_recipient(t)) for t in (args.text or []) if t]
     
     if args.pause or args.playpause:
@@ -329,9 +315,9 @@ def queue_track():
         print(f"Now playing: {spotify.get_current_track().prettify(album=True, timestamp=False)}!")
         exit(0)
     elif args.playlist:
-        puri = playlist_id(args.playlist)
+        puri = playlist_preference(args.playlist)
         if puri:
-            play_name = playlist_name(puri)
+            play_name = spotify.get_playlist(puri)
             req_p = spotify.put(f"https://api.spotify.com/v1/me/player/play", data=json.dumps({
                 "context_uri": f"spotify:playlist:{puri}",
             }))
@@ -346,8 +332,8 @@ def queue_track():
         exit(0)
 
     if args.progress:
-        if playlist_id("QUEUE"):
-            progress_playlist(playlist_id("QUEUE"))
+        if playlist_preference("QUEUE"):
+            progress_playlist(playlist_preference("QUEUE"))
         else:
             print(f"Found no playlist {magenta('QUEUE')} to pop from; try adding one to your {magenta('PLAYLISTS')} in preferences.json!")
         
@@ -362,7 +348,7 @@ def queue_track():
         ran = args.offset[1] if args.offset and len(args.offset) > 1 else 1
         offset = 0
 
-        backlog_uri = playlist_id("BACKLOG")
+        backlog_uri = playlist_preference("BACKLOG")
         if args.source == "BACKLOG" and backlog_uri:
             count = spotify.get(f"https://api.spotify.com/v1/playlists/{backlog_uri}/tracks").json().get('total')
             if not count > idx > -1:
@@ -475,7 +461,7 @@ def queue_track():
     elif args.watch:
         track = get_current_track(args.watch)
         if track:
-            shared_playlist = playlist_id("SHARED")
+            shared_playlist = playlist_preference("SHARED")
             if args.save: 
                 if shared_playlist:
                     uri = spotify.search(track["name"], track["artist"])
@@ -565,14 +551,14 @@ def queue_track():
             save_uris = set(save_to.values())
             if not (len(save_uris) == 1 and None in save_uris):
                 for p, puri in save_to.items():
-                    play_name = playlist_name(puri)
-                    if not playlist_name:
+                    retrieved = spotify.get_playlist(puri)
+                    if not retrieved:
                         print(f"Could not find playlist {p} from provided ID; make sure your preferences file has the correct ID ({bold('spotify:playlist:[id]')})!")
                         continue 
                     
                     if len(tracks) > 0:
                         if spotify.add_playlist_tracks(puri, tracks):
-                            print(f"Added {', '.join(t.prettify() for t in tracks)} to {magenta(play_name)} ({magenta(p)})!")
+                            print(f"Added {', '.join(t.prettify() for t in tracks)} to {magenta(retrieved.name)} ({magenta(p)})!")
                         else:
                             print(f"Something went wrong while adding to playlist {p}!")
                     else:

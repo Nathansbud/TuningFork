@@ -9,7 +9,6 @@ from network import client as spotify
 from utilities import flatten
 
 CACHE_FILE = os.path.join(os.path.dirname(__file__), "resources", "playlister.json")
-DUMMY_PLAYLIST = "1ijioHJWs8eEhrG7UQSISo"
 UPDATE_BACKLOG = False
 
 def internet():

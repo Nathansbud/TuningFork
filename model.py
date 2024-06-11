@@ -104,6 +104,28 @@ class ActiveTrackObject(TrackObject):
     def __str__(self):
         return f"[@T]: {self.name} by {self.artist} (@ {self.progress})"
 
+class PlaylistObject:
+    name: str
+    id: str
+    uri: str
+
+    snapshot: str
+    tracks: Optional[List[TrackObject]]
+    
+    def __init__(
+        self, 
+        name=None,
+        id=None,
+        uri=None,
+        snapshot=None,
+        tracks=None
+    ):
+        self.name = name
+        self.id = id
+        self.uri = uri
+        self.snapshot = snapshot
+        self.tracks = tracks
+
 def create_track_object(track_json: dict, album=None) -> TrackObject:
     track_album = album if album else (
         create_album_object(track_json.get('album')) 
@@ -150,4 +172,13 @@ def create_saved_album_object(saved_album_json: dict) -> SavedAlbumObject:
     return SavedAlbumObject(
         added=datetime.fromisoformat(saved_album_json['added_at'][:-1]),
         **album_object.__dict__
+    )
+
+def create_playlist_object(playlist_json: dict, tracks=None) -> PlaylistObject:    
+    return PlaylistObject(
+        name=playlist_json.get("name"),
+        snapshot=playlist_json.get("snapshot_id"),
+        id=playlist_json.get("id"),
+        uri=playlist_json.get("uri"),
+        tracks=tracks
     )

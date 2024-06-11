@@ -60,4 +60,12 @@ def dump_shortcuts():
     with open(shortcuts_file, 'w+') as sf:
         json.dump(shortcuts, sf)
 
+def playlist_preference(identifier):
+    if identifier.startswith('http'):
+        return identifier.split("/")[-1].split("?")[0]
+    elif identifier.startswith("spotify:playlist:"):
+        return identifier.split(":")[-1]
+    else:
+        return prefs.get("PLAYLISTS", {}).get(identifier.upper())
+    
 groups, prefs, shortcuts = load_prefs()
