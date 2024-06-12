@@ -504,9 +504,9 @@ def queue_track():
             if not args.share: args.share = "SPOTIFY"
             
             if mode == "albums":
-                item = spotify.get(f"https://api.spotify.com/v1/albums/{tracks[0]['album_uri'].split(':')[-1]}").json()
+                item = spotify.get(f"https://api.spotify.com/v1/albums/{tracks[0].album.id}").json()
             else:
-                item = spotify.get(f"https://api.spotify.com/v1/tracks/{tracks[0]['uri'].split(':')[-1]}").json()
+                item = spotify.get(f"https://api.spotify.com/v1/tracks/{tracks[0].id}").json()
             
             res = get_share_link(item['external_urls']['spotify'], args.share != 'SPOTIFY')
             if res['code'] == 0 and len(res['link']) > 0:
