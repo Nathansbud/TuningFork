@@ -31,7 +31,7 @@ def find_prunable_albums(backlog_id):
 def update_musook_form(form_hook, playlist_id):
     tracks = spotify.get_playlist_tracks(playlist_id=playlist_id)
     albums = list(set(f"{t.album.artist} – {t.album.name}" for t in tracks))
-    resp = spotify.post(form_hook, data=json.dumps({
+    spotify.post(form_hook, data=json.dumps({
         "albums": albums
     }))
 
