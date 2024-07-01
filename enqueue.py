@@ -48,8 +48,7 @@ def make_group():
         if candidate_track.strip().upper() == 'SAVE':
             if len(tracks) > 0:                
                 groups[name] = tracks
-                with open(group_file, 'w+') as gf:
-                    json.dump(groups, gf)
+                dump_groups()
             else:
                 print("No tracks specified!")
             adding = False
