@@ -120,7 +120,7 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
     # for some reason, the playlist takes a bit before a playlist cover can be updated; wait a few seconds first
     if image:
         sleep(5)
-        spotify.set_playlist_cover(
+        spotify.set_playlist_image(
             playlist_id, 
             build_playlist_image(start_date)
         )
