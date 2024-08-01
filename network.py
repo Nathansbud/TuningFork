@@ -108,18 +108,19 @@ class SpotifyClient:
     def post(self, *args, **kwargs): return self.client.post(*args, **kwargs)
     def put(self, *args, **kwargs): return self.client.put(*args, **kwargs)
     
-    def search(self, title, artist=None, mode='track') -> TrackObject | AlbumObject:
+    def search(self, title, artist=None, mode='track') -> Optional[TrackObject | AlbumObject]:
+        title = title.replace("#", "Number ")
         if title and artist:
             resp = self.client.get(f"https://api.spotify.com/v1/search/?q={title.strip()}%20artist:{artist.strip()}&type={mode}&limit=1&offset=0").json()
         elif title:
             resp = self.client.get(f"https://api.spotify.com/v1/search/?q={title.strip()}&type={mode}&limit=1&offset=0").json()
-
+        
         if mode == 'track':
-            result = resp.get('tracks', {}).get('items')        
-            return create_track_object(result[0])
+            result = resp.get('tracks', {}).get('items')       
+            return create_track_object(result[0]) if result else None
         else:
             result = resp.get('albums', {}).get('items')
-            return create_album_object(result[0])
+            return create_album_object(result[0]) if result else None
     
     def get_library_albums(self, earliest=None, latest=None, limit=inf) -> List[SavedAlbumObject]:
         lb = iso_or_datetime(earliest) or datetime.min

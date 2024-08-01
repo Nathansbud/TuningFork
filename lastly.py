@@ -100,10 +100,17 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
         print(f"Could not find preference {magenta('SPOTIFY_USER')}, exiting...")
         return
     
-    top_tracks = [
+    lastfm_chart = get_top_tracks(start_date, end_date, limit)
+    raw_tracks = [
         spotify.search(t["name"], t["artist"])
         for t in get_top_tracks(start_date, end_date, limit)
     ]
+
+    top_tracks = []
+    for (raw, last) in zip(raw_tracks, lastfm_chart):
+        if not raw: print(f"Failed to fetch track: {last} from last.fm!")
+        else:
+            top_tracks.append(raw)
 
     if not top_tracks: 
         print("Found no tracks in provided range; exiting...")
