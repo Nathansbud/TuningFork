@@ -212,5 +212,5 @@ def iso_or_datetime(iso_or_datetime: Union[str, datetime]):
     
     return None
 
-def flatten[T](nested: List[List[T]]) -> T:
+def flatten(nested):
     return [item for sublist in nested for item in sublist]

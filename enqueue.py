@@ -161,7 +161,7 @@ def enqueue(
                 
     return tracks, status
 
-def shortcut_serialize(obj: AlbumObject | TrackObject):
+def shortcut_serialize(obj):
     return {
         'name': obj.name, 
         'artist': obj.artist,

@@ -108,7 +108,7 @@ class SpotifyClient:
     def post(self, *args, **kwargs): return self.client.post(*args, **kwargs)
     def put(self, *args, **kwargs): return self.client.put(*args, **kwargs)
     
-    def search(self, title, artist=None, mode='track') -> Optional[TrackObject | AlbumObject]:
+    def search(self, title, artist=None, mode='track'):
         title = title.replace("#", "Number ")
         if title and artist:
             resp = self.client.get(f"https://api.spotify.com/v1/search/?q={title.strip()}%20artist:{artist.strip()}&type={mode}&limit=1&offset=0").json()
@@ -316,7 +316,7 @@ class SpotifyClient:
         
         self.add_playlist_tracks(playlist_id, tracks)
         
-    def get_track(self, track_id: str) -> TrackObject | AlbumObject:
+    def get_track(self, track_id: str):
         response = self.client.get(f'https://api.spotify.com/v1/tracks/{track_id}')
         if response.status_code != 200: 
             return None
