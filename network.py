@@ -23,9 +23,6 @@ from model import (
 )
 from preferences import prefs
 
-
-
-
 cred_path = os.path.join(os.path.dirname(__file__), "credentials")
 auth_url, token_url = "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token"        
 default_spotify_scopes = [
@@ -107,6 +104,7 @@ class SpotifyClient:
     def get(self, *args, **kwargs): return self.client.get(*args, **kwargs)
     def post(self, *args, **kwargs): return self.client.post(*args, **kwargs)
     def put(self, *args, **kwargs): return self.client.put(*args, **kwargs)
+    def delete(self, *args, **kwargs): return self.client.delete(*args, **kwargs)
     
     def search(self, title, artist=None, mode='track'):
         title = title.replace("#", "Number ")
@@ -308,6 +306,41 @@ class SpotifyClient:
             flag_failure = flag_failure or response.status_code >= 300
 
         return not flag_failure
+
+    def get_user_playlists(self, user_id=None):
+        USER = user_id or prefs.get("SPOTIFY_USER")
+        request_url = f"https://api.spotify.com/v1/users/{USER}/playlists?limit=50&offset=0"
+
+        items = []
+        should = True
+        while should:
+            resp = self.client.get(request_url).json() 
+            playlists = resp['items']
+            for p in playlists:
+                items.append(create_playlist_object(p))
+
+            request_url = resp.get('next')
+            if not request_url:
+                should = False
+        
+        return items
+
+    def delete_playlist(self, playlist_id):
+        self.delete(f"https://api.spotify.com/v1/playlists/{playlist_id}/followers")
+
+    def merge_playlists(self, target_id, filter_condition=None):
+        playlists = [p for p in self.get_user_playlists() if (filter_condition(p) if filter_condition else True)]
+        for pl in playlists:
+            self.add_playlist_tracks(target_id, self.get_playlist_tracks(playlist_id=pl.id))
+
+    def delete_playlists(self, filter_condition=None, delay=3):
+        playlists = [p for p in self.get_user_playlists() if (filter_condition(p) if filter_condition else True)]
+        for pl in playlists:
+            if delay:
+                print(f"Deleting playlist '{pl}' in {delay}s...")
+                sleep(delay)
+            
+            self.delete_playlist(pl.id)
 
     def replace_all_playlist_tracks(self, playlist_id, tracks):
         # Clear existing tracks

@@ -125,6 +125,12 @@ class PlaylistObject:
         self.uri = uri
         self.snapshot = snapshot
         self.tracks = tracks
+    
+    def __repr__(self):
+        return self.__str__()
+    
+    def __str__(self):
+        return f"[P]: {self.name}"
 
 def create_track_object(track_json: dict, album=None) -> TrackObject:
     track_album = album if album else (
