@@ -7,6 +7,7 @@ class AlbumObject:
     artist: str
     uri: str
     id: str
+    released: str
 
     tracks: Optional[List['TrackObject']]
     duration: Optional[int]
@@ -17,6 +18,7 @@ class AlbumObject:
         artist=None, 
         uri=None, 
         id=None,
+        released=None,
         tracks=None, 
         duration=None
     ):
@@ -24,6 +26,7 @@ class AlbumObject:
         self.artist = artist
         self.uri = uri
         self.id = id
+        self.released = released
 
         self.set_tracks(tracks, duration)
 
@@ -160,7 +163,8 @@ def create_album_object(album_json: dict) -> AlbumObject:
         name=album_json.get("name"),
         artist=', '.join(artist.get('name') for artist in album_json.get('artists', [])),
         uri=album_json.get("uri"),
-        id=album_json.get('id')
+        id=album_json.get('id'),
+        released=album_json.get("release_date")
     )
 
     if 'tracks' in album_json:

@@ -1,7 +1,9 @@
 import json
 import random
+
 from datetime import datetime
 from typing import List, Optional
+from utilities import flatten
 
 from network import client as spotify
 
@@ -12,40 +14,24 @@ def save_album_history(
     library_playlist_id: Optional[str]=None,
     release_all: bool=False
 ):
-    albums = spotify.get_library_albums(datetime(year, 12, 21, 0, 0, 0))[::-1]
-    
-    def name_fmt(alb, added, release=False):
-        alb_name = alb['name']
-        alb_artist = " & ".join([art['name'] for art in alb['artists']])
-        alb_added = added.strftime("%B %d").replace(" 0", " ")
-        alb_release = f' ({alb["release_date"]})' if release else ''
+    albums = spotify.get_library_albums(datetime(year - 1, 12, 31, 0, 0, 0))[::-1]    
+    def name_fmt(alb, release=False):
+        released = f' ({alb.released})' if release else ''
 
-        return f'{alb_added} - {alb_name} by {alb_artist}{alb_release}\n'
+        return f'{alb.added.split(" ")[0]} - {alb.name} by {alb.artist}{released}\n'
     
     if allpath:
         with open(allpath, "w+") as allf:
-            for (alb, added) in albums:
-                allf.write(name_fmt(alb, added, release=release_all))
+            for alb in albums:
+                allf.write(name_fmt(alb, release=release_all))
     
     if yearpath:
         with open(yearpath, "w+") as yearf:
-            for (alb, added) in [a for a in albums if a[0]['release_date'].startswith(f"{year}")]:
-                yearf.write(name_fmt(alb, added, release=True))
+            for alb in [a for a in albums if a.released.startswith(f"{year}")]:
+                yearf.write(name_fmt(alb, release=True))
 
     if library_playlist_id:
-        items = [album[0]['tracks']['items'] for album in albums]
-        tracks = [t['uri'] for tracks in items for t in tracks]
-        
-        BATCH_SIZE = 100
-        batched = [
-            tracks[i:i+BATCH_SIZE] for i in range(0, len(tracks), BATCH_SIZE)
-        ][::-1]
-
-        for b in batched:
-            spotify.post(
-                f"https://api.spotify.com/v1/playlists/{library_playlist_id}/tracks", 
-                data=json.dumps({"uris": b, "position": 0})
-            )
+        spotify.add_playlist_tracks(library_playlist_id, flatten([t.tracks for t in albums]))
 
 def create_shuffled(in_id: str, out_id: str):
     ts = set()
