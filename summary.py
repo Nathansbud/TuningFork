@@ -12,13 +12,14 @@ def save_album_history(
     allpath: Optional[str]=None, 
     yearpath: Optional[str]=None, 
     library_playlist_id: Optional[str]=None,
+    year_playlist_id: Optional[str]=None,
     release_all: bool=False
 ):
     albums = spotify.get_library_albums(datetime(year - 1, 12, 31, 0, 0, 0))[::-1]    
     def name_fmt(alb, release=False):
         released = f' ({alb.released})' if release else ''
 
-        return f'{alb.added.split(" ")[0]} - {alb.name} by {alb.artist}{released}\n'
+        return f'{alb.added.strftime("%m-%d")} - {alb.name} by {alb.artist}{released}\n'
     
     if allpath:
         with open(allpath, "w+") as allf:
@@ -31,7 +32,16 @@ def save_album_history(
                 yearf.write(name_fmt(alb, release=True))
 
     if library_playlist_id:
-        spotify.add_playlist_tracks(library_playlist_id, flatten([t.tracks for t in albums]))
+        spotify.add_playlist_tracks(
+            library_playlist_id, 
+            flatten([t.tracks for t in albums])
+        )
+
+    if year_playlist_id:
+        spotify.add_playlist_tracks(
+            year_playlist_id,
+            [a.tracks[0] for a in albums if a.released.startswith(f"{year}")]
+        )
 
 def create_shuffled(in_id: str, out_id: str):
     ts = set()
