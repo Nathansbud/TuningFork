@@ -43,30 +43,14 @@ def save_album_history(
             [a.tracks[0] for a in albums if a.released.startswith(f"{year}")]
         )
 
-def create_shuffled(in_id: str, out_id: str):
-    ts = set()
+def create_shuffled(in_id: str, out_id: str):    
+    playlist_items = spotify.get_playlist_tracks(playlist_id=in_id)
     
-    for i in range(2):
-        # heads up that the playlist endpoint doesn't support offset, only tracks does
-        ts |= {
-            t['track']['uri'] for t in spotify.get(
-                f"https://api.spotify.com/v1/playlists/{in_id}/tracks?offset={i * 100}&limit=100"
-            ).json()['items']
-        }
+    # unique-ify items by converting -> dict on item uri, then back
+    unique_items = list({p.uri: p for p in playlist_items}.values())
+    random.shuffle(unique_items)
 
-    tracks = list(ts)
-    random.shuffle(tracks)
-    
-    BATCH_SIZE = 100
-    batched = [
-        tracks[i:i+BATCH_SIZE] for i in range(0, len(tracks), BATCH_SIZE)
-    ][::-1]
-
-    for b in batched:
-        spotify.post(
-            f"https://api.spotify.com/v1/playlists/{out_id}/tracks", 
-            data=json.dumps({"uris": b, "position": 0})
-        )
+    spotify.add_playlist_tracks(out_id, unique_items)
 
 def combine_playlists(target_id: str, *pids: List[str]):
     tracks = []
@@ -87,6 +71,14 @@ def combine_playlists(target_id: str, *pids: List[str]):
             f"https://api.spotify.com/v1/playlists/{target_id}/tracks", 
             data=json.dumps({"uris": b, "position": 0})
         )
+
+def merge_monthly_playlists(combined_id: str, year: int):
+    valid_names = [
+        f"{n} {year}" for n in 
+        ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    ]
+
+    spotify.merge_playlists(combined_id, lambda p: p.name in valid_names)
 
 if __name__ == "__main__":
     pass

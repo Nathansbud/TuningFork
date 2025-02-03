@@ -2,6 +2,7 @@ import json
 import os
 
 from datetime import datetime
+from typing import List
 
 import requests
 
@@ -9,7 +10,7 @@ from network import client as spotify
 from utilities import flatten
 
 CACHE_FILE = os.path.join(os.path.dirname(__file__), "resources", "playlister.json")
-UPDATE_BACKLOG = False
+UPDATE_BACKLOG = True
 
 def internet():
     connection = True
@@ -80,6 +81,13 @@ def update_backlog_playlist(playlist_id, backlog_id, last_update=None):
     cache["BACKLOG_METADATA"]["LAST_UPDATE"] = time_now
     save_cache()
     
+def get_representative_tracks_from_albums(playlist_id: str, album_ids: List[str]):
+    tracks = [
+        listing[0] for listing in [spotify.get_album_tracks(album_id=aid) for aid in album_ids]
+    ]
+
+    spotify.add_playlist_tracks(playlist_id, tracks)
+
 if __name__ == "__main__":
     if internet():
         # Would prefer to disable liked playlist -> Zacksongs, since workflow doesn't really make sense since 
