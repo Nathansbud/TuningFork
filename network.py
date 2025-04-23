@@ -79,13 +79,16 @@ def get_token():
     if not os.path.isfile(os.path.join(cred_path, "spotify_token.json")):
         CLIENT = authorize_spotify(default_spotify_scopes)
     else:
-        with open(os.path.join(cred_path, "spotify_token.json"), 'r+') as t:
-            token = json.load(t)
-        
-        CLIENT = OAuth2Session(spotify_creds['client_id'], token=token,
-                                auto_refresh_url=token_url,
-                                auto_refresh_kwargs={'client_id': spotify_creds['client_id'], 'client_secret': spotify_creds['client_secret']},
-                                token_updater=save_token)    
+        try:
+            with open(os.path.join(cred_path, "spotify_token.json"), 'r+') as t:
+                token = json.load(t)
+        except json.decoder.JSONDecodeError:
+            CLIENT = authorize_spotify(default_spotify_scopes)
+        else:
+            CLIENT = OAuth2Session(spotify_creds['client_id'], token=token,
+                                    auto_refresh_url=token_url,
+                                    auto_refresh_kwargs={'client_id': spotify_creds['client_id'], 'client_secret': spotify_creds['client_secret']},
+                                    token_updater=save_token)    
     return CLIENT
 
 def get_cookies():
