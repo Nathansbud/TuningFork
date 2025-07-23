@@ -23,7 +23,7 @@ def track_lyrics(track, clean=True):
         }
     else:
         for p in permutations(track.artist.split(", ")):
-            lyrics = get_lyrics(" and ".join(p), remove_remaster(curr.get('name')) if clean else curr.get('name'))
+            lyrics = get_lyrics(" and ".join(p), remove_remaster(track.name) if clean else track.name)
             if lyrics:
                 return {
                     "artist": " and ".join(p),
