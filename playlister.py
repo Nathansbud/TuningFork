@@ -11,6 +11,7 @@ from utilities import flatten
 
 CACHE_FILE = os.path.join(os.path.dirname(__file__), "resources", "playlister.json")
 UPDATE_BACKLOG = False
+UPDATE_LIBRARY = False
 
 def internet():
     connection = True
@@ -98,11 +99,12 @@ if __name__ == "__main__":
             cache["LIKED_METADATA"]["LAST_UPDATE"],
         )
         
-        update_library_playlist(
-            cache["LIBRARY_METADATA"]["ACTIVE_PLAYLIST_ID"],
-            cache["LIBRARY_METADATA"]["LAST_UPDATE"],
-        )
-        
+        if UPDATE_LIBRARY:
+            update_library_playlist(
+                cache["LIBRARY_METADATA"]["ACTIVE_PLAYLIST_ID"],
+                cache["LIBRARY_METADATA"]["LAST_UPDATE"],
+            )   
+            
         if UPDATE_BACKLOG:
             update_backlog_playlist(
                 cache["BACKLOG_METADATA"]["ACTIVE_PLAYLIST_ID"],
