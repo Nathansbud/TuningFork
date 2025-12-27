@@ -4,6 +4,7 @@ import random
 from datetime import datetime
 from typing import List, Optional
 from utilities import flatten
+from collections import Counter
 
 from network import client as spotify
 
@@ -80,7 +81,22 @@ def merge_monthly_playlists(combined_id: str, year: int):
 
     spotify.merge_playlists(combined_id, lambda p: p.name in valid_names)
 
+def get_artists_in_playlist(playlist_id: str) -> List[str]:
+    tracks = spotify.get_playlist_tracks(playlist_id=playlist_id)
+    return list(set([t.artist for t in tracks]))
+
+def get_playlist_overlaps(p1_id: str, p2_id: str) -> set:
+    p1_tracks = set(str(s) for s in spotify.get_playlist_tracks(playlist_id=p1_id))
+    p2_tracks = set(str(s) for s in spotify.get_playlist_tracks(playlist_id=p2_id))
+    
+    return p1_tracks.intersection(p2_tracks)
+
+def get_non_unique_albums(playlist_id: str) -> List[str]:
+    album_counter = Counter((
+        t.artist,
+        t.album.name
+    ) for t in spotify.get_playlist_tracks(playlist_id=playlist_id))
+    return [album for album, count in album_counter.items() if count > 1]
+
 if __name__ == "__main__":
     pass
-
-

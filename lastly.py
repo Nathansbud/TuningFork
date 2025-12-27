@@ -135,13 +135,17 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
     print(f"Created playlist {name}!")
 
 def generate_last_month_playlist(dt):
-    this_month = dt.replace(day=1, hour=0, minute=0, second=1)
-    last_month = (this_month - timedelta(days=1)).replace(day=1, second=0)
-    playlist_for = f"{MONTHS[last_month.month - 1]} {last_month.year}"
+    this_month = dt.replace(day=1, hour=0, minute=0, second=0)
+
+    # Last.fm is upper-bound inclusive, weirdly; hence, we want to do between midnight
+    # on the first day of the month to 11:59 on the final day of the month
+    start_last_month = (this_month - timedelta(days=1)).replace(day=1)
+    end_last_month = (this_month - timedelta(seconds=1))
+    playlist_for = f"{MONTHS[start_last_month.month - 1]} {start_last_month.year}"
     make_date_playlist(
         playlist_for,
-        last_month,
-        this_month,
+        start_last_month,
+        end_last_month,
         description=f"most played tracks for {playlist_for} (per last.fm)"
     ) 
         
@@ -153,3 +157,14 @@ if __name__ == "__main__":
     TZ = pytz.timezone("US/Eastern")
     if args.mode == "auto":
         generate_last_month_playlist(datetime.now(tz=TZ))
+    elif args.mode == "year":
+        current_year = datetime.now(tz=TZ).year
+        make_date_playlist(
+            "YIZ25: Zpotify Wrapped",
+            datetime.now(tz=TZ).replace(month=1, day=1, hour=0, minute=0, second=0),
+            datetime.now(tz=TZ).replace(year=current_year + 1, month=1, day=1, hour=0, minute=0, second=0),
+            description=f"my 100 (ish) most played songs of {current_year}, per last.fm",
+            limit=100
+        )
+    else:
+        pass

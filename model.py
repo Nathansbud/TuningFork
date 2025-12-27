@@ -93,6 +93,12 @@ class TrackObject:
     def __str__(self):
         return f"[T]: {self.name} by {self.artist}"
 
+    def __repr__(self):
+        return str(self)
+    
+    def __hash__(self):
+        return hash(str(self))
+
 class ActiveTrackObject(TrackObject):
     progress: int
 
