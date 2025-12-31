@@ -66,6 +66,8 @@ class TrackObject:
     local: bool
     duration: int
 
+    url: str
+
     def __init__(
         self, 
         name=None, 
@@ -74,7 +76,8 @@ class TrackObject:
         id=None,
         album=None,
         local=None,
-        duration=None
+        duration=None,
+        url=None
     ):
         self.name = name
         self.artist = artist
@@ -83,6 +86,7 @@ class TrackObject:
         self.album = album
         self.local = local
         self.duration = duration
+        self.url = url
     
     def prettify(self, album=False) -> str:
         if not album:
@@ -145,8 +149,8 @@ def create_track_object(track_json: dict, album=None) -> TrackObject:
     track_album = album if album else (
         create_album_object(track_json.get('album')) 
         if track_json.get('album') else None
-    ) 
-
+    )
+    
     return TrackObject(
         name=track_json.get('name'),
         artist=', '.join(artist.get('name') for artist in track_json.get('artists', [])),
@@ -154,7 +158,8 @@ def create_track_object(track_json: dict, album=None) -> TrackObject:
         id=track_json.get('id'),
         album=track_album,
         local=track_json.get('is_local', False),
-        duration=track_json.get('duration_ms')
+        duration=track_json.get('duration_ms'),
+        url=track_json.get('external_urls', {}).get('spotify')
     )
 
 def create_active_track_object(active_track_json: dict) -> ActiveTrackObject:

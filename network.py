@@ -332,7 +332,7 @@ class SpotifyClient:
         self.delete(f"https://api.spotify.com/v1/playlists/{playlist_id}/followers")
 
     def merge_playlists(self, target_id, filter_condition=None):
-        playlists = [p for p in self.get_user_playlists() if (filter_condition(p) if filter_condition else True)]
+        playlists = [p for p in reversed(self.get_user_playlists()) if (filter_condition(p) if filter_condition else True)]
         for pl in playlists:
             self.add_playlist_tracks(target_id, self.get_playlist_tracks(playlist_id=pl.id))
 

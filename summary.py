@@ -3,7 +3,7 @@ import random
 
 from datetime import datetime
 from typing import List, Optional
-from utilities import flatten
+from utilities import flatten, get_share_link
 from collections import Counter
 
 from network import client as spotify
@@ -97,6 +97,19 @@ def get_non_unique_albums(playlist_id: str) -> List[str]:
         t.album.name
     ) for t in spotify.get_playlist_tracks(playlist_id=playlist_id))
     return [album for album, count in album_counter.items() if count > 1]
+
+def get_all_apple_music_links(playlist_id: str, print_intermediate = False) -> List[dict]:
+    tracks = spotify.get_playlist_tracks(playlist_id=playlist_id)
+    
+    links = []
+    for t in tracks:
+        link = str(get_share_link(t.url, True)['link']) or None
+        if print_intermediate: 
+            print(link, t)
+        
+        links.append(link)
+
+    return links
 
 if __name__ == "__main__":
     pass
