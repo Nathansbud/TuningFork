@@ -54,7 +54,7 @@ if __name__ == "__main__":
         )
     
     if should(args.backlog):
-        print("Updated sorted backlog...")
+        print("Updating sorted backlog...")
         sort_backlog_by_album_length(
             playlist_preference("ORDERED"),
             playlist_preference("BACKLOG")

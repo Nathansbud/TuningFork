@@ -96,8 +96,8 @@ def build_playlist_image(dt: datetime):
 
 # annoying limitation: Spotify API doesn't really expose playlist folders through the API, so can't set
 def make_date_playlist(name, start_date, end_date, limit=25, description="", public=True, image=True):
-    if not prefs.get("SPOTIFY_USER"): 
-        print(f"Could not find preference {magenta('SPOTIFY_USER')}, exiting...")
+    if not prefs.get("LASTFM_USER"): 
+        print(f"Could not find preference {magenta('LASTFM_USER')}, exiting...")
         return
     
     lastfm_chart = get_top_tracks(start_date, end_date, limit)
