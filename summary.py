@@ -3,10 +3,13 @@ import random
 
 from datetime import datetime
 from typing import List, Optional
+from model import PlaylistObject
 from utilities import flatten, get_share_link
 from collections import Counter
 
 from network import client as spotify
+
+MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 def save_album_history(
     year: int, 
@@ -76,7 +79,7 @@ def combine_playlists(target_id: str, *pids: List[str]):
 def merge_monthly_playlists(combined_id: str, year: int):
     valid_names = [
         f"{n} {year}" for n in 
-        ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        MONTH_NAMES
     ]
 
     spotify.merge_playlists(combined_id, lambda p: p.name in valid_names)
@@ -98,7 +101,7 @@ def get_non_unique_albums(playlist_id: str) -> List[str]:
     ) for t in spotify.get_playlist_tracks(playlist_id=playlist_id))
     return [album for album, count in album_counter.items() if count > 1]
 
-def get_all_apple_music_links(playlist_id: str, print_intermediate = False) -> List[dict]:
+def get_all_apple_music_links(playlist_id: str, print_intermediate = False) -> List[str]:
     tracks = spotify.get_playlist_tracks(playlist_id=playlist_id)
     
     links = []
@@ -110,6 +113,13 @@ def get_all_apple_music_links(playlist_id: str, print_intermediate = False) -> L
         links.append(link)
 
     return links
+
+def get_all_snapshot_playlists() -> list[PlaylistObject]:
+    return [
+        p for p in spotify.get_matching_playlists(
+            lambda p: any(mn in p.name for mn in MONTH_NAMES)
+        )
+    ]
 
 if __name__ == "__main__":
     pass
