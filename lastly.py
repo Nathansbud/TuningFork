@@ -134,7 +134,7 @@ def make_date_playlist(name, start_date, end_date, limit=25, description="", pub
         
     print(f"Created playlist {name}!")
 
-def generate_last_month_playlist(dt):
+def generate_last_month_playlist(dt, limit=25):
     this_month = dt.replace(day=1, hour=0, minute=0, second=0)
 
     # Last.fm is upper-bound inclusive, weirdly; hence, we want to do between midnight
@@ -146,7 +146,8 @@ def generate_last_month_playlist(dt):
         playlist_for,
         start_last_month,
         end_last_month,
-        description=f"most played tracks for {playlist_for} (per last.fm)"
+        description=f"most played tracks for {playlist_for} (per last.fm)",
+        limit=limit
     ) 
         
 if __name__ == "__main__":
@@ -156,7 +157,10 @@ if __name__ == "__main__":
 
     TZ = pytz.timezone("US/Eastern")
     if args.mode == "auto":
-        generate_last_month_playlist(datetime.now(tz=TZ))
+        generate_last_month_playlist(datetime.now(tz=TZ)),
+    elif args.mode == "current":
+        current = datetime.now(tz=TZ)
+        generate_last_month_playlist(current.replace(month=current.month + 1)),
     elif args.mode == "year":
         current_year = datetime.now(tz=TZ).year
         make_date_playlist(
