@@ -46,7 +46,7 @@ def start_server(port):
     #Certificate files can be generated using: 
     #openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
 
-    httpd = HTTPServer(("localhost", port), SimpleHTTPRequestHandler)
+    httpd = HTTPServer(("127.0.0.1", port), SimpleHTTPRequestHandler)
     httpd.socket = ssl.wrap_socket(httpd.socket, 
         certfile=os.path.join(os.path.dirname(__file__), "certificates", "nathansbud.crt"), 
         keyfile=os.path.join(os.path.dirname(__file__), "certificates", "nathansbud.key"), server_side=True
